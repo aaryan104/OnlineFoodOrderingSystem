@@ -44,9 +44,9 @@
             align-items: center;
             color: #fff;
             position: absolute;
-            top: -5px;
-            left: 80%;
-            padding: 3px 10px;
+            top: -4px;
+            left: 75%;
+            padding: 1px 6px;
             margin-top: 15px;
         }
 
@@ -85,6 +85,11 @@
             color: #fff;
             width: 100%;
             padding: 10px;
+        }
+
+        .list .item button:hover {
+            background-color: #36373a;
+            cursor: pointer;
         }
 
         .card {
@@ -340,7 +345,7 @@
             <img src="../../Asset/Library/img/${value.image}" alt="no image priview">
             <div class="title">${value.name}</div>
             <div class="price">MRP ₹${value.price.toLocaleString()}</div>
-            <button onclick="addToCard(${key})">Add To Card</button>`;
+            <button onclick="addToCard(${key})">Add To Cart</button>`;
                 list.appendChild(newDiv);
             })
         }
