@@ -15,6 +15,15 @@ namespace OnlineFoodOrderingSystem.FOS
     {
 
         /// <summary>
+        /// lblMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMessage;
+
+        /// <summary>
         /// loginForm control.
         /// </summary>
         /// <remarks>
@@ -42,13 +51,13 @@ namespace OnlineFoodOrderingSystem.FOS
         protected global::System.Web.UI.WebControls.TextBox password;
 
         /// <summary>
-        /// RadioButtonList1 control.
+        /// txtRole control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList RadioButtonList1;
+        protected global::System.Web.UI.WebControls.RadioButtonList txtRole;
 
         /// <summary>
         /// Customer control.

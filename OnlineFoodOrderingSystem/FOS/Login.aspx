@@ -62,7 +62,7 @@
 
         #login form #btn {
             width: 100%;
-            margin-top: 5px;
+            margin-top: 15px;
             padding: 0.7rem;
             margin-top: 10px;
             background-color: #FEA116;
@@ -248,30 +248,35 @@
 </head>
 <body>
     <section id="login">
+            <asp:Label ID="lblMessage" runat="server" ForeColor="black" Text=""></asp:Label>
         <form id="loginForm" runat="server">
             <h1>Login</h1>
             <hr>
             <asp:Label for="username" runat="server"></asp:Label>
-            <asp:TextBox type="text" ID="username" runat="server" name="username" placeholder="USERNAME"></asp:TextBox>
+            <asp:TextBox type="text" ID="username" runat="server" name="username" placeholder="USERNAME" list="email"></asp:TextBox>
+            <datalist id="email">
+                <option value="admin@gmail.com">
+                <option value="delivery@gmail.com">
+                <option value="shivam@gmail.com">
+            </datalist>
 
             <asp:Label for="password" runat="server"></asp:Label>
             <asp:TextBox type="password" ID="password" runat="server" name="password" placeholder="PASSWORD"></asp:TextBox>
             
             <div class="radio-container">
-                <asp:RadioButtonList ID="RadioButtonList1" runat="server" Height="80px" RepeatDirection="Horizontal" Width="400px">
+                <asp:RadioButtonList ID="txtRole" runat="server" Height="80px" RepeatDirection="Horizontal" Width="400px">
                     <asp:ListItem value="Customer" id="Customer" Selected >Customer</asp:ListItem>
                     <asp:ListItem value="Restaurant" id="Restaurant">Restaurant</asp:ListItem>
                     <asp:ListItem Value="DeliveryAgent" id="Delivery">Delivery Agent</asp:ListItem>
                 </asp:RadioButtonList>
             </div>          
-            
             <a href="ForgotPassword.aspx" class="FPass">Forgot Password?</a>
 
             <asp:Button ID="btn" runat="server" Text="Login" OnClick="btn_Click" />
             <h4>Don't have an account? <a href="Register.aspx" class="Regi">Register</a></h4>
             <a href="Index.aspx" id="Atag" class="next round">
                 <span class="arrow">&#8249;</span> GoBack
-            </a>
+            </a><br />  
         </form>
     </section>
 </body>
