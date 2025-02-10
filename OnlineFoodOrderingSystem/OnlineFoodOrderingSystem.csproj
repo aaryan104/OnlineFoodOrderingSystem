@@ -73,6 +73,7 @@
     <Content Include="Asset\Library\img\about-2.jpg" />
     <Content Include="Asset\Library\img\about-3.jpg" />
     <Content Include="Asset\Library\img\about-4.jpg" />
+    <Content Include="Asset\Library\img\AddToCart.png" />
     <Content Include="Asset\Library\img\bg-hero.jpg" />
     <Content Include="Asset\Library\img\GreenMarco.png" />
     <Content Include="Asset\Library\img\hero.jpg" />
@@ -133,6 +134,7 @@
     <Content Include="Asset\Library\lib\wow\wow.min.js" />
     <Content Include="FOS\About.aspx" />
     <Content Include="FOS\Contact.aspx" />
+    <Content Include="FOS\Customer\Dashboard.aspx" />
     <Content Include="FOS\ForgotPassword.aspx" />
     <Content Include="FOS\Index.aspx" />
     <Content Include="FOS\Login.aspx" />
@@ -157,6 +159,13 @@
     </Compile>
     <Compile Include="FOS\Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FOS\Customer\Dashboard.aspx.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FOS\Customer\Dashboard.aspx.designer.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
     <Compile Include="FOS\ForgotPassword.aspx.cs">
       <DependentUpon>ForgotPassword.aspx</DependentUpon>
@@ -316,7 +325,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="FOS\Admin\" />
-    <Folder Include="FOS\Customer\" />
     <Folder Include="FOS\DeliveryAgent\" />
     <Folder Include="Images\" />
     <Folder Include="Models\" />
