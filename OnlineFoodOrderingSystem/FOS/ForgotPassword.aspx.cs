@@ -109,14 +109,14 @@ namespace OnlineFoodOrderingSystem.FOS
                     </div>";
 
                 MailMessage mail = new MailMessage();
-                mail.From = new MailAddress("aaryanmangukiya@gmail.com");
+                mail.From = new MailAddress("kashtabhanjanfood@gmail.com");
                 mail.To.Add(email);
                 mail.Subject = "Password Reset OTP";
                 mail.Body = emailTemplate;
                 mail.IsBodyHtml = true;
 
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-                smtp.Credentials = new NetworkCredential("aaryanmangukiya@gmail.com", "zhdo agbw enmh hnbx");
+                smtp.Credentials = new NetworkCredential("kashtabhanjanfood@gmail.com", "kkyc oixf saeb serx");
                 smtp.EnableSsl = true;
                 smtp.Send(mail);
 
