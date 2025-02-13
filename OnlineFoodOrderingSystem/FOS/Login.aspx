@@ -5,9 +5,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Food Delivery Management System</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -250,10 +251,11 @@
     <section id="login">
             <asp:Label ID="lblMessage" runat="server" ForeColor="black" Text=""></asp:Label>
         <form id="loginForm" runat="server">
-            <h1>Login</h1>
+            <h1><i class="fas fa-user-alt" style="font-size:26px;color:#FEA116;"></i> &nbsp;Login</h1>
+            
             <hr>
-            <asp:Label for="username" runat="server"></asp:Label>
-            <asp:TextBox type="text" ID="username" runat="server" name="username" placeholder="USERNAME" list="email"></asp:TextBox>
+            <asp:Label for="email" runat="server"></asp:Label>
+            <asp:TextBox type="text" ID="txtEmail" runat="server" name="email" placeholder="EMAIL" list="email"></asp:TextBox>
             <datalist id="email">
                 <option value="admin@gmail.com">
                 <option value="delivery@gmail.com">
@@ -261,7 +263,7 @@
             </datalist>
 
             <asp:Label for="password" runat="server"></asp:Label>
-            <asp:TextBox type="password" ID="password" runat="server" name="password" placeholder="PASSWORD"></asp:TextBox>
+            <asp:TextBox type="password" ID="txtPass" runat="server" name="password" placeholder="PASSWORD"></asp:TextBox>
             
             <div class="radio-container">
                 <asp:RadioButtonList ID="txtRole" runat="server" Height="80px" RepeatDirection="Horizontal" Width="400px">

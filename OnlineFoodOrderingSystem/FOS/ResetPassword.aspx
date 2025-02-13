@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ForgotPassword.aspx.cs" Inherits="OnlineFoodOrderingSystem.FOS.ForgotPassword" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ResetPassword.aspx.cs" Inherits="OnlineFoodOrderingSystem.FOS.ResetPassword" %>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot Password</title>
+    <title>Reset Password</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
@@ -24,13 +24,13 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 100%;
-            height: 35%;
+            height: 40%;
             max-width: 400px;
             text-align: center;
         }
 
         h2 {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             color: #333;
         }
 
@@ -43,19 +43,19 @@
             font-size: 16px;
         }
 
-        #btnSend {
-            width: 90%;
-            padding: 10px;
-            background-color: #FEA116;
-            color: white;
-            border: none;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 12px 0px;
+        #btnReset {
+                width: 90%;
+                padding: 10px;
+                background-color: #FEA116;
+                color: white;
+                border: none;
+                font-size: 16px;
+                border-radius: 5px;
+                cursor: pointer;
+                margin: 10px 0px;
         }
 
-        #btnSend:hover {
+        #btnReset:hover {
             background-color: #e29013;
         }
 
@@ -68,22 +68,18 @@
         .back-btn:hover {
             color: #e29013;
         }
-
-        label, #lblMessage {
-            color: red;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-            <label id="msg" runat="server"></label>
         <form runat="server">
-            <h2>Forgot Password</h2>
-            <asp:TextBox type="email" ID="txtEmail" runat="server" placeholder="Enter your email"></asp:TextBox>
-            <asp:Button ID="btnSend" runat="server" Text="Send OTP" OnClick="btnSend_Click" />
+            <h2>Reset Password</h2>
+            <asp:TextBox ID="txtPassword" type="password" runat="server" placeholder="New Password"></asp:TextBox>
+            <asp:TextBox ID="txtConfirmPassword" type="password" runat="server" placeholder="Confirm Password"></asp:TextBox>
+            <asp:Button ID="btnReset" runat="server" Text="Reset Password" OnClick="btnReset_Click1" />
             <a class="back-btn" href="Login.aspx">Back to Login?</a>
                 <br />
-            <asp:Label ID="lblMessage" runat="server"></asp:Label>
+            <asp:Label ID="lblMessage" runat="server" ForeColor="black" Text=""></asp:Label>
         </form>
     </div>
 </body>

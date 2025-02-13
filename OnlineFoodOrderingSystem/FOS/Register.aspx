@@ -155,21 +155,25 @@
         <form id="RegisterForm" runat="server">
             <h1>Register</h1>
             <hr>
-            <label for="username"></label>
-            <asp:TextBox type="text" ID="username" runat="server" name="username" placeholder="USERNAME"></asp:TextBox>
+            <label for="firstname"></label>
+            <asp:TextBox type="text" ID="txtFirstname" runat="server" name="firstname" placeholder="FIRSTNAME"></asp:TextBox>
+            
+            <label for="lastname"></label>
+            <asp:TextBox type="text" ID="txtLastname" runat="server" name="lastname" placeholder="LASTNAME"></asp:TextBox>
             
             <label for="email"></label>
-            <asp:TextBox type="email" ID="email" runat="server" name="email" placeholder="EMAIL"></asp:TextBox>
+            <asp:TextBox type="email" ID="txtEmail" runat="server" name="email" placeholder="EMAIL"></asp:TextBox>
             
-            <label for="mobile"></label>
-            <asp:TextBox type="number" ID="mobile" runat="server" name="mobile" placeholder="MOBILE"></asp:TextBox>
-
             <label for="password"></label>
-            <asp:TextBox type="password" ID="password" runat="server" name="password" placeholder="PASSWORD"></asp:TextBox>
+            <asp:TextBox type="password" ID="txtPassword" runat="server" name="password" placeholder="PASSWORD"></asp:TextBox>
 
-            <label for="conPassword"></label>
-            <asp:TextBox type="text" ID="conPassword" runat="server" name="conPassword" placeholder="CONFORM PASSWORD"></asp:TextBox>
+            <label for="mobile"></label>
+            <asp:TextBox type="number" ID="txtMobile" runat="server" name="mobile" placeholder="MOBILE"></asp:TextBox>
 
+            <label for="address"></label>
+            <asp:TextBox type="text" ID="txtAddress" runat="server" name="address" placeholder="ADDRESS"></asp:TextBox>
+
+            <label id="msg" runat="server"></label>
             <asp:Button ID="btn" runat="server" Text="Register" OnClick="btn_Click" />
             <h4>You have an account? <a href="Login.aspx" class="Regi">Login</a></h4>
         </form>

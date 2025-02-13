@@ -142,8 +142,10 @@
     <Content Include="FOS\Login.aspx" />
     <Content Include="FOS\Menu.aspx" />
     <Content Include="FOS\Register.aspx" />
+    <Content Include="FOS\ResetPassword.aspx" />
     <Content Include="FOS\Service.aspx" />
     <Content Include="FOS\Team.aspx" />
+    <Content Include="FOS\VerifyOTP.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -225,6 +227,13 @@
     <Compile Include="FOS\Register.aspx.designer.cs">
       <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
+    <Compile Include="FOS\ResetPassword.aspx.cs">
+      <DependentUpon>ResetPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FOS\ResetPassword.aspx.designer.cs">
+      <DependentUpon>ResetPassword.aspx</DependentUpon>
+    </Compile>
     <Compile Include="FOS\Service.aspx.cs">
       <DependentUpon>Service.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -238,6 +247,13 @@
     </Compile>
     <Compile Include="FOS\Team.aspx.designer.cs">
       <DependentUpon>Team.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FOS\VerifyOTP.aspx.cs">
+      <DependentUpon>VerifyOTP.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FOS\VerifyOTP.aspx.designer.cs">
+      <DependentUpon>VerifyOTP.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

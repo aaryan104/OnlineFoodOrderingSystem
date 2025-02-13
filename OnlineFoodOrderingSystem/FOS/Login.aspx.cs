@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -9,52 +12,97 @@ namespace OnlineFoodOrderingSystem.FOS
 {
     public partial class Login : System.Web.UI.Page
     {
+        SqlConnection conn;
+        SqlCommand cmd;
+        SqlDataAdapter sda;
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
 
+        public void funcon()
+        {
+            try
+            {
+                string conStr = ConfigurationManager.ConnectionStrings["conStr"].ConnectionString;
+                conn = new SqlConnection(conStr);
+                if (conn.State != ConnectionState.Open)
+                {
+                    conn.Open();
+                    // Response.Write("connection success");
+                }
+                else
+                {
+                    Response.Write("not connect");
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.ToString());
+            }
+        }
+
         protected void btn_Click(object sender, EventArgs e)
         {
             String role = txtRole.Text;
-            String email = username.Text;
-            String pass = password.Text;
+            String email = txtEmail.Text;
+            String pass = txtPass.Text;
 
             if(email == string.Empty && pass == string.Empty)
             {
                 lblMessage.Text = "Please Enter Email and Password!";
             }
-            else if(role == "Restaurant")
+            else
             {
-                if (email == "admin@gmail.com" && pass == "admin123")
+                if (role == "Restaurant")
                 {
-                    Response.Redirect("~/FOS/Admin/Home.aspx");
+                    if (email == "admin@gmail.com" && pass == "admin123")
+                    {
+                        Response.Redirect("~/FOS/Admin/Home.aspx");
+                    }
+                    else
+                    {
+                        lblMessage.Text = "Incorrect email-password or Role!";
+                    }
+                }
+                else if(role == "Customer")
+                {
+                    funcon();
+                    string qry = "SELECT COUNT(*) FROM Users WHERE Email=@eml AND PasswordHash=@pwd";
+                    cmd = new SqlCommand(qry, conn);
+                    cmd.Parameters.AddWithValue("eml", email);
+                    cmd.Parameters.AddWithValue("pwd", pass);
+
+                    int cnt = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
+
+                    if (cnt > 0)
+                    {
+                        Session["s_eml"] = txtEmail.Text;
+                        Response.Redirect("~/FOS/Customer/Dashboard.aspx");
+                    }
+                    else
+                    {
+                        lblMessage.Text = "Incorrect email-password or Role!";
+                    }
+                    conn.Close();
+                }
+                else if(role == "DeliveryAgent")
+                {
+                    if(email == "delivery@gmail.com" && pass == "delivery123")
+                    {
+                        Response.Redirect("~/FOS/DeliveryAgent/Agent.aspx");
+                    }
+                    else
+                    {
+                        lblMessage.Text = "Incorrect email-password or Role!";
+                    }
                 }
                 else
                 {
-                    lblMessage.Text = "Incorrect email or password!";
-                }
-            }
-            else if(role == "Customer")
-            {
-                if(email == "shivam@gmail.com" && pass == "shivam123")
-                {
-                    Response.Redirect("~/FOS/Customer/Dashboard.aspx");
-                }
-                else
-                {
-                    lblMessage.Text = "Incorrect email or password!";
-                }
-            }
-            else if(role == "Delivery")
-            {
-                if(email == "delivery@gmail.com" && pass == "delivery123")
-                {
-                    Response.Redirect("~/FOS/DeliveryAgent/Agent.aspx");
-                }
-                else
-                {
-                    lblMessage.Text = "Incorrect email or password!";
+                    lblMessage.Text = "Invalid Role";
                 }
             }
         }
