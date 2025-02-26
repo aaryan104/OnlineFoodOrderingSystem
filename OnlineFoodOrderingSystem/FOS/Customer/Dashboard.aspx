@@ -136,7 +136,6 @@
                 <ItemTemplate>
                     <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
                         <div class="relative h-48">
-                            <%--<img src="../../Asset/Library/img/menu10.jpg" />--%>
                             <img src='<%# Eval("ImageUrl") %>' class="w-full h-full object-cover" alt='<%# Eval("Name") %>' />
                             <div class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
                                 <i class="ri-heart-line text-gray-400 hover:text-primary cursor-pointer"></i>
