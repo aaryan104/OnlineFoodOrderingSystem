@@ -66,7 +66,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
                     <div class="relative">
                         <i class="ri-lock-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <asp:TextBox ID="txtPass" runat="server" TextMode="Password" CssClass="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary focus:border-primary text-sm" placeholder="Enter your password"></asp:TextBox>
+                        <asp:TextBox ID="txtPass" runat="server" CssClass="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-primary focus:border-primary text-sm" placeholder="Enter your password"></asp:TextBox>
                         <button type="button" id="togglePassword" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                             <i class="ri-eye-off-line"></i>
                         </button>

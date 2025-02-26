@@ -60,6 +60,24 @@ namespace OnlineFoodOrderingSystem.FOS
         protected global::System.Web.UI.WebControls.TextBox txtEmail;
 
         /// <summary>
+        /// verifyEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button verifyEmail;
+
+        /// <summary>
+        /// txtOtp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtOtp;
+
+        /// <summary>
         /// txtPassword control.
         /// </summary>
         /// <remarks>
@@ -87,12 +105,12 @@ namespace OnlineFoodOrderingSystem.FOS
         protected global::System.Web.UI.WebControls.TextBox txtAddress;
 
         /// <summary>
-        /// btnSignin control.
+        /// btnRegi control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSignin;
+        protected global::System.Web.UI.WebControls.Button btnRegi;
     }
 }

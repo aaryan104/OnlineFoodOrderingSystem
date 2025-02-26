@@ -131,6 +131,7 @@
     <Content Include="Asset\Library\lib\wow\wow.js" />
     <Content Include="Asset\Library\lib\wow\wow.min.js" />
     <Content Include="FOS\About.aspx" />
+    <Content Include="FOS\Admin\FoodItems.aspx" />
     <Content Include="FOS\Admin\Home.aspx" />
     <Content Include="FOS\Contact.aspx" />
     <Content Include="FOS\Customer\Dashboard.aspx" />
@@ -155,6 +156,20 @@
     </Compile>
     <Compile Include="FOS\About.aspx.designer.cs">
       <DependentUpon>About.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FOS\Admin\Admin.Master.cs">
+      <DependentUpon>Admin.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FOS\Admin\Admin.Master.designer.cs">
+      <DependentUpon>Admin.Master</DependentUpon>
+    </Compile>
+    <Compile Include="FOS\Admin\FoodItems.aspx.cs">
+      <DependentUpon>FoodItems.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FOS\Admin\FoodItems.aspx.designer.cs">
+      <DependentUpon>FoodItems.aspx</DependentUpon>
     </Compile>
     <Compile Include="FOS\Admin\Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
@@ -352,6 +367,7 @@
     <Content Include="Asset\Library\scss\bootstrap\scss\_utilities.scss" />
     <Content Include="Asset\Library\scss\bootstrap\scss\_variables.scss" />
     <Content Include="FOS\FOS.Master" />
+    <Content Include="FOS\Admin\Admin.Master" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
