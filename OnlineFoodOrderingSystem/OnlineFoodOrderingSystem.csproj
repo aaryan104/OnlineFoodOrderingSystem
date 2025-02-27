@@ -147,6 +147,10 @@
     <Content Include="FOS\Team.aspx" />
     <Content Include="FOS\VerifyOTP.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="StoreImage\Burger.jpg" />
+    <Content Include="StoreImage\Pizza.jpg" />
+    <Content Include="StoreImage\Sandwich.jpg" />
+    <Content Include="StoreImage\Tea.jpg" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

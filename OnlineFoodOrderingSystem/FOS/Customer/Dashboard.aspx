@@ -144,7 +144,7 @@
                         <div class="p-4">
                             <div class="flex items-center justify-between mb-2">
                                 <h3 class="font-semibold text-gray-800"><%# Eval("Name") %></h3>
-                                <span class="text-primary font-bold">$<%# Eval("Price") %></span>
+                                <span class="text-primary font-bold">₹<%# Eval("Price") %></span>
                             </div>
                             <p class="text-sm text-gray-600 mb-3">
                                 <%# Eval("Description") %>
