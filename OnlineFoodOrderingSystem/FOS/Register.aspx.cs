@@ -197,16 +197,6 @@ namespace OnlineFoodOrderingSystem.FOS
 
         protected void txtOtp_TextChanged(object sender, EventArgs e)
         {
-            string enteredOTP = txtOtp.Text.Trim();
-
-            if (enteredOTP == generatedOTP)
-            {
-            }
-            else
-            {
-                msg.Text = "Invalid OTP. Try again.";
-                msg.ForeColor = System.Drawing.Color.Red;
-            }
 
         }
 
