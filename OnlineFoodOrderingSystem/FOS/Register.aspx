@@ -32,6 +32,7 @@
         #btnRegi, #verifyEmail, #regiDone {
             background-color: #FEA116;
             border-radius: 10px;
+            cursor: pointer;
         }
 
         img {
@@ -84,7 +85,7 @@
                     <label class="block text-sm font-medium text-gray-700">Verification Code</label>
                     <asp:TextBox ID="txtOtp" runat="server" maxlength="6"
                         class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-button text-sm"
-                        placeholder="Enter 6-digit code"></asp:TextBox>
+                        placeholder="Enter 6-digit code" OnTextChanged="txtOtp_TextChanged"></asp:TextBox>
                     <span class="error-message text-red-500 text-xs mt-1">Please enter the verification code</span>
                 </div>
                 <div>
@@ -139,9 +140,11 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="flex gap-4">
                 <asp:Button ID="btnRegi" runat="server" Text="Create Account" 
-                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-button text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary whitespace-nowrap" OnClick="btnRegi_Click"/>
+                    class="flex-1 flex justify-center py-2 px-4 border border-transparent rounded-button text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary whitespace-nowrap" OnClick="btnRegi_Click"/>
+                <asp:Button ID="btnReset" runat="server" Text="Reset" 
+                    class="flex-1 flex justify-center py-2 px-4 border border-gray-300 rounded-button text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 whitespace-nowrap" OnClick="btnReset_Click"/>
             </div>
         </form>
         <div class="text-center">
@@ -166,16 +169,11 @@
     </div>
     <script>
         const form = document.getElementById('registrationForm');
-        const verifyEmailBtn = document.getElementById('verifyEmail');
-        const verificationSection = document.getElementById('verificationCodeSection');
         const togglePasswordBtn = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('txtPassword');
         const successModal = document.getElementById('successModal');
         const submitForm = document.getElementById('btnRegi');
 
-        verifyEmailBtn.addEventListener('click', () => {
-            verificationSection.classList.remove('hidden');
-        });
         togglePasswordBtn.addEventListener('click', () => {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
