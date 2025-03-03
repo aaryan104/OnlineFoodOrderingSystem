@@ -70,7 +70,11 @@
 <body class="bg-gray-50 min-h-screen">
     <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
         <div class="container mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="font-['Pacifico'] text-2xl text-primary">logo</div>
+            <div class="flex items-center gap-4">
+                <img src="../../Asset/Library/img/logo.jpg" height="60px" width="60px" alt="Logo" />
+                <h1 class="font-['Pacifico'] text-2xl text-primary m-0">Kashtabhanjan</h1>
+            </div>
+
             <div class="flex-1 max-w-xl mx-8">
                 <div class="relative">
                     <input type="text" placeholder="Search for food, cuisines, restaurants..."
