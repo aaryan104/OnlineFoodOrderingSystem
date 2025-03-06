@@ -51,9 +51,9 @@
             transition: transform 0.3s ease-in-out;
         }
 
-        .cart-panel.active {
-            transform: translateX(0);
-        }
+            .cart-panel.active {
+                transform: translateX(0);
+            }
 
         .modal {
             opacity: 0;
@@ -61,10 +61,10 @@
             transition: all 0.3s ease-in-out;
         }
 
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
+            .modal.active {
+                opacity: 1;
+                visibility: visible;
+            }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -77,8 +77,11 @@
 
             <div class="flex-1 max-w-xl mx-8">
                 <div class="relative">
-                    <input type="text" placeholder="Search for food, cuisines, restaurants..."
-                        class="w-full h-10 pl-10 pr-4 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm" />
+                    <form runat="server">
+                        <asp:TextBox ID="searchInput" placeholder="Search for food, cuisines, restaurants..."
+                            class="w-full h-10 pl-10 pr-4 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
+                            runat="server" AutoPostBack="True" OnTextChanged="searchInput_TextChanged"></asp:TextBox>
+                    </form>
                     <div class="absolute left-3 top-0 h-10 w-5 flex items-center justify-center">
                         <i class="ri-search-line text-gray-400"></i>
                     </div>
@@ -135,39 +138,40 @@
                 <span>Drinks</span>
             </button>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 py-6">
-            <asp:Repeater ID="MenuItemsRepeater" runat="server">
-                <ItemTemplate>
-                    <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                        <div class="relative h-48">
-                            <img src='<%# Eval("ImageUrl") %>' class="w-full h-full object-cover" alt='<%# Eval("Name") %>' />
-                            <div class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
-                                <i class="ri-heart-line text-gray-400 hover:text-primary cursor-pointer"></i>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <div class="flex items-center justify-between mb-2">
-                                <h3 class="font-semibold text-gray-800"><%# Eval("Name") %></h3>
-                                <span class="text-primary font-bold">₹<%# Eval("Price") %></span>
-                            </div>
-                            <p class="text-sm text-gray-600 mb-3">
-                                <%# Eval("Description") %>
-                            </p>
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-1">
-                                    <i class="ri-star-fill text-yellow-400"></i>
-                                    <%--<span class="text-sm text-gray-600"><%# Eval("Rating") %> (<%# Eval("ReviewCount") %>)</span>--%>
-                                </div>
-                                <button class="px-4 py-2 bg-primary text-white rounded !rounded-button hover:bg-opacity-90">
-                                    Add to Cart
-                                </button>
-                            </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 py-6">
+        <asp:Repeater ID="MenuItemsRepeater" runat="server">
+            <ItemTemplate>
+                <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                    <div class="relative h-48">
+                        <img src='<%# Eval("ImageUrl") %>' class="w-full h-full object-cover" alt='<%# Eval("Name") %>' />
+                        <div class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
+                            <i class="ri-heart-line text-gray-400 hover:text-primary cursor-pointer"></i>
                         </div>
                     </div>
-                </ItemTemplate>
-            </asp:Repeater>
-        </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-semibold text-gray-800"><%# Eval("Name") %></h3>
+                            <span class="text-primary font-bold">₹<%# Eval("Price") %></span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">
+                            <%# Eval("Description") %>
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-1">
+                                <i class="ri-star-fill text-yellow-400"></i>
+                                <span class="text-sm text-gray-600"><%# Eval("Category") %> <%--(<%# Eval("ReviewCount") %>)--%></span>
+                            </div>
+                            <button class="px-4 py-2 bg-primary text-white rounded !rounded-button hover:bg-opacity-90">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </ItemTemplate>
+        </asp:Repeater>
     </div>
+    </div>
+   
     <div id="userPanel"
         class="fixed top-0 right-0 bottom-0 w-80 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
         <div class="p-6">
@@ -224,6 +228,7 @@
         const orderTrackingModal = document.getElementById("orderTrackingModal");
         const closeTrackingBtn = document.getElementById("closeTrackingBtn");
         const supportBtn = document.getElementById("supportBtn");
+
         cartBtn.addEventListener("click", () => {
             cartPanel.classList.add("active");
         });
@@ -251,6 +256,7 @@
                 orderTrackingModal.classList.remove("active");
             }
         });
+
     </script>
 </body>
 </html>

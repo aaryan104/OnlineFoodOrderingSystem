@@ -65,7 +65,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <body>
-        <div class="container mx-auto px-4 py-8">
+        <div class="container mx-auto px-4 py-2">
             <div class="mb-8">
                 <h1 class="text-3xl font-bold text-gray-900 mb-2">Menu Management</h1>
                 <p class="text-gray-600">Add, edit or remove menu items</p>
@@ -101,7 +101,7 @@
                                     <asp:ListItem>Lunch</asp:ListItem>
                                     <asp:ListItem>Breakfast</asp:ListItem>
                                     <asp:ListItem>Dinner</asp:ListItem>
-                                    <asp:ListItem>Cold-Drinks</asp:ListItem>
+                                    <asp:ListItem>Drinks</asp:ListItem>
                                 </asp:DropDownList>
                                 <div class="absolute right-3 top-2.5 pointer-events-none">
                                     <i class="ri-arrow-down-s-line text-gray-400"></i>
@@ -136,8 +136,9 @@
                         <div class="p-4 border-b flex justify-between items-center">
                             <h2 class="text-lg font-semibold text-gray-900">Menu Items</h2>
                             <div class="relative">
-                                <input type="text" placeholder="Search items..." id="searchInput"
-                                    class="pl-10 pr-40 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-sm" />
+                                <asp:TextBox ID="searchInput" placeholder="Search items..."
+                                    class="pl-10 pr-40 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-sm"
+                                    runat="server" AutoPostBack="True" OnTextChanged="searchInput_TextChanged" onkeyup="debounceSearch()"></asp:TextBox>
                                 <i class="ri-search-line absolute left-3 top-2.5 text-gray-400"></i>
                             </div>
                         </div>
@@ -154,7 +155,7 @@
                                             <asp:LinkButton ID="btnEdit" runat="server" OnClick="btnEdit_Click" CommandArgument='<%# Eval("ItemId") %>' CssClass="text-primary hover:text-primary/90 mr-2">
                                                 <i class="ri-edit-line"></i>
                                             </asp:LinkButton>
-                                            <asp:LinkButton ID="btnDelete" runat="server" OnClick="btnDelete_Click" CommandArgument='<%# Eval("ItemId") %>' CssClass="text-red-600 hover:text-red-700">
+                                            <asp:LinkButton ID="btnDelete" runat="server" OnClick="btnDelete_Click" CommandArgument='<%# Eval("ItemId") %>' OnClientClick="Conform()" CssClass="text-red-600 hover:text-red-700">
                                                 <i class="ri-delete-bin-line"></i>
                                             </asp:LinkButton>
                                         </ItemTemplate>
@@ -202,6 +203,19 @@
                     };
                     reader.readAsDataURL(file);
                 }
+            }
+
+            let debounceTimer;
+
+            function debounceSearch() {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(function () {
+                    __doPostBack('<%= searchInput.ClientID %>', '');
+                }, 500);
+            }
+
+            function Conform() {
+                confirm("Are you want to delete this food?");
             }
         </script>
     </body>

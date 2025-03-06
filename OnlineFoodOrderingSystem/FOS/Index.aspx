@@ -544,7 +544,7 @@
                                         <div class="w-100 d-flex flex-column text-start ps-4">
                                             <h5 class="d-flex justify-content-between border-bottom pb-2">
                                                 <span>Papad / Masala Papad(1 pcs)</span>
-                                                <span class="text-primary">₹10</span>
+                                                <span class="text-primary">₹10 / ₹15</span>
                                             </h5>
                                         </div>
                                     </div>

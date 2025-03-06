@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace OnlineFoodOrderingSystem.FOS.Customer
 {
@@ -60,6 +61,31 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
             finally
             {
                 conn.Close();
+            }
+        }
+
+        protected void searchInput_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string search = searchInput.Text;
+
+                funcon();
+                String qry = "SELECT * from MenuItems WHERE Name LIKE @search + '%'";
+                cmd = new SqlCommand(qry, conn);
+                cmd.Parameters.AddWithValue("@search", search);
+                sda = new SqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                sda.Fill(ds);
+                MenuItemsRepeater.DataSource = ds;
+                MenuItemsRepeater.DataBind();
+                conn.Close();
+                //MessageBox.Show(search);
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Error");
+                //msg.Text = ex.ToString();
             }
         }
     }

@@ -85,8 +85,8 @@ namespace OnlineFoodOrderingSystem.FOS
                         ";
                         ClientScript.RegisterStartupScript(this.GetType(), "disableEmail", disableEmailScript, true);
 
-                        msg.Text = "OTP verified! Email locked.";
-                        msg.ForeColor = System.Drawing.Color.Green;
+                        //msg.Text = "OTP verified! Email locked.";
+                        //msg.ForeColor = System.Drawing.Color.Green;
                     }
                     else
                     {
