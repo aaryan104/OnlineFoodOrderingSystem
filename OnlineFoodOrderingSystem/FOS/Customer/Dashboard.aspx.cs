@@ -84,8 +84,83 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
             }
             catch (Exception ex)
             {
-                Response.Write("Error");
-                //msg.Text = ex.ToString();
+                Response.Write(ex.ToString());
+            }
+        }
+
+        protected void btnAll_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                funcon();
+
+                string qry = "SELECT ItemId, Name, ImageUrl, Price, Category, Description FROM MenuItems";
+                cmd = new SqlCommand(qry, conn);
+                sda = new SqlDataAdapter(cmd);
+                dt = new DataTable();
+                sda.Fill(dt);
+
+                MenuItemsRepeater.DataSource = dt;
+                MenuItemsRepeater.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Error fetching data: " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
+        protected void btnDinner_Click(object sender, EventArgs e)
+        {
+            fetchMenuByCategory("Dinner");
+        }
+
+        protected void btnBreakfast_Click(object sender, EventArgs e)
+        {
+            fetchMenuByCategory("Breakfast");
+        }
+
+        protected void btnFastFood_Click(object sender, EventArgs e)
+        {
+            fetchMenuByCategory("Fast-Food");       
+        }
+
+        protected void btnDrinks_Click(object sender, EventArgs e)
+        {
+            fetchMenuByCategory("Drinks");
+        }
+
+        protected void btnLunch_Click(object sender, EventArgs e)
+        {
+            fetchMenuByCategory("Lunch");
+        }
+
+        private void fetchMenuByCategory(String Category)
+        {
+            try
+            {
+                funcon();
+
+                string qry = "SELECT ItemId, Name, ImageUrl, Price, Category, Description FROM MenuItems WHERE Category=@category";
+                cmd = new SqlCommand(qry, conn);
+                cmd.Parameters.AddWithValue("@category", Category);
+                sda = new SqlDataAdapter(cmd);
+                dt = new DataTable();
+                sda.Fill(dt);
+
+                MenuItemsRepeater.DataSource = dt;
+                MenuItemsRepeater.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Response.Write("Error fetching data: " + ex.Message);
+            }
+            finally
+            {
+                conn.Close();
             }
         }
     }

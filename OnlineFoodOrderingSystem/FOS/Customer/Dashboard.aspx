@@ -65,6 +65,19 @@
                 opacity: 1;
                 visibility: visible;
             }
+            .card {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+
+            .card-content {
+                flex-grow: 1; /* Ensures content takes all space */
+            }
+
+            /*.card-footer {
+                margin-top: auto;*/ /* Pushes the button to the bottom */
+            /*}*/
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -77,14 +90,13 @@
 
             <div class="flex-1 max-w-xl mx-8">
                 <div class="relative">
-                    <form runat="server">
+                    <form id="form1" runat="server">
                         <asp:TextBox ID="searchInput" placeholder="Search for food, cuisines, restaurants..."
-                            class="w-full h-10 pl-10 pr-4 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
-                            runat="server" AutoPostBack="True" OnTextChanged="searchInput_TextChanged"></asp:TextBox>
-                    </form>
-                    <div class="absolute left-3 top-0 h-10 w-5 flex items-center justify-center">
-                        <i class="ri-search-line text-gray-400"></i>
-                    </div>
+                            class="w-full h-10 pl-10 pr-4 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"  
+                            runat="server" OnTextChanged="searchInput_TextChanged" AutoPostBack="True"></asp:TextBox>
+                            <div class="absolute left-3 top-0 h-10 w-5 flex items-center justify-center">
+                            <i class="ri-search-line text-gray-400"></i>
+                        </div>
                 </div>
             </div>
             <div class="flex items-center gap-4">
@@ -106,77 +118,112 @@
         </div>
     </header>
     <div class="container mx-auto px-4 pt-20">
-        <div class="category-scroll overflow-x-auto flex gap-4 py-4 -mx-4 px-4">
-            <button
-                class="flex-shrink-0 px-6 py-2 bg-primary text-white rounded-full !rounded-button flex items-center gap-2">
-                <i class="ri-apps-line"></i>
-                <span>All</span>
-            </button>
-            <button
-                class="flex-shrink-0 px-6 py-2 bg-white hover:bg-gray-100 rounded-full !rounded-button flex items-center gap-2">
-                <i class="ri-restaurant-line"></i>
-                <span>Italian</span>
-            </button>
-            <button
-                class="flex-shrink-0 px-6 py-2 bg-white hover:bg-gray-100 rounded-full !rounded-button flex items-center gap-2">
-                <i class="ri-bowl-line"></i>
-                <span>Asian</span>
-            </button>
-            <button
-                class="flex-shrink-0 px-6 py-2 bg-white hover:bg-gray-100 rounded-full !rounded-button flex items-center gap-2">
-                <i class="ri-hamburger-line"></i>
-                <span>Fast Food</span>
-            </button>
-            <button
-                class="flex-shrink-0 px-6 py-2 bg-white hover:bg-gray-100 rounded-full !rounded-button flex items-center gap-2">
-                <i class="ri-cake-3-line"></i>
-                <span>Desserts</span>
-            </button>
-            <button
-                class="flex-shrink-0 px-6 py-2 bg-white hover:bg-gray-100 rounded-full !rounded-button flex items-center gap-2">
-                <i class="ri-cup-line"></i>
-                <span>Drinks</span>
-            </button>
-        </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 py-6">
-        <asp:Repeater ID="MenuItemsRepeater" runat="server">
-            <ItemTemplate>
-                <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                    <div class="relative h-48">
-                        <img src='<%# Eval("ImageUrl") %>' class="w-full h-full object-cover" alt='<%# Eval("Name") %>' />
-                        <div class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
-                            <i class="ri-heart-line text-gray-400 hover:text-primary cursor-pointer"></i>
-                        </div>
+        <div class="sticky top-16 bg-white shadow-sm z-40">
+            <div class="container mx-auto px-4">
+                <div class="category-scroll flex gap-4 py-4 overflow-x-auto whitespace-nowrap">
+                    <div class="category-scroll flex gap-2">
+                        <asp:LinkButton ID="btnAll" runat="server" class="px-6 py-2 bg-primary text-white rounded-full flex items-center gap-2" OnClick="btnAll_Click">
+                            <i class="ri-apps-line"></i>
+                            <span>All</span>
+                        </asp:LinkButton>
+
+                        <asp:LinkButton ID="btnDinner" runat="server" class="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2" OnClick="btnDinner_Click">
+                            <i class="ri-restaurant-line"></i>
+                            <span>Dinner</span>
+                        </asp:LinkButton>
+
+                        <asp:LinkButton ID="btnBreakfast" runat="server" class="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2" OnClick="btnBreakfast_Click">
+                            <i class="ri-bowl-line"></i>
+                            <span>Breakfast</span>
+                        </asp:LinkButton>
+
+                        <asp:LinkButton ID="btnFastFood" runat="server" class="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2" OnClick="btnFastFood_Click">
+                            <i class="ri-burger-line"></i>
+                            <span>Fast Food</span>
+                        </asp:LinkButton>
+
+                        <asp:LinkButton ID="btnDrinks" runat="server" class="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2" OnClick="btnDrinks_Click">
+                            <i class="ri-cake-3-line"></i>
+                            <span>Drinks</span>
+                        </asp:LinkButton>
+
+                        <asp:LinkButton ID="btnLunch" runat="server" class="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2" OnClick="btnLunch_Click">
+                            <i class="ri-plant-line"></i>
+                            <span>Lunch</span>
+                        </asp:LinkButton>
                     </div>
-                    <div class="p-4">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-semibold text-gray-800"><%# Eval("Name") %></h3>
-                            <span class="text-primary font-bold">₹<%# Eval("Price") %></span>
+                </form>
+
+                    <%--<button class="px-6 py-2 bg-primary text-white rounded-full !rounded-button flex items-center gap-2">
+                        <i class="ri-apps-line"></i>
+                        <span>All</span>
+                    </button>
+                    <button
+                        class="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full !rounded-button flex items-center gap-2">
+                        <i class="ri-restaurant-line"></i>
+                        <span>Dinner</span>
+                    </button>
+                    <button
+                        class="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full !rounded-button flex items-center gap-2">
+                        <i class="ri-bowl-line"></i>
+                        <span>Breakfast</span>
+                    </button>
+                    <button
+                        class="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full !rounded-button flex items-center gap-2">
+                        <i class="ri-burger-line"></i>
+                        <span>Fast Food</span>
+                    </button>
+                    <button
+                        class="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full !rounded-button flex items-center gap-2">
+                        <i class="ri-cake-3-line"></i>
+                        <span>Drinks</span>
+                    </button>
+                    <button
+                        class="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full !rounded-button flex items-center gap-2">
+                        <i class="ri-plant-line"></i>
+                        <span>Lunch</span>
+                    </button>--%>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 py-6">
+            <asp:Repeater ID="MenuItemsRepeater" runat="server">
+                <ItemTemplate>
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow card">
+                        <div class="relative h-48">
+                            <img src='<%# Eval("ImageUrl") %>' class="w-full h-full object-cover" alt='<%# Eval("Name") %>' />
+                            <div class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
+                                <i class="ri-heart-line text-gray-400 hover:text-primary cursor-pointer"></i>
+                            </div>
                         </div>
-                        <p class="text-sm text-gray-600 mb-3">
-                            <%# Eval("Description") %>
-                        </p>
-                        <div class="flex items-center justify-between">
+                        <div class="p-4 card-content">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="font-semibold text-gray-800"><%# Eval("Name") %></h3>
+                                <span class="text-primary font-bold">₹<%# Eval("Price") %></span></div>
+                            <p class="text-sm text-gray-600 mb-3">
+                                <%# Eval("Description") %>
+                            </p>
+                        </div>
+                        <div class="p-4 flex items-center justify-between card-footer">
                             <div class="flex items-center gap-1">
                                 <i class="ri-star-fill text-yellow-400"></i>
-                                <span class="text-sm text-gray-600"><%# Eval("Category") %> <%--(<%# Eval("ReviewCount") %>)--%></span>
+                                <span class="text-sm text-gray-600"><%# Eval("Category") %></span>
                             </div>
                             <button class="px-4 py-2 bg-primary text-white rounded !rounded-button hover:bg-opacity-90">
                                 Add to Cart
                             </button>
                         </div>
                     </div>
-                </div>
-            </ItemTemplate>
-        </asp:Repeater>
-    </div>
+                </ItemTemplate>
+            </asp:Repeater>
+        </div>
     </div>
    
     <div id="userPanel"
         class="fixed top-0 right-0 bottom-0 w-80 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
         <div class="p-6">
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-semibold">Profile</h2>
+                <h2 class="text-xl font-semibold">Profiletext-xl font-semibold">Profile</h2>
                 <button class="w-8 h-8 flex items-center justify-center" id="closeProfileBtn">
                     <i class="ri-close-line text-xl"></i>
                 </button>
@@ -219,6 +266,22 @@
         <i class="ri-customer-service-2-line text-xl"></i>
     </button>
     <script>
+        document.querySelectorAll('.category-scroll a').forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Remove active class from all buttons
+                document.querySelectorAll('.category-scroll a').forEach(btn => {
+                    btn.classList.remove('bg-primary', 'text-white');
+                    btn.classList.add('bg-gray-100', 'hover:bg-gray-200');
+                });
+                // Add active class to clicked button
+                button.classList.remove('bg-gray-100', 'hover:bg-gray-200');
+                button.classList.add('bg-primary', 'text-white');
+                // Update food grid based on category
+                const category = button.textContent.trim().toLowerCase().replace(/\s+/g, '');
+                updateFoodGrid(category);
+            });
+        });
+
         const cartBtn = document.getElementById("cartBtn");
         const closeCartBtn = document.getElementById("closeCartBtn");
         const userPanel = document.getElementById("userPanel");
@@ -256,6 +319,7 @@
                 orderTrackingModal.classList.remove("active");
             }
         });
+
 
     </script>
 </body>
