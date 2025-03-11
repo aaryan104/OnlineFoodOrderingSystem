@@ -80,9 +80,9 @@
     <div class="flex">
         <div id="sidebar" class="sidebar h-screen bg-white shadow-lg flex flex-col fixed">
             <div class="flex items-center justify-between p-4 border-b border-gray-200">
-                    <img src="../../Asset/Library/img/logo.jpg" height="60px" width="60px" alt="Logo" />
+                    <img src="../../Asset/Library/img/logo.jpg" height="40px" width="40px" alt="Logo" />
                 <div class="flex items-center gap-4">
-                    <h1 class="font-['Pacifico'] text-xl text-primary m-0">Kashtabhanjan</h1>
+                    <h1 class="font-['Pacifico'] text-xl text-primary m-0"><%--Kashtabhanjan--%></h1>
                 </div>
                 <button id="toggleBtn"
                     class="w-8 h-8 flex items-center justify-center text-primary hover:bg-gray-100 rounded-full">
@@ -105,7 +105,7 @@
                         </div>
                         <span class="menu-text text-sm">Dashboard</span>
                     </a>
-                    <a href="#"
+                    <a href="userManage.aspx"
                         class="menu-item flex items-center gap-3 px-3 py-2.5 text-gray-700 hover:bg-primary/10 rounded-lg group">
                         <div class="w-6 h-6 flex items-center justify-center">
                             <i class="ri-user-line text-primary group-hover:text-primary"></i>

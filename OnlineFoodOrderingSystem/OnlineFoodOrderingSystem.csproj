@@ -133,8 +133,10 @@
     <Content Include="FOS\About.aspx" />
     <Content Include="FOS\Admin\FoodItems.aspx" />
     <Content Include="FOS\Admin\Home.aspx" />
+    <Content Include="FOS\Admin\userManage.aspx" />
     <Content Include="FOS\Contact.aspx" />
     <Content Include="FOS\Customer\Dashboard.aspx" />
+    <Content Include="FOS\Customer\UserProfile.aspx" />
     <Content Include="FOS\DeliveryAgent\Agent.aspx" />
     <Content Include="FOS\ForgotPassword.aspx" />
     <Content Include="FOS\Index.aspx" />
@@ -182,6 +184,13 @@
     <Compile Include="FOS\Admin\Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
+    <Compile Include="FOS\Admin\userManage.aspx.cs">
+      <DependentUpon>userManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FOS\Admin\userManage.aspx.designer.cs">
+      <DependentUpon>userManage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="FOS\Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -195,6 +204,13 @@
     </Compile>
     <Compile Include="FOS\Customer\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FOS\Customer\UserProfile.aspx.cs">
+      <DependentUpon>UserProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FOS\Customer\UserProfile.aspx.designer.cs">
+      <DependentUpon>UserProfile.aspx</DependentUpon>
     </Compile>
     <Compile Include="FOS\DeliveryAgent\Agent.aspx.cs">
       <DependentUpon>Agent.aspx</DependentUpon>

@@ -18,7 +18,7 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
         {
             if (!IsPostBack)
             {
-                FetchMenuItems();
+                //FetchMenuItems(); 
             }
         }
 
@@ -56,7 +56,7 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
             }
             catch (Exception ex)
             {
-               Response.Write("Error fetching data: " + ex.Message);
+                Response.Write("Error fetching data: " + ex.Message);
             }
             finally
             {
@@ -71,7 +71,7 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
                 string search = searchInput.Text;
 
                 funcon();
-                String qry = "SELECT * from MenuItems WHERE Name LIKE @search + '%'";
+                string qry = "SELECT * FROM MenuItems WHERE Name LIKE @search + '%'";
                 cmd = new SqlCommand(qry, conn);
                 cmd.Parameters.AddWithValue("@search", search);
                 sda = new SqlDataAdapter(cmd);
@@ -80,7 +80,6 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
                 MenuItemsRepeater.DataSource = ds;
                 MenuItemsRepeater.DataBind();
                 conn.Close();
-                //MessageBox.Show(search);
             }
             catch (Exception ex)
             {
@@ -90,55 +89,41 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
 
         protected void btnAll_Click(object sender, EventArgs e)
         {
-            try
-            {
-                funcon();
-
-                string qry = "SELECT ItemId, Name, ImageUrl, Price, Category, Description FROM MenuItems";
-                cmd = new SqlCommand(qry, conn);
-                sda = new SqlDataAdapter(cmd);
-                dt = new DataTable();
-                sda.Fill(dt);
-
-                MenuItemsRepeater.DataSource = dt;
-                MenuItemsRepeater.DataBind();
-            }
-            catch (Exception ex)
-            {
-                Response.Write("Error fetching data: " + ex.Message);
-            }
-            finally
-            {
-                conn.Close();
-            }
+            SetActiveButton(btnAll);
+            FetchMenuItems(); // Show all items when "All" is clicked
         }
 
         protected void btnDinner_Click(object sender, EventArgs e)
         {
-            fetchMenuByCategory("Dinner");
+            SetActiveButton(btnDinner);
+            fetchMenuByCategory("Dinner"); // Show only Dinner items
         }
 
         protected void btnBreakfast_Click(object sender, EventArgs e)
         {
-            fetchMenuByCategory("Breakfast");
+            SetActiveButton(btnBreakfast);
+            fetchMenuByCategory("Breakfast"); // Show only Breakfast items
         }
 
         protected void btnFastFood_Click(object sender, EventArgs e)
         {
-            fetchMenuByCategory("Fast-Food");       
+            SetActiveButton(btnFastFood);
+            fetchMenuByCategory("Fast-Food"); // Show only Fast Food items
         }
 
         protected void btnDrinks_Click(object sender, EventArgs e)
         {
-            fetchMenuByCategory("Drinks");
+            SetActiveButton(btnDrinks);
+            fetchMenuByCategory("Drinks"); // Show only Drinks items
         }
 
         protected void btnLunch_Click(object sender, EventArgs e)
         {
-            fetchMenuByCategory("Lunch");
+            SetActiveButton(btnLunch);
+            fetchMenuByCategory("Lunch"); // Show only Lunch items
         }
 
-        private void fetchMenuByCategory(String Category)
+        private void fetchMenuByCategory(string Category)
         {
             try
             {
@@ -162,6 +147,18 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
             {
                 conn.Close();
             }
+        }
+
+        private void SetActiveButton(LinkButton activeButton)
+        {
+            btnAll.CssClass = "px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2";
+            btnDinner.CssClass = "px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2";
+            btnBreakfast.CssClass = "px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2";
+            btnFastFood.CssClass = "px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2";
+            btnDrinks.CssClass = "px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2";
+            btnLunch.CssClass = "px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2";
+
+            activeButton.CssClass = "px-6 py-2 bg-primary text-white rounded-full flex items-center gap-2";
         }
     }
 }

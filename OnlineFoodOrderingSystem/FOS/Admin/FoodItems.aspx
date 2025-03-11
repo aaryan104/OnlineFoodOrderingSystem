@@ -64,7 +64,7 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <body>
+    <body class="bg-gray-50 min-h-screen">
         <div class="container mx-auto px-4 py-2">
             <div class="mb-8">
                 <h1 class="text-3xl font-bold text-gray-900 mb-2">Menu Management</h1>
@@ -215,7 +215,7 @@
             }
 
             function Conform() {
-                confirm("Are you want to delete this food?");
+                confirm("Are you want to delete this food?");   
             }
         </script>
     </body>
