@@ -58,12 +58,12 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <body>
+    <body class="bg-gray-50 min-h-screen">
     <div class="container mx-auto px-4 py-2">
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">User Management</h1>
-        <p class="text-gray-600">Edit or remove User</p>
-    </div>
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">User Management</h1>
+            <p class="text-gray-600">Edit or remove User</p>
+        </div>
 
         <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
             <form id="userForm" class="grid grid-cols-1 md:grid-cols-2 gap-6" runat="server">
@@ -127,81 +127,84 @@
                         <i class="ri-refresh-line cursor-pointer text-2xl"></i>
                     </button>
                 </div>
-        </div>
+            </div>
             <div class="message text-center flex flex-col items-center">
                 <asp:Label ID="msg" runat="server" ForeColor="red" Text=""></asp:Label>
             </div>
-        <div class="bg-white rounded-lg shadow-sm p-6 overflow-hidden">
-            <div class="flex flex-col md:flex-row gap-4 mb-6">
-                <div class="flex-1">
-                    <asp:TextBox ID="searchInput" runat="server" placeholder="Search users..." onkeyup="debounceSearch()"
-                        class="w-full px-4 py-2 border rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-sm" OnTextChanged="searchInput_TextChanged"></asp:TextBox>
+       
+                <div class="bg-white rounded-lg shadow-sm p-6 overflow-hidden">
+                    <div class="flex flex-col md:flex-row gap-4 mb-6">
+                        <div class="flex-1">
+                            <asp:TextBox ID="searchInput" runat="server" placeholder="Search users..." onkeyup="debounceSearch()"
+                                class="w-full px-4 py-2 border rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-sm" OnTextChanged="searchInput_TextChanged"></asp:TextBox>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <span>Sort by:</span>
+                            <asp:DropDownList ID="sortField" runat="server" class="px-3 py-2 border rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                                <asp:ListItem>First Name</asp:ListItem>
+                                <asp:ListItem>Last Name</asp:ListItem>
+                                <asp:ListItem>Email</asp:ListItem>
+                                <asp:ListItem>Role</asp:ListItem>
+                            </asp:DropDownList>
+                            <button id="sortOrder"
+                                class="w-8 h-8 flex items-center justify-center border rounded-button hover:bg-gray-50">
+                                <i class="ri-sort-asc"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <asp:GridView ID="UserGV" runat="server" AutoGenerateColumns="False"
+                            CssClass="w-full" GridLines="None" OnRowDataBound="GridView_RowDataBound">
+                            <Columns>
+                                <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 text-right">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="btnEdit" runat="server" OnClick="btnEdit_Click" CommandArgument='<%# Eval("UserID") %>' CssClass="text-primary hover:text-primary/90 mr-2">
+                                            <i class="ri-edit-line"></i>
+                                        </asp:LinkButton>
+                                        <asp:LinkButton ID="btnDelete" runat="server" OnClick="btnDelete_Click" CommandArgument='<%# Eval("UserID") %>' OnClientClick="Conform()" CssClass="text-red-600 hover:text-red-700">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:BoundField DataField="FirstName" HeaderText="FirstName" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 text-sm text-gray-900" />
+                                <asp:BoundField DataField="LastName" HeaderText="LastName" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 text-sm text-gray-900" />
+                                <asp:BoundField DataField="Email" HeaderText="Email" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 text-sm text-gray-900" />
+                                <asp:BoundField DataField="PhoneNumber" HeaderText="PhoneNumber" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 text-sm text-gray-900" />
+                                <asp:BoundField DataField="Role" HeaderText="Role" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 text-sm text-gray-900" />
+                                <asp:BoundField DataField="Address" HeaderText="Address" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 text-sm text-gray-900" />
+                            </Columns>
+                            <HeaderStyle CssClass="bg-gray-50" />
+                            <RowStyle CssClass="border-b border-gray-200" />
+                        </asp:GridView>
+                    </form>
+                    </div>
+            </div>
+            <div id="confirmDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+                <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+                    <div class="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 mx-auto mb-4">
+                        <i class="ri-error-warning-line text-2xl text-secondary"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 text-center mb-2">
+                        Delete Confirmation
+                    </h3>
+                    <p class="text-sm text-gray-500 text-center mb-6">
+                        Are you sure you want to delete this user? This action cannot be
+                        undone.
+                    </p>
+                    <div class="flex justify-center gap-4">
+                        <button id="cancelDelete"
+                            class="px-4 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors cursor-pointer whitespace-nowrap text-sm font-medium">
+                            Cancel
+                        </button>
+                        <button id="confirmDelete"
+                            class="px-4 py-2 bg-secondary text-white rounded-button hover:bg-secondary/90 transition-colors cursor-pointer whitespace-nowrap text-sm font-medium">
+                            Delete
+                        </button>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2 text-sm text-gray-600">
-                    <span>Sort by:</span>
-                    <asp:DropDownList ID="sortField" runat="server" class="px-3 py-2 border rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-sm">
-                        <asp:ListItem>First Name</asp:ListItem>
-                        <asp:ListItem>Last Name</asp:ListItem>
-                        <asp:ListItem>Email</asp:ListItem>
-                        <asp:ListItem>Role</asp:ListItem>
-                    </asp:DropDownList>
-                    <button id="sortOrder"
-                        class="w-8 h-8 flex items-center justify-center border rounded-button hover:bg-gray-50">
-                        <i class="ri-sort-asc"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="overflow-x-auto">
-                <asp:GridView ID="UserGV" runat="server" AutoGenerateColumns="False"
-                    CssClass="w-full" GridLines="None" OnRowDataBound="GridView_RowDataBound">
-                    <Columns>
-                        <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 text-right">
-                            <ItemTemplate>
-                                <asp:LinkButton ID="btnEdit" runat="server" OnClick="btnEdit_Click" CommandArgument='<%# Eval("UserID") %>' CssClass="text-primary hover:text-primary/90 mr-2">
-                                    <i class="ri-edit-line"></i>
-                                </asp:LinkButton>
-                                <asp:LinkButton ID="btnDelete" runat="server" OnClick="btnDelete_Click" CommandArgument='<%# Eval("UserID") %>' OnClientClick="Conform()" CssClass="text-red-600 hover:text-red-700">
-                                    <i class="ri-delete-bin-line"></i>
-                                </asp:LinkButton>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:BoundField DataField="FirstName" HeaderText="FirstName" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 text-sm text-gray-900" />
-                        <asp:BoundField DataField="LastName" HeaderText="LastName" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 text-sm text-gray-900" />
-                        <asp:BoundField DataField="Email" HeaderText="Email" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 text-sm text-gray-900" />
-                        <asp:BoundField DataField="PhoneNumber" HeaderText="PhoneNumber" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 text-sm text-gray-900" />
-                        <asp:BoundField DataField="Role" HeaderText="Role" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 text-sm text-gray-900" />
-                        <asp:BoundField DataField="Address" HeaderText="Address" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 text-sm text-gray-900" />
-                    </Columns>
-                    <HeaderStyle CssClass="bg-gray-50" />
-                    <RowStyle CssClass="border-b border-gray-200" />
-                </asp:GridView>
-            </form>
-            </div>
-    </div>
-    <div id="confirmDialog" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <div class="flex items-center justify-center w-12 h-12 rounded-full bg-red-100 mx-auto mb-4">
-                <i class="ri-error-warning-line text-2xl text-secondary"></i>
-            </div>
-            <h3 class="text-lg font-medium text-gray-900 text-center mb-2">
-                Delete Confirmation
-            </h3>
-            <p class="text-sm text-gray-500 text-center mb-6">
-                Are you sure you want to delete this user? This action cannot be
-                undone.
-            </p>
-            <div class="flex justify-center gap-4">
-                <button id="cancelDelete"
-                    class="px-4 py-2 border border-gray-300 rounded-button hover:bg-gray-50 transition-colors cursor-pointer whitespace-nowrap text-sm font-medium">
-                    Cancel
-                </button>
-                <button id="confirmDelete"
-                    class="px-4 py-2 bg-secondary text-white rounded-button hover:bg-secondary/90 transition-colors cursor-pointer whitespace-nowrap text-sm font-medium">
-                    Delete
-                </button>
             </div>
         </div>
-    </div>
+        </body>
         <script>
             document.getElementById("togglePassword").addEventListener("click", function () {
                 const passwordInput = document.getElementById("txtPassword");

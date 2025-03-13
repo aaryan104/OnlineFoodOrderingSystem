@@ -12,7 +12,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
     <script>
         tailwind.config = {
             theme: {
@@ -37,261 +47,301 @@
             },
         };
     </script>
-    <style>
-        :where([class^="ri-"])::before {
-            content: "\f3c2";
-        }
-
-        .category-scroll::-webkit-scrollbar {
-            display: none;
-        }
-
-        .cart-panel {
-            transform: translateX(100%);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .cart-panel.active {
-            transform: translateX(0);
-        }
-
-        .modal {
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        .card {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .card-content {
-            flex-grow: 1; /* Ensures content takes all space */
-        }
-
-        /*.card-footer {
-            margin-top: auto;*/ /* Pushes the button to the bottom */
-        /*}*/
-    </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
-        <div class="container mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <img src="../../Asset/Library/img/logo.jpg" height="60px" width="60px" alt="Logo" />
-                <h1 class="font-['Pacifico'] text-2xl text-primary m-0">Kashtabhanjan</h1>
-            </div>
 
-            <div class="flex-1 max-w-xl mx-8">
+<body class="bg-gray-100 min-h-screen">
+    <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl font-['Pacifico'] text-primary"><img src="../../Asset/Library/img/logo.jpg" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14" alt="Logo" /></span>
+                <%--<span class="text-xl font-semibold text-gray-700">Kastabhanjan</span>--%>
+            </div>
+            <div class="flex-1 max-w-2xl mx-6">
                 <div class="relative">
-                    <form runat="server">
-                        <asp:TextBox ID="searchInput" placeholder="Search for food, cuisines, restaurants..."
-                            class="w-full h-10 pl-10 pr-4 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"  
-                            runat="server" OnTextChanged="searchInput_TextChanged" AutoPostBack="True"></asp:TextBox>
-                        <div class="absolute left-3 top-0 h-10 w-5 flex items-center justify-center">
-                            <i class="ri-search-line text-gray-400"></i>
-                        </div>
-                </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <button class="relative w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-full">
-                    <i class="ri-notification-3-line text-gray-600"></i>
-                    <span
-                        class="absolute top-1 right-1 w-4 h-4 bg-primary text-white text-xs flex items-center justify-center rounded-full">3</span>
-                </button>
-                <button id="cartBtn"
-                    class="relative w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-full">
-                    <i class="ri-shopping-cart-line text-gray-600"></i>
-                    <span
-                        class="absolute top-1 right-1 w-4 h-4 bg-primary text-white text-xs flex items-center justify-center rounded-full">2</span>
-                </button>
-                <button class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center" id="profileBtn">
-                    <i class="ri-user-line text-gray-600"></i>
-                </button>
-            </div>
-        </div>
-    </header>
-    <div class="container mx-auto px-4 pt-20">
-        <div class="sticky top-16 bg-white shadow-sm z-40">
-            <div class="container mx-auto px-4">
-                <div class="category-scroll flex gap-4 py-4 overflow-x-auto whitespace-nowrap">
-                    
-                    <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
-                        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                            <ContentTemplate>
-                                <div class="category-scroll flex gap-2">
-                                    <asp:LinkButton ID="btnAll" runat="server" class="px-6 py-2 bg-primary text-white rounded-full flex items-center gap-2" OnClick="btnAll_Click">
-                                        <i class="ri-apps-line"></i>
-                                        <span>All</span>
-                                    </asp:LinkButton>
-                                    <asp:LinkButton ID="btnDinner" runat="server" class="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2" OnClick="btnDinner_Click">
-                                        <i class="ri-restaurant-line"></i>
-                                        <span>Dinner</span>
-                                    </asp:LinkButton>
-                                    <asp:LinkButton ID="btnBreakfast" runat="server" class="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2" OnClick="btnBreakfast_Click">
-                                        <i class="ri-bowl-line"></i>
-                                        <span>Breakfast</span>
-                                    </asp:LinkButton>
-                                    <asp:LinkButton ID="btnFastFood" runat="server" class="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2" OnClick="btnFastFood_Click">
-                                        <i class="ri-burger-line"></i>
-                                        <span>Fast Food</span>
-                                    </asp:LinkButton>
-                                    <asp:LinkButton ID="btnDrinks" runat="server" class="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2" OnClick="btnDrinks_Click">
-                                        <i class="ri-cake-3-line"></i>
-                                        <span>Drinks</span>
-                                    </asp:LinkButton>
-                                    <asp:LinkButton ID="btnLunch" runat="server" class="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center gap-2" OnClick="btnLunch_Click">
-                                        <i class="ri-plant-line"></i>
-                                        <span>Lunch</span>
-                                    </asp:LinkButton>
-                                </div>
+                    <div class="absolute inset-y-0 left-3 flex items-center">
+                        <i class="ri-map-pin-line text-gray-400"></i>
+                    </div>
+                    <input type="text" placeholder="Search for food or restaurants"
+                        class="w-full pl-9 pr-9 py-1 rounded-full border border-gray-200 focus:outline-none focus:border-primary" />
+                    <div class="absolute inset-y-0 right-3 flex items-center">
+                        <i class="ri-search-line text-gray-400"></i>
                     </div>
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 py-6">
-                <asp:Repeater ID="MenuItemsRepeater" runat="server">
-                    <ItemTemplate>
-                        <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow card">
-                            <div class="relative h-48">
-                                <img src='<%# Eval("ImageUrl") %>' class="w-full h-full object-cover" alt='<%# Eval("Name") %>' />
-                                <div class="absolute top-3 right-3 bg-white rounded-full p-2 shadow-md">
-                                    <i class="ri-heart-line text-gray-400 hover:text-primary cursor-pointer"></i>
+            <div class="flex items-center gap-6">
+                <div class="relative cursor-pointer" id="cartButton">
+                    <i class="ri-shopping-cart-line text-xl"></i>
+                    <span
+                        class="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                        id="cartCount">0</span>
+                    <div
+                        id="cartDropdown"
+                        class="absolute right-0 top-full mt-4 w-80 bg-white rounded-lg shadow-lg hidden">
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Shopping Cart</h3>
+                            <div id="cartItems" class="space-y-2">
+                                <div class="text-gray-500 text-center py-4">
+                                    Your cart is empty
                                 </div>
                             </div>
-                            <div class="p-4 card-content">
-                                <div class="flex items-center justify-between mb-2">
-                                    <h3 class="font-semibold text-gray-800"><%# Eval("Name") %></h3>
-                                    <span class="text-primary font-bold">₹<%# Eval("Price") %></span></div>
-                                <p class="text-sm text-gray-600 mb-3">
-                                    <%# Eval("Description") %>
-                                </p>
-                            </div>
-                            <div class="p-4 flex items-center justify-between card-footer">
-                                <div class="flex items-center gap-1">
-                                    <i class="ri-star-fill text-yellow-400"></i>
-                                    <span class="text-sm text-gray-600"><%# Eval("Category") %></span>
+                            <div class="border-t mt-4 pt-4">
+                                <div class="flex justify-between mb-2">
+                                    <span>Subtotal:</span>
+                                    <span class="font-semibold">₹0</span>
                                 </div>
-                                <button class="px-4 py-2 bg-primary text-white rounded !rounded-button hover:bg-opacity-90">
-                                    Add to Cart
+                                <button
+                                    class="w-full bg-primary text-white py-2 rounded-button font-semibold hover:bg-opacity-90">
+                                    Checkout
                                 </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer">
+                    <a href="UserProfile.aspx"><i class="ri-user-line"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-4 pt-24 pb-16">
+        <form id="form1" runat="server">
+            <input type="hidden" id="hiddenCategory" name="hiddenCategory" />
+            <div class="categories mb-8">
+                <div class="flex gap-4 overflow-x-auto py-2" id="categoryTabs">
+                    <button class="category-tab px-6 py-2 rounded-full bg-primary text-white whitespace-nowrap" data-category="all" onclick="filterItems(this)">
+                        All
+                    </button>
+                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap hover:bg-gray-100"
+                        data-category="Breakfast" onclick="filterItems(this)">
+                        Breakfast
+                    </button>
+                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap hover:bg-gray-100"
+                        data-category="Lunch" onclick="filterItems(this)">
+                        Lunch
+                    </button>
+                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap hover:bg-gray-100"
+                        data-category="Dinner" onclick="filterItems(this)">
+                        Dinner
+                    </button>
+                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap hover:bg-gray-100"
+                        data-category="Drinks" onclick="filterItems(this)">
+                        Drinks
+                    </button>
+                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap hover:bg-gray-100"
+                        data-category="Fast-Food" onclick="filterItems(this)">
+                        Fast Food
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div class="popular-dishes mb-12">
+            <h2 class="text-2xl font-semibold mb-6 text-left">
+                <div class="message flex flex-col items-start">
+                    <asp:Label ID="msg" runat="server" Text="Popular All Dishes"></asp:Label>
+                </div>
+            </h2>
+            <div class="grid gap-4 md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2" id="foodGrid">
+                <asp:Repeater ID="MenuItemsRepeater" runat="server">
+                     <ItemTemplate>
+                        <div class="rounded-t-2xl overflow-hidden shadow-md hover:shadow-lg cursor-pointer">
+                            <img src='<%# Eval("ImageUrl") %>' class="w-full h-48 object-cover" alt='<%# Eval("Name") %>'>
+                            <div class="p-4" onclick="openModal(<%# Eval("ItemId") %>)">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="font-semibold text-lg"><%# Eval("Name") %></h3>
+                                    <span class="text-xs px-2 py-1 bg-white-100 rounded-full capitalize"><%# Eval("Category") %></span>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-4 line-clamp-2"><%# Eval("Description") %></p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex flex-col">
+                                        <span class="text-primary font-semibold text-lg">₹<%# Eval("Price") %></span>
+                                        <span class="text-xs text-gray-500">Inclusive of taxes</span>
+                                    </div>
+                                    <button class="px-4 py-2 bg-primary text-white rounded-button hover:bg-opacity-90 whitespace-nowrap">Add to Cart</button>
+                                </div>
                             </div>
                         </div>
                     </ItemTemplate>
                 </asp:Repeater>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
-                    </form>
             </div>
         </div>
-   
-        <div id="userPanel"
-            class="fixed top-0 right-0 bottom-0 w-80 bg-white shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+    </main>
+    <div id="foodModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-2xl font-semibold" id="modalTitle"></h3>
+                    <button class="text-gray-500 hover:text-gray-700" onclick="closeModal()">
+                        <i class="ri-close-line text-2xl"></i>
+                    </button>
+                </div>
+                <img id="modalImage" class="w-full h-64 object-cover rounded-lg mb-4" src="" alt="Food" />
+                <p id="modalDescription" class="text-gray-600 mb-4"></p>
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-semibold">Profiletext-xl font-semibold">Profile</h2>
-                    <button class="w-8 h-8 flex items-center justify-center" id="closeProfileBtn">
-                        <i class="ri-close-line text-xl"></i>
-                    </button>
-                </div>
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center">
-                        <i class="ri-user-line text-gray-600 text-2xl"></i>
+                    <div class="text-2xl font-semibold" id="modalPrice"></div>
+                    <div class="flex items-center gap-4">
+                        <button class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center"
+                            onclick="updateQuantity(-1)">
+                            <i class="ri-subtract-line"></i>
+                        </button>
+                        <span id="modalQuantity" class="text-xl">1</span>
+                        <button class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center"
+                            onclick="updateQuantity(1)">
+                            <i class="ri-add-line"></i>
+                        </button>
                     </div>
-                    <div>
-                        <h3 class="font-semibold">Emma Wilson</h3>
-                        <p class="text-sm text-gray-600">emma.wilson@email.com</p>
+                </div>
+                <button class="w-full bg-primary text-white py-3 rounded-button font-semibold hover:bg-opacity-90"
+                    onclick="addToCart()">
+                    Add to Cart
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-200 border-t">
+        <div class="max-w-7xl mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">About Us</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><a href="#" class="hover:text-primary">Our Story</a></li>
+                        <li><a href="#" class="hover:text-primary">Blog</a></li>
+                        <li><a href="#" class="hover:text-primary">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><a href="#" class="hover:text-primary">Help Center</a></li>
+                        <li><a href="#" class="hover:text-primary">Safety Center</a></li>
+                        <li>
+                            <a href="#" class="hover:text-primary">Community Guidelines</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li>
+                            <a href="#" class="hover:text-primary">Terms of Service</a>
+                        </li>
+                        <li><a href="#" class="hover:text-primary">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-primary">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Install App</h3>
+                    <div class="flex flex-col gap-4">
+                        <a href="#" class="flex items-center gap-2 text-gray-600 hover:text-primary">
+                            <i class="ri-apple-fill text-2xl"></i>
+                            <span>Download on the<br />App Store</span>
+                        </a>
+                        <a href="#" class="flex items-center gap-2 text-gray-600 hover:text-primary">
+                            <i class="ri-google-play-fill text-2xl"></i>
+                            <span>Get it on<br />Google Play</span>
+                        </a>
                     </div>
                 </div>
-                <div class="space-y-4">
-                    <button class="w-full px-4 py-2 text-left flex items-center gap-3">
-                        <i class="ri-history-line"></i>
-                        <span>Order History</span>
-                    </button>
-                    <button class="w-full px-4 py-2 text-left flex items-center gap-3">
-                        <i class="ri-map-pin-line"></i>
-                        <span>Saved Addresses</span>
-                    </button>
-                    <button class="w-full px-4 py-2 text-left flex items-center gap-3">
-                        <i class="ri-heart-line"></i>
-                        <span>Favorites</span>
-                    </button>
-                    <button class="w-full px-4 py-2 text-left flex items-center gap-3">
-                        <i class="ri-settings-3-line"></i>
-                        <span>Settings</span>
-                    </button>
-                    <button class="w-full px-4 py-2 text-left flex items-center gap-3 text-red-500">
-                        <i class="ri-logout-box-line"></i>
-                        <span>Logout</span>
-                    </button>
+            </div>
+            <div class="mt-12 pt-8 border-t">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <p class="text-gray-600">
+                        © 2025 Food Delivery. All rights reserved.
+                    </p>
+                    <div class="flex gap-6">
+                        <a href="#" class="text-gray-600 hover:text-primary">
+                            <i class="ri-facebook-fill text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary">
+                            <i class="ri-twitter-fill text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary">
+                            <i class="ri-instagram-fill text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-primary">
+                            <i class="ri-youtube-fill text-xl"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    <button id="supportBtn"
-        class="fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:bg-primary/90">
-        <i class="ri-customer-service-2-line text-xl"></i>
-    </button>
+    </footer>
+
     <script>
-        document.querySelectorAll('.category-scroll a').forEach(button => {
-            button.addEventListener('click', (e) => {
-                // Remove active class from all buttons
-                document.querySelectorAll('.category-scroll a').forEach(btn => {
-                    btn.classList.remove('bg-primary', 'text-white');
-                    btn.classList.add('bg-gray-100', 'hover:bg-gray-200');
-                });
-                // Add active class to clicked button
-                button.classList.remove('bg-gray-100', 'hover:bg-gray-200');
-                button.classList.add('bg-primary', 'text-white');
-                // Update food grid based on category
-                const category = button.textContent.trim().toLowerCase().replace(/\s+/g, '');
-                updateFoodGrid(category);
+        const cartButton = document.getElementById('cartButton');
+        const cartDropdown = document.getElementById('cartDropdown');
+
+        cartButton.addEventListener('click', () => {
+            cartDropdown.classList.toggle('hidden');
+        });
+
+        // Close the dropdown if clicked outside
+        document.addEventListener('click', (e) => {
+            if (!cartButton.contains(e.target) && !cartDropdown.contains(e.target)) {
+                cartDropdown.classList.add('hidden');
+            }
+        });
+
+        function updateCategories(category) {
+            currentCategory = category;
+            const tabs = document.querySelectorAll("#categoryTabs button");
+            tabs.forEach((tab) => {
+                if (tab.dataset.category === category) {
+                    tab.classList.remove("bg-gray-100", "text-gray-600");
+                    tab.classList.add("bg-primary", "text-white");
+                } else {
+                    tab.classList.remove("bg-primary", "text-white");
+                    tab.classList.add("bg-gray-100", "text-gray-600");
+                }
+            });
+            displayFoodItems(category);
+        }
+
+        document.querySelectorAll("#categoryTabs button").forEach((button) => {
+            button.addEventListener("click", () => {
+                updateCategories(button.dataset.category);
             });
         });
 
-        const cartBtn = document.getElementById("cartBtn");
-        const closeCartBtn = document.getElementById("closeCartBtn");
-        const userPanel = document.getElementById("userPanel");
-        const profileBtn = document.getElementById("profileBtn");
-        const closeProfileBtn = document.getElementById("closeProfileBtn");
-        const cartPanel = document.getElementById("cartPanel");
-        const orderTrackingModal = document.getElementById("orderTrackingModal");
-        const closeTrackingBtn = document.getElementById("closeTrackingBtn");
-        const supportBtn = document.getElementById("supportBtn");
+        function filterItems(button) {
+            var category = button.getAttribute('data-category');
+            document.getElementById('hiddenCategory').value = category;
+            document.getElementById('form1').submit();
+        }
 
-        cartBtn.addEventListener("click", () => {
-            cartPanel.classList.add("active");
-        });
-        closeCartBtn.addEventListener("click", () => {
-            cartPanel.classList.remove("active");
-        });
-        profileBtn.addEventListener("click", () => {
-            userPanel.classList.remove("translate-x-full");
-        });
-        closeProfileBtn.addEventListener("click", () => {
-            userPanel.classList.add("translate-x-full");
-        });
-        supportBtn.addEventListener("click", () => {
-            orderTrackingModal.classList.add("active");
-        });
-        closeTrackingBtn.addEventListener("click", () => {
-            orderTrackingModal.classList.remove("active");
-        });
-        document.addEventListener("click", (e) => {
-            if (!userPanel.contains(e.target) && e.target !== profileBtn) {
-                userPanel.classList.add("translate-x-full");
+        function addToCart() {
+            cartItems += currentQuantity;
+            document.getElementById("cartCount").textContent = cartItems;
+            const cartItemsContainer = document.getElementById("cartItems");
+            if (cartItemsContainer.querySelector(".text-gray-500")) {
+                cartItemsContainer.innerHTML = "";
             }
-
-            if (e.target === orderTrackingModal) {
-                orderTrackingModal.classList.remove("active");
-            }
-        });
-
-
+            const itemElement = document.createElement("div");
+            itemElement.className = "flex items-center gap-2";
+            itemElement.innerHTML = `
+                <img src="${currentItem.image}" class="w-16 h-16 object-cover rounded" alt="${currentItem.name}">
+                <div class="flex-1">
+                <h4 class="font-semibold">${currentItem.name}</h4>
+                <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-600">${currentQuantity} × ₹${(currentItem.price).toFixed(0)}</span>
+                <button class="text-red-500 hover:text-red-700" onclick="this.parentElement.parentElement.parentElement.remove()">
+                <i class="ri-delete-bin-line"></i>
+                </button>
+                </div>
+                </div>
+            `;
+            cartItemsContainer.appendChild(itemElement);
+            const toast = document.createElement("div");
+            toast.className =
+                "fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 translate-y-0";
+            toast.textContent = `Added ${currentQuantity} ${currentItem.name} to cart`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add("translate-y-full");
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+            closeModal();
+        }
     </script>
 </body>
 </html>

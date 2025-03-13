@@ -32,11 +32,25 @@
 
     <!-- Template Stylesheet -->
     <link href="../Asset/Library/css/style.css" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .container-xxl {
+            max-width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
-<body>
-    <div class="container-xxl bg-white p-0">
+<body class="w-full max-w-full min-h-screen">
+    <div class="container-xxl bg-white p-0 w-100">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
             <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
