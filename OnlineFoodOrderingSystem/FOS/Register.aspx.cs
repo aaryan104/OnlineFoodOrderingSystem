@@ -9,6 +9,7 @@ using System.Net;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.IO;
 
 namespace OnlineFoodOrderingSystem.FOS
 {
@@ -151,12 +152,17 @@ namespace OnlineFoodOrderingSystem.FOS
             string enteredOTP = txtOtp.Text.Trim();
             string role = "Customer";
 
+            //String img = "../../StoreImage/UserImage/" + txtUpload.FileName;
+            String folderPath = "~/StoreImage/UserImage/";
+            String fileName = Path.GetFileName(txtUpload.FileName);
+            String img = Path.Combine(folderPath, fileName);
+
             if (enteredOTP == generatedOTP)
             {
                 generatedOTP = null;
 
                 if (txtfirstName.Text == string.Empty || txtlastName.Text == string.Empty || txtPassword.Text == string.Empty
-                    || txtEmail.Text == string.Empty || txtMobile.Text == string.Empty || txtAddress.Text == string.Empty)
+                    || txtEmail.Text == string.Empty || txtMobile.Text == string.Empty || txtAddress.Text == string.Empty || txtUpload == null)
                 {
                     msg.Text = "Please fill all fields.";
                     msg.ForeColor = System.Drawing.Color.Red;
@@ -164,8 +170,8 @@ namespace OnlineFoodOrderingSystem.FOS
                 else
                 {
                     funcon();
-                    string qry = "INSERT INTO Users (FirstName, LastName, Email, PasswordHash, PhoneNumber, Role, Address) " +
-                                 "VALUES (@firstname, @lastname, @email, @password, @phone, @role, @address)";
+                    string qry = "INSERT INTO Users (FirstName, LastName, Email, PasswordHash, PhoneNumber, Role, Address, ImageURL) " +
+                                 "VALUES (@firstname, @lastname, @email, @password, @phone, @role, @address, @image)";
                     cmd = new SqlCommand(qry, conn);
                     cmd.Parameters.AddWithValue("@firstname", txtfirstName.Text);
                     cmd.Parameters.AddWithValue("@lastname", txtlastName.Text);
@@ -174,8 +180,12 @@ namespace OnlineFoodOrderingSystem.FOS
                     cmd.Parameters.AddWithValue("@phone", txtMobile.Text);
                     cmd.Parameters.AddWithValue("@role", role);
                     cmd.Parameters.AddWithValue("@address", txtAddress.Text);
+                    cmd.Parameters.AddWithValue("@image", img);
 
                     int res = cmd.ExecuteNonQuery();
+
+                    txtUpload.SaveAs(Server.MapPath(img));
+
                     if (res > 0)
                     {
                         Response.Redirect("~/FOS/Login.aspx");

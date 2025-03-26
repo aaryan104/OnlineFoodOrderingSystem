@@ -223,6 +223,9 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
                 cmd.Parameters.AddWithValue("@id", itemId);
 
                 int res = cmd.ExecuteNonQuery();
+
+                txtUpload.SaveAs(Server.MapPath(img));
+
                 if (res > 0)
                 {   
                     msg.Text = "Data Update!";

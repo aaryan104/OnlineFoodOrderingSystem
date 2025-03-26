@@ -72,6 +72,7 @@
     <Content Include="Asset\Library\img\about-4.jpg" />
     <Content Include="Asset\Library\img\AddToCart.png" />
     <Content Include="Asset\Library\img\bg-hero.jpg" />
+    <Content Include="Asset\Library\img\Default_Photo.jpg" />
     <Content Include="Asset\Library\img\GreenMarco.png" />
     <Content Include="Asset\Library\img\hero.jpg" />
     <Content Include="Asset\Library\img\logo.jpg" />
@@ -399,6 +400,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="StoreImage\UserImage\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

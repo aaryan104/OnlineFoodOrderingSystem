@@ -13,12 +13,23 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
         SqlCommand cmd;
         SqlDataAdapter sda;
         DataTable dt;
+        public static String eml = String.Empty;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["s_eml"] != null)
+            {
+                eml = Session["s_eml"].ToString();
+            }
+            else
+            {
+                Response.Redirect("~/FOS/Login.aspx");
+            }
+
             if (!IsPostBack)
             {
-                FetchMenuItems("all");
+                string selectedCategory = Request.Form["hiddenCategory"] ?? "all";
+                FetchMenuItems(selectedCategory);
             }
         }
 

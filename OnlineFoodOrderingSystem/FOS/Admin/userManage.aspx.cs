@@ -164,7 +164,33 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
-            msg.Text = "Delete button is clicked!";
+            //msg.Text = "Delete button is clicked!";
+            LinkButton btn = (LinkButton)sender;
+            string itemId = btn.CommandArgument;
+
+            try
+            {
+                funcon();
+                String qry = "DELETE FROM Users WHERE UserId=@id";
+                SqlCommand cmd = new SqlCommand(qry, conn);
+                cmd.Parameters.AddWithValue("id", itemId);
+                int res = cmd.ExecuteNonQuery();
+
+                if (res > 0)
+                {
+                    msg.Text = "Data Remove!";
+                }
+                else
+                {
+                    msg.Text = "Data not Removed!";
+                    conn.Close();
+                }
+                fungrid();
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.ToString());
+            }
         }
 
         protected void GridView_RowDataBound(object sender, GridViewRowEventArgs e)

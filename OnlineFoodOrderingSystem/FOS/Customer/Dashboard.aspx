@@ -22,6 +22,9 @@
             -webkit-appearance: none;
             margin: 0;
         }
+        .category-tab:hover {
+            background-color: darkgrey;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -69,14 +72,13 @@
                 </div>
             </div>
             <div class="flex items-center gap-6">
+                <div>
+                    <a href="../Index.aspx"><i class="ri-logout-box-line" style="font-size: 20px;cursor: pointer" title="Logout"></i></a>
+                </div>
                 <div class="relative cursor-pointer" id="cartButton">
                     <i class="ri-shopping-cart-line text-xl"></i>
-                    <span
-                        class="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
-                        id="cartCount">0</span>
-                    <div
-                        id="cartDropdown"
-                        class="absolute right-0 top-full mt-4 w-80 bg-white rounded-lg shadow-lg hidden">
+                    <span class="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" id="cartCount">0</span>
+                    <div id="cartDropdown" class="absolute right-0 top-full mt-4 w-80 bg-white rounded-lg shadow-lg hidden">
                         <div class="p-4">
                             <h3 class="font-semibold mb-2">Shopping Cart</h3>
                             <div id="cartItems" class="space-y-2">
@@ -89,8 +91,7 @@
                                     <span>Subtotal:</span>
                                     <span class="font-semibold">₹0</span>
                                 </div>
-                                <button
-                                    class="w-full bg-primary text-white py-2 rounded-button font-semibold hover:bg-opacity-90">
+                                <button class="w-full bg-primary text-white py-2 rounded-button font-semibold hover:bg-opacity-90">
                                     Checkout
                                 </button>
                             </div>
@@ -111,23 +112,23 @@
                     <button class="category-tab px-6 py-2 rounded-full bg-primary text-white whitespace-nowrap" data-category="all" onclick="filterItems(this)">
                         All
                     </button>
-                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap hover:bg-gray-100"
+                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap"
                         data-category="Breakfast" onclick="filterItems(this)">
                         Breakfast
                     </button>
-                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap hover:bg-gray-100"
+                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap"
                         data-category="Lunch" onclick="filterItems(this)">
                         Lunch
                     </button>
-                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap hover:bg-gray-100"
+                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap"
                         data-category="Dinner" onclick="filterItems(this)">
                         Dinner
                     </button>
-                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap hover:bg-gray-100"
+                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap"
                         data-category="Drinks" onclick="filterItems(this)">
                         Drinks
                     </button>
-                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap hover:bg-gray-100"
+                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap"
                         data-category="Fast-Food" onclick="filterItems(this)">
                         Fast Food
                     </button>
@@ -309,38 +310,39 @@
             document.getElementById('form1').submit();
         }
 
-        function addToCart() {
-            cartItems += currentQuantity;
-            document.getElementById("cartCount").textContent = cartItems;
-            const cartItemsContainer = document.getElementById("cartItems");
-            if (cartItemsContainer.querySelector(".text-gray-500")) {
-                cartItemsContainer.innerHTML = "";
-            }
-            const itemElement = document.createElement("div");
-            itemElement.className = "flex items-center gap-2";
-            itemElement.innerHTML = `
-                <img src="${currentItem.image}" class="w-16 h-16 object-cover rounded" alt="${currentItem.name}">
-                <div class="flex-1">
-                <h4 class="font-semibold">${currentItem.name}</h4>
-                <div class="flex items-center justify-between">
-                <span class="text-sm text-gray-600">${currentQuantity} × ₹${(currentItem.price).toFixed(0)}</span>
-                <button class="text-red-500 hover:text-red-700" onclick="this.parentElement.parentElement.parentElement.remove()">
-                <i class="ri-delete-bin-line"></i>
-                </button>
-                </div>
-                </div>
-            `;
-            cartItemsContainer.appendChild(itemElement);
-            const toast = document.createElement("div");
-            toast.className =
-                "fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-transform duration-300 translate-y-0";
-            toast.textContent = `Added ${currentQuantity} ${currentItem.name} to cart`;
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.classList.add("translate-y-full");
-                setTimeout(() => toast.remove(), 300);
-            }, 2000);
-            closeModal();
+        let currentQuantity = 1;
+        let currentItem = null;
+
+        function openModal(itemId)
+        {
+            currentItem = foodData.find((item) => item.id === itemId);
+            currentQuantity = 1;
+            document.getElementById("modalTitle").textContent = currentItem.name;
+            document.getElementById("modalImage").src = currentItem.image;
+            document.getElementById("modalDescription").textContent = currentItem.description;
+            document.getElementById("modalPrice").textContent = `₹${(currentItem.price).toFixed(0)}`;
+            document.getElementById("modalQuantity").textContent = currentQuantity;
+
+            const modalContent = document.querySelector("#foodModal .p-6");
+            const categoryTag = document.createElement("span");
+            categoryTag.className = "inline-block px-3 py-1 bg-gray-100 rounded-full text-sm capitalize mb-4";
+            categoryTag.textContent = currentItem.category;
+            modalContent.insertBefore(
+                categoryTag,
+                document.getElementById("modalDescription"),
+            );
+            document.getElementById("foodModal").classList.remove("hidden");
+            document.getElementById("foodModal").classList.add("flex");
+            document.body.style.overflow = "hidden";
+        }
+        function closeModal() {
+            document.getElementById("foodModal").classList.add("hidden");
+            document.getElementById("foodModal").classList.remove("flex");
+            document.body.style.overflow = "auto";
+        }
+        function updateQuantity(change) {
+            currentQuantity = Math.max(1, currentQuantity + change);
+            document.getElementById("modalQuantity").textContent = currentQuantity;
         }
     </script>
 </body>

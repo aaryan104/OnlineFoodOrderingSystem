@@ -129,6 +129,21 @@
                     <span class="error-message text-red-500 text-xs mt-1">Please enter your address</span>
                 </div>
 
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Profile Photo</label>
+                    <div class="flex items-center space-x-4">
+                        <label
+                            class="flex items-center justify-center px-4 py-2 border border-gray-300 rounded-button cursor-pointer hover:bg-gray-50 !rounded-button">
+                            <i class="ri-upload-2-line mr-2"></i>
+                            <span class="text-sm">Upload Image</span>
+                            <asp:FileUpload ID="txtUpload" runat="server" class="hidden" onchange="previewImage(event)" />
+                        </label>
+                        <div id="imagePreview" class="hidden w-16 h-16 rounded overflow-hidden">
+                            <img src="" alt="Preview" class="w-full h-full object-cover" />
+                        </div>
+                    </div>
+                </div>
+
                 <div class="flex items-start">
                     <div class="flex items-center h-5">
                         <input type="checkbox" class="h-4 w-4 text-primary border-gray-300 rounded">
@@ -168,6 +183,19 @@
         </div>
     </div>
     <script>
+        function previewImage(event) {
+            const preview = document.getElementById("imagePreview");
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.querySelector("img").src = e.target.result;
+                    preview.classList.remove("hidden");
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
         const form = document.getElementById('registrationForm');
         const togglePasswordBtn = document.getElementById('togglePassword');
         const passwordInput = document.getElementById('txtPassword');

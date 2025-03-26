@@ -105,6 +105,15 @@ namespace OnlineFoodOrderingSystem.FOS
         protected global::System.Web.UI.WebControls.TextBox txtAddress;
 
         /// <summary>
+        /// txtUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload txtUpload;
+
+        /// <summary>
         /// btnRegi control.
         /// </summary>
         /// <remarks>

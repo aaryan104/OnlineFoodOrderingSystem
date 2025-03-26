@@ -21,7 +21,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>  
         <!-- Navbar & Hero End -->
 
         <!-- Service Start -->
@@ -700,6 +700,9 @@
             </div>
         </div>
         <!-- Menu End -->
+        <div class="d-flex justify-content-center">
+            <a href="Login.aspx" class="btn btn-primary py-2 px-4">Order Now</a>
+        </div>
 
         <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
