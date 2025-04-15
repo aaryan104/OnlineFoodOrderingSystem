@@ -1,4 +1,4 @@
-﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="OnlineFoodOrderingSystem.FOS.Customer.Dashboard" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Home.aspx.cs" Inherits="OnlineFoodOrderingSystem.FOS.Customer.Dashboard" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +22,7 @@
             -webkit-appearance: none;
             margin: 0;
         }
+
         .category-tab:hover {
             background-color: darkgrey;
         }
@@ -56,7 +57,8 @@
     <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
         <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <span class="text-2xl font-['Pacifico'] text-primary"><img src="../../Asset/Library/img/logo.jpg" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14" alt="Logo" /></span>
+                <span class="text-2xl font-['Pacifico'] text-primary">
+                    <img src="../../Asset/Library/img/logo.jpg" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14" alt="Logo" /></span>
                 <%--<span class="text-xl font-semibold text-gray-700">Kastabhanjan</span>--%>
             </div>
             <div class="flex-1 max-w-2xl mx-6">
@@ -73,7 +75,7 @@
             </div>
             <div class="flex items-center gap-6">
                 <div>
-                    <a href="../Index.aspx"><i class="ri-logout-box-line" style="font-size: 20px;cursor: pointer" title="Logout"></i></a>
+                    <a href="../Index.aspx"><i class="ri-logout-box-line" style="font-size: 20px; cursor: pointer" title="Logout"></i></a>
                 </div>
                 <div class="relative cursor-pointer" id="cartButton">
                     <i class="ri-shopping-cart-line text-xl"></i>
@@ -91,9 +93,7 @@
                                     <span>Subtotal:</span>
                                     <span class="font-semibold">₹0</span>
                                 </div>
-                                <button class="w-full bg-primary text-white py-2 rounded-button font-semibold hover:bg-opacity-90">
-                                    Checkout
-                                </button>
+                                <button class="w-full bg-primary text-white py-2 rounded-button font-semibold hover:bg-opacity-90" onclick="checkout()">Checkout</button>
                             </div>
                         </div>
                     </div>
@@ -143,7 +143,7 @@
             </h2>
             <div class="grid gap-4 md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2" id="foodGrid">
                 <asp:Repeater ID="MenuItemsRepeater" runat="server">
-                     <ItemTemplate>
+                    <ItemTemplate>
                         <div class="rounded-t-2xl overflow-hidden shadow-md hover:shadow-lg cursor-pointer">
                             <img src='<%# Eval("ImageUrl") %>' class="w-full h-48 object-cover" alt='<%# Eval("Name") %>'>
                             <div class="p-4" onclick="openModal(<%# Eval("ItemId") %>)">
@@ -235,11 +235,13 @@
                     <div class="flex flex-col gap-4">
                         <a href="#" class="flex items-center gap-2 text-gray-600 hover:text-primary">
                             <i class="ri-apple-fill text-2xl"></i>
-                            <span>Download on the<br />App Store</span>
+                            <span>Download on the<br />
+                                App Store</span>
                         </a>
                         <a href="#" class="flex items-center gap-2 text-gray-600 hover:text-primary">
                             <i class="ri-google-play-fill text-2xl"></i>
-                            <span>Get it on<br />Google Play</span>
+                            <span>Get it on<br />
+                                Google Play</span>
                         </a>
                     </div>
                 </div>
@@ -313,8 +315,7 @@
         let currentQuantity = 1;
         let currentItem = null;
 
-        function openModal(itemId)
-        {
+        function openModal(itemId) {
             currentItem = foodData.find((item) => item.id === itemId);
             currentQuantity = 1;
             document.getElementById("modalTitle").textContent = currentItem.name;

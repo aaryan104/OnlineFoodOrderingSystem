@@ -1,0 +1,26 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="AgentMasterPage.Master.cs" Inherits="OnlineFoodOrderingSystem.FOS.DeliveryAgent.Site1" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title>Delivery Agent Panel</title>
+    <link href="../../Asset/Library/agentCss/css/style.css" rel="stylesheet" />
+
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+
+</head>
+<body>
+    <div class="sidebar">
+        <a href="AgentDashboard.aspx">Dashboard</a>
+        <a href="AddDeliveryAgent.aspx">Add Agent</a>
+    </div>
+    <div class="main">
+
+        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        </asp:ContentPlaceHolder>
+
+    </div>
+</body>
+</html>

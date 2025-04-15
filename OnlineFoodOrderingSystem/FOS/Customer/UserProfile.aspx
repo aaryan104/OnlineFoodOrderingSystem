@@ -63,7 +63,7 @@
     <main class="max-w-7xl mx-auto px-4 pt-8 pb-16">
         <asp:Label ID="lblMessage" runat="server" ForeColor="Red"></asp:Label>
         <div class="flex items-center gap-2 text-sm text-gray-500 mb-8">
-            <a href="Dashboard.aspx" class="hover:text-primary">Home</a>
+            <a href="Home.aspx" class="hover:text-primary">Home</a>
             <i class="ri-arrow-right-s-line"></i>
             <span>Profile</span>
         </div>

@@ -191,6 +191,7 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
                 if (res > 0)
                 {
                     msg.Text = "Data Remove!";
+                    txtName.ReadOnly = false;
                 }
                 else
                 {

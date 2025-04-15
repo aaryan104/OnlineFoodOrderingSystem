@@ -11,7 +11,7 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
 {
 
 
-    public partial class Home
+    public partial class ReviewAndFeedback
     {
     }
 }

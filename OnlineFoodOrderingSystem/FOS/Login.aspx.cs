@@ -58,11 +58,11 @@ namespace OnlineFoodOrderingSystem.FOS
             {
                 if (email == "admin@gmail.com" && pass == "admin123")
                 {
-                    Response.Redirect("~/FOS/Admin/Home.aspx");
+                    Response.Redirect("~/FOS/Admin/Dashboard.aspx");
                 }
                 else if(email == "delivery@gmail.com" && pass == "delivery123")
                 {
-                    Response.Redirect("~/FOS/DeliveryAgent/Agent.aspx");
+                    Response.Redirect("~/FOS/DeliveryAgent/DeliveryDashboard.aspx");
                 }
                 else
                 {
@@ -77,7 +77,7 @@ namespace OnlineFoodOrderingSystem.FOS
                     if (cnt > 0)
                     {
                         Session["s_eml"] = txtEmail.Text;
-                        Response.Redirect("~/FOS/Customer/Dashboard.aspx");
+                        Response.Redirect("~/FOS/Customer/Home.aspx");
                     }
                     else
                     {

@@ -9,6 +9,16 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
 {
     public partial class Dashboard : System.Web.UI.Page
     {
+        //private void RegisterCategoryScript()
+        //{
+        //    string script = @"
+        //        <script>
+
+        //        </script>";
+
+        //    ClientScript.RegisterStartupScript(this.GetType(), "CategoryScript", script);
+        //}
+
         SqlConnection conn;
         SqlCommand cmd;
         SqlDataAdapter sda;
@@ -32,16 +42,6 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
                 FetchMenuItems(selectedCategory);
             }
         }
-
-        //private void RegisterCategoryScript()
-        //{
-        //    string script = @"
-        //        <script>
-
-        //        </script>";
-
-        //    ClientScript.RegisterStartupScript(this.GetType(), "CategoryScript", script);
-        //}
 
         public void funcon()
         {

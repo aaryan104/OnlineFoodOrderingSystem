@@ -84,7 +84,7 @@
                             <div class="relative">
                                 <span class="absolute left-3 top-2 text-gray-500">(₹)</span>
                                 <asp:TextBox ID="txtPrice" runat="server"
-                                    step="0.01" min="0" class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-sm"></asp:TextBox>
+                                    step="0.01" min="0" class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-sm" TextMode="Number"></asp:TextBox>
                             </div>
                         </div>
                         <div class="md:col-span-2">
@@ -129,7 +129,7 @@
                         <asp:Button ID="updateBtn" OnClientClick="Hidden()" runat="server" class="px-6 py-2 bg-primary text-white rounded-button hover:bg-primary/90 !rounded-button whitespace-nowrap" Text="Edit" OnClick="updateBtn_Click" />
                         <asp:HiddenField ID="hiddenItemId" runat="server" />
                     </div>
-                    <div class="message text-center flex flex-col items-center">
+                    <div class="message text-center flex flex-col items-center  ">
                         <asp:Label ID="msg" runat="server" ForeColor="red" Text=""></asp:Label>
                     </div>
                     <div class="bg-white rounded-lg shadow-md overflow-hidden">
