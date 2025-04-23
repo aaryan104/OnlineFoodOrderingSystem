@@ -41,6 +41,14 @@
 </head>
 
 <body class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <!-- Top-right Agent Login button-style link -->
+    <div class="absolute top-4 right-6">
+        <a href="DeliveryAgent/AgentLogin.aspx"
+           class="inline-block px-4 py-2 border border-[#FEA116] text-[#FEA116] text-sm font-medium rounded-md hover:bg-[#FEA116] hover:text-white transition duration-200">
+            Agent Login
+        </a>
+    </div>
+
     <section class="w-full max-w-md" style="max-width:25rem;">
         <div class="bg-white rounded-lg shadow-lg p-8">
             <div class="mb-8">

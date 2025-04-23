@@ -143,13 +143,17 @@
     <Content Include="FOS\Admin\Transaction.aspx" />
     <Content Include="FOS\Admin\userManage.aspx" />
     <Content Include="FOS\Contact.aspx" />
+    <Content Include="FOS\Customer\Cart.aspx" />
     <Content Include="FOS\Customer\Checkout.aspx" />
     <Content Include="FOS\Customer\Home.aspx" />
+    <Content Include="FOS\Customer\scratch.aspx" />
     <Content Include="FOS\Customer\UserProfile.aspx" />
-    <Content Include="FOS\DeliveryAgent\AddDeliveryAgent.aspx" />
-    <Content Include="FOS\DeliveryAgent\AgentDashboard.aspx" />
-    <Content Include="FOS\DeliveryAgent\LiveTracking.aspx" />
-    <Content Include="FOS\DeliveryAgent\UpdateOrderStatus.aspx" />
+    <Content Include="FOS\DeliveryAgent\addAgent.aspx" />
+    <Content Include="FOS\DeliveryAgent\AgentLogin.aspx" />
+    <Content Include="FOS\DeliveryAgent\AgentProfile.aspx" />
+    <Content Include="FOS\DeliveryAgent\DeliveryAgentDashboard.aspx" />
+    <Content Include="FOS\DeliveryAgent\TrackOrder.aspx" />
+    <Content Include="FOS\DeliveryAgent\updateStatus.aspx" />
     <Content Include="FOS\ForgotPassword.aspx" />
     <Content Include="FOS\Index.aspx" />
     <Content Include="FOS\Login.aspx" />
@@ -247,6 +251,13 @@
     <Compile Include="FOS\Contact.aspx.designer.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
     </Compile>
+    <Compile Include="FOS\Customer\Cart.aspx.cs">
+      <DependentUpon>Cart.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FOS\Customer\Cart.aspx.designer.cs">
+      <DependentUpon>Cart.aspx</DependentUpon>
+    </Compile>
     <Compile Include="FOS\Customer\Checkout.aspx.cs">
       <DependentUpon>Checkout.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -261,6 +272,13 @@
     <Compile Include="FOS\Customer\Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
+    <Compile Include="FOS\Customer\scratch.aspx.cs">
+      <DependentUpon>scratch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FOS\Customer\scratch.aspx.designer.cs">
+      <DependentUpon>scratch.aspx</DependentUpon>
+    </Compile>
     <Compile Include="FOS\Customer\UserProfile.aspx.cs">
       <DependentUpon>UserProfile.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -268,40 +286,47 @@
     <Compile Include="FOS\Customer\UserProfile.aspx.designer.cs">
       <DependentUpon>UserProfile.aspx</DependentUpon>
     </Compile>
-    <Compile Include="FOS\DeliveryAgent\AddDeliveryAgent.aspx.cs">
-      <DependentUpon>AddDeliveryAgent.aspx</DependentUpon>
+    <Compile Include="FOS\DeliveryAgent\addAgent.aspx.cs">
+      <DependentUpon>addAgent.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="FOS\DeliveryAgent\AddDeliveryAgent.aspx.designer.cs">
-      <DependentUpon>AddDeliveryAgent.aspx</DependentUpon>
+    <Compile Include="FOS\DeliveryAgent\addAgent.aspx.designer.cs">
+      <DependentUpon>addAgent.aspx</DependentUpon>
     </Compile>
-    <Compile Include="FOS\DeliveryAgent\AgentDashboard.aspx.cs">
-      <DependentUpon>AgentDashboard.aspx</DependentUpon>
+    <Compile Include="FOS\DeliveryAgent\AgentLogin.aspx.cs">
+      <DependentUpon>AgentLogin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="FOS\DeliveryAgent\AgentDashboard.aspx.designer.cs">
-      <DependentUpon>AgentDashboard.aspx</DependentUpon>
+    <Compile Include="FOS\DeliveryAgent\AgentLogin.aspx.designer.cs">
+      <DependentUpon>AgentLogin.aspx</DependentUpon>
     </Compile>
-    <Compile Include="FOS\DeliveryAgent\LiveTracking.aspx.cs">
-      <DependentUpon>LiveTracking.aspx</DependentUpon>
+    <Compile Include="FOS\DeliveryAgent\AgentProfile.aspx.cs">
+      <DependentUpon>AgentProfile.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="FOS\DeliveryAgent\LiveTracking.aspx.designer.cs">
-      <DependentUpon>LiveTracking.aspx</DependentUpon>
+    <Compile Include="FOS\DeliveryAgent\AgentProfile.aspx.designer.cs">
+      <DependentUpon>AgentProfile.aspx</DependentUpon>
     </Compile>
-    <Compile Include="FOS\DeliveryAgent\AgentMasterPage.Master.cs">
-      <DependentUpon>AgentMasterPage.Master</DependentUpon>
+    <Compile Include="FOS\DeliveryAgent\DeliveryAgentDashboard.aspx.cs">
+      <DependentUpon>DeliveryAgentDashboard.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="FOS\DeliveryAgent\AgentMasterPage.Master.designer.cs">
-      <DependentUpon>AgentMasterPage.Master</DependentUpon>
+    <Compile Include="FOS\DeliveryAgent\DeliveryAgentDashboard.aspx.designer.cs">
+      <DependentUpon>DeliveryAgentDashboard.aspx</DependentUpon>
     </Compile>
-    <Compile Include="FOS\DeliveryAgent\UpdateOrderStatus.aspx.cs">
-      <DependentUpon>UpdateOrderStatus.aspx</DependentUpon>
+    <Compile Include="FOS\DeliveryAgent\TrackOrder.aspx.cs">
+      <DependentUpon>TrackOrder.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="FOS\DeliveryAgent\UpdateOrderStatus.aspx.designer.cs">
-      <DependentUpon>UpdateOrderStatus.aspx</DependentUpon>
+    <Compile Include="FOS\DeliveryAgent\TrackOrder.aspx.designer.cs">
+      <DependentUpon>TrackOrder.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FOS\DeliveryAgent\updateStatus.aspx.cs">
+      <DependentUpon>updateStatus.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FOS\DeliveryAgent\updateStatus.aspx.designer.cs">
+      <DependentUpon>updateStatus.aspx</DependentUpon>
     </Compile>
     <Compile Include="FOS\FOS.Master.cs">
       <DependentUpon>FOS.Master</DependentUpon>
@@ -472,7 +497,6 @@
     <Content Include="Asset\Library\scss\bootstrap\scss\_variables.scss" />
     <Content Include="FOS\FOS.Master" />
     <Content Include="FOS\Admin\Admin.Master" />
-    <Content Include="FOS\DeliveryAgent\AgentMasterPage.Master" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

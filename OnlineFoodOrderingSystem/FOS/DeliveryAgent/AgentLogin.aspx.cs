@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace OnlineFoodOrderingSystem.FOS
+namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
 {
-    public partial class Login : System.Web.UI.Page
+    public partial class AgentLogin : System.Web.UI.Page
     {
         SqlConnection conn;
         SqlCommand cmd;
@@ -45,48 +45,37 @@ namespace OnlineFoodOrderingSystem.FOS
             }
         }
 
-        protected void btn_Click(object sender, EventArgs e)
+        protected void btnLogin_Click(object sender, EventArgs e)
         {
+            //Response.Write("Login BTN clickes!");
             String email = txtEmail.Text;
             String pass = txtPass.Text;
 
-            if(email == string.Empty && pass == string.Empty)
+            if (email == string.Empty && pass == string.Empty)
             {
                 lblMessage.Text = "Please Enter Email and Password!";
             }
-            else/* if(email != string.Empty && pass != string.Empty)*/
+            else
             {
                 funcon();
 
-                if (email == "admin@gmail.com" && pass == "admin123")
+                string qry = "SELECT DeliveryAgentId FROM DeliveryAgents WHERE Email=@eml AND PasswordHash=@pwd";
+                cmd = new SqlCommand(qry, conn);
+                cmd.Parameters.AddWithValue("eml", email);
+                cmd.Parameters.AddWithValue("pwd", pass);
+
+                object result = cmd.ExecuteScalar();
+                if (result != null)
                 {
-                    Response.Redirect("~/FOS/Admin/Dashboard.aspx");
+                    Session["DeliveryAgentId"] = result.ToString();
+                    Response.Redirect("~/FOS/DeliveryAgent/DeliveryAgentDashboard.aspx");
                 }
                 else
                 {
-                    string qry = "SELECT COUNT(*) FROM Users WHERE Email=@eml AND PasswordHash=@pwd";
-                    cmd = new SqlCommand(qry, conn);
-                    cmd.Parameters.AddWithValue("eml", email);
-                    cmd.Parameters.AddWithValue("pwd", pass);
-
-                    int cnt = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
-
-                    if (cnt > 0)
-                    {
-                        Session["s_eml"] = txtEmail.Text;
-                        Response.Redirect("~/FOS/Customer/Home.aspx");
-                    }
-                    else
-                    {
-                        lblMessage.Text = "Incorrect email-password!";
-                    }
-                    conn.Close();
+                    lblMessage.Text = "Invalid email or password.";
                 }
+                conn.Close();
             }
-            //else
-            //{
-            //    lblMessage.Text = "Incorrect email-password";
-            //}
         }
     }
 }

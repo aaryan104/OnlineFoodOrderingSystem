@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 public class DBConnection
 {
-    private string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["conStr"].ConnectionString;
+    private string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MyConn"].ConnectionString;
 
     public DataTable ExecuteQuery(string query)
     {

@@ -60,6 +60,7 @@
                 <span class="text-2xl font-['Pacifico'] text-primary">
                     <img src="../../Asset/Library/img/logo.jpg" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14" alt="Logo" /></span>
                 <%--<span class="text-xl font-semibold text-gray-700">Kastabhanjan</span>--%>
+                &nbsp;Welcome, <asp:Label ID="txtName" runat="server" Text="" ForeColor="#FEA116"></asp:Label>
             </div>
             <div class="flex-1 max-w-2xl mx-6">
                 <div class="relative">
@@ -82,19 +83,19 @@
                     <span class="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" id="cartCount">0</span>
                     <div id="cartDropdown" class="absolute right-0 top-full mt-4 w-80 bg-white rounded-lg shadow-lg hidden">
                         <div class="p-4">
-                            <h3 class="font-semibold mb-2">Shopping Cart</h3>
                             <div id="cartItems" class="space-y-2">
                                 <div class="text-gray-500 text-center py-4">
                                     Your cart is empty
                                 </div>
                             </div>
-                            <div class="border-t mt-4 pt-4">
+                            <%--<div class="border-t mt-4 pt-4">--%>
+                            <br />
                                 <div class="flex justify-between mb-2">
                                     <span>Subtotal:</span>
-                                    <span class="font-semibold">₹0</span>
+                                    <h3 class="font-semibold mb-2">Shopping Cart</h3>
                                 </div>
-                                <button class="w-full bg-primary text-white py-2 rounded-button font-semibold hover:bg-opacity-90" onclick="checkout()">Checkout</button>
-                            </div>
+                                <a href="Cart.aspx" class="w-full bg-primary text-white py-2 rounded-button font-semibold hover:bg-opacity-90 block text-center">View Cart</a>
+                            <%--</div>--%>
                         </div>
                     </div>
                 </div>
@@ -146,7 +147,7 @@
                     <ItemTemplate>
                         <div class="rounded-t-2xl overflow-hidden shadow-md hover:shadow-lg cursor-pointer">
                             <img src='<%# Eval("ImageUrl") %>' class="w-full h-48 object-cover" alt='<%# Eval("Name") %>'>
-                            <div class="p-4" onclick="openModal(<%# Eval("ItemId") %>)">
+                            <div class="p-4">
                                 <div class="flex justify-between items-start mb-2">
                                     <h3 class="font-semibold text-lg"><%# Eval("Name") %></h3>
                                     <span class="text-xs px-2 py-1 bg-white-100 rounded-full capitalize"><%# Eval("Category") %></span>
@@ -157,7 +158,10 @@
                                         <span class="text-primary font-semibold text-lg">₹<%# Eval("Price") %></span>
                                         <span class="text-xs text-gray-500">Inclusive of taxes</span>
                                     </div>
-                                    <button class="px-4 py-2 bg-primary text-white rounded-button hover:bg-opacity-90 whitespace-nowrap">Add to Cart</button>
+                                    <button class="px-4 py-2 bg-primary text-white rounded-button hover:bg-opacity-90 whitespace-nowrap"
+                                        onclick="addToCartDirect(<%# Eval("ItemId") %>, '<%# Eval("Name") %>', <%# Eval("Price") %>, '<%# Eval("ImageUrl") %>')">
+                                        Add to Cart
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -166,6 +170,7 @@
             </div>
         </div>
     </main>
+
     <div id="foodModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div class="p-6">
@@ -175,7 +180,7 @@
                         <i class="ri-close-line text-2xl"></i>
                     </button>
                 </div>
-                <img id="modalImage" class="w-full h-64 object-cover rounded-lg mb-4" src="" alt="Food" />
+                <img id="modalImage" class="w-full h-64 object-cover rounded-lg mb-4" src="'<%# Eval("ImageUrl") %>'" alt="Food" />
                 <p id="modalDescription" class="text-gray-600 mb-4"></p>
                 <div class="flex items-center justify-between mb-6">
                     <div class="text-2xl font-semibold" id="modalPrice"></div>
@@ -226,7 +231,7 @@
                         <li>
                             <a href="#" class="hover:text-primary">Terms of Service</a>
                         </li>
-                        <li><a href="#" class="hover:text-primary">Privacy Policy</a></li>
+                        <li><a href="../Privacy_Policy.aspx" class="hover:text-primary">Privacy Policy</a></li>
                         <li><a href="#" class="hover:text-primary">Cookie Policy</a></li>
                     </ul>
                 </div>
@@ -270,81 +275,217 @@
         </div>
     </footer>
 
-    <script>
-        const cartButton = document.getElementById('cartButton');
-        const cartDropdown = document.getElementById('cartDropdown');
+   <script>
+       // Cart functionality
+       let cart = JSON.parse(localStorage.getItem('cart')) || [];
+       let currentQuantity = 1;
+       let currentItem = null;
 
-        cartButton.addEventListener('click', () => {
-            cartDropdown.classList.toggle('hidden');
-        });
+       // Update cart count on page load
+       updateCartCount();
 
-        // Close the dropdown if clicked outside
-        document.addEventListener('click', (e) => {
-            if (!cartButton.contains(e.target) && !cartDropdown.contains(e.target)) {
-                cartDropdown.classList.add('hidden');
-            }
-        });
+       const cartButton = document.getElementById('cartButton');
+       const cartDropdown = document.getElementById('cartDropdown');
 
-        function updateCategories(category) {
-            currentCategory = category;
-            const tabs = document.querySelectorAll("#categoryTabs button");
-            tabs.forEach((tab) => {
-                if (tab.dataset.category === category) {
-                    tab.classList.remove("bg-gray-100", "text-gray-600");
-                    tab.classList.add("bg-primary", "text-white");
-                } else {
-                    tab.classList.remove("bg-primary", "text-white");
-                    tab.classList.add("bg-gray-100", "text-gray-600");
-                }
-            });
-            displayFoodItems(category);
-        }
+       cartButton.addEventListener('click', () => {
+           cartDropdown.classList.toggle('hidden');
+           updateCartDropdown();
+       });
 
-        document.querySelectorAll("#categoryTabs button").forEach((button) => {
-            button.addEventListener("click", () => {
-                updateCategories(button.dataset.category);
-            });
-        });
+       // Close the dropdown if clicked outside
+       document.addEventListener('click', (e) => {
+           if (!cartButton.contains(e.target) && !cartDropdown.contains(e.target)) {
+               cartDropdown.classList.add('hidden');
+           }
+       });
 
-        function filterItems(button) {
-            var category = button.getAttribute('data-category');
-            document.getElementById('hiddenCategory').value = category;
-            document.getElementById('form1').submit();
-        }
+       function updateCategories(category) {
+           currentCategory = category;
+           const tabs = document.querySelectorAll("#categoryTabs button");
+           tabs.forEach((tab) => {
+               if (tab.dataset.category === category) {
+                   tab.classList.remove("bg-gray-100", "text-gray-600");
+                   tab.classList.add("bg-primary", "text-white");
+               } else {
+                   tab.classList.remove("bg-primary", "text-white");
+                   tab.classList.add("bg-gray-100", "text-gray-600");
+               }
+           });
+           displayFoodItems(category);
+       }
 
-        let currentQuantity = 1;
-        let currentItem = null;
+       document.querySelectorAll("#categoryTabs button").forEach((button) => {
+           button.addEventListener("click", () => {
+               updateCategories(button.dataset.category);
+           });
+       });
 
-        function openModal(itemId) {
-            currentItem = foodData.find((item) => item.id === itemId);
-            currentQuantity = 1;
-            document.getElementById("modalTitle").textContent = currentItem.name;
-            document.getElementById("modalImage").src = currentItem.image;
-            document.getElementById("modalDescription").textContent = currentItem.description;
-            document.getElementById("modalPrice").textContent = `₹${(currentItem.price).toFixed(0)}`;
-            document.getElementById("modalQuantity").textContent = currentQuantity;
+       function filterItems(button) {
+           var category = button.getAttribute('data-category');
+           document.getElementById('hiddenCategory').value = category;
+           document.getElementById('form1').submit();
+       }
 
-            const modalContent = document.querySelector("#foodModal .p-6");
-            const categoryTag = document.createElement("span");
-            categoryTag.className = "inline-block px-3 py-1 bg-gray-100 rounded-full text-sm capitalize mb-4";
-            categoryTag.textContent = currentItem.category;
-            modalContent.insertBefore(
-                categoryTag,
-                document.getElementById("modalDescription"),
-            );
-            document.getElementById("foodModal").classList.remove("hidden");
-            document.getElementById("foodModal").classList.add("flex");
-            document.body.style.overflow = "hidden";
-        }
-        function closeModal() {
-            document.getElementById("foodModal").classList.add("hidden");
-            document.getElementById("foodModal").classList.remove("flex");
-            document.body.style.overflow = "auto";
-        }
-        function updateQuantity(change) {
-            currentQuantity = Math.max(1, currentQuantity + change);
-            document.getElementById("modalQuantity").textContent = currentQuantity;
-        }
+       function openModal(itemId) {
+           // This would be populated from your actual data
+           currentItem = {
+               id: itemId,
+               name: "Sample Item",
+               price: 199,
+               image: "https://via.placeholder.com/120",
+               description: "Sample description",
+               category: "Sample Category"
+           };
+           currentQuantity = 1;
+           document.getElementById("modalTitle").textContent = currentItem.name;
+           document.getElementById("modalImage").src = currentItem.image;
+           document.getElementById("modalDescription").textContent = currentItem.description;
+           document.getElementById("modalPrice").textContent = `₹${ currentItem.price }`;
+           document.getElementById("modalQuantity").textContent = currentQuantity;
+
+           const modalContent = document.querySelector("#foodModal .p-6");
+           const categoryTag = document.createElement("span");
+           categoryTag.className = "inline-block px-3 py-1 bg-gray-100 rounded-full text-sm capitalize mb-4";
+           categoryTag.textContent = currentItem.category;
+           modalContent.insertBefore(
+               categoryTag,
+               document.getElementById("modalDescription"),
+           );
+           document.getElementById("foodModal").classList.remove("hidden");
+           document.getElementById("foodModal").classList.add("flex");
+           document.body.style.overflow = "hidden";
+       }
+
+       function closeModal() {
+           document.getElementById("foodModal").classList.add("hidden");
+           document.getElementById("foodModal").classList.remove("flex");
+           document.body.style.overflow = "auto";
+       }
+
+       function updateQuantity(change) {
+           currentQuantity = Math.max(1, currentQuantity + change);
+           document.getElementById("modalQuantity").textContent = currentQuantity;
+       }
+
+       function addToCart() {
+           if (!currentItem) return;
+
+           // Check if item already exists in cart
+           const existingItem = cart.find(item => item.id === currentItem.id);
+
+           if (existingItem) {
+               existingItem.quantity += currentQuantity;
+           } else {
+               cart.push({
+                   id: currentItem.id,
+                   name: currentItem.name,
+                   price: currentItem.price,
+                   image: currentItem.image,
+                   quantity: currentQuantity
+               });
+           }
+
+           saveCart();
+           updateCartCount();
+           closeModal();
+
+           // Show success message
+           alert(`${ currentItem.name } added to cart!`);   
+       }
+
+       function addToCartDirect(itemId, name, price, image) {
+           // Check if item already exists in cart
+           const existingItem = cart.find(item => item.id == itemId);
+
+           if (existingItem) {
+               existingItem.quantity += 1;
+           } else {
+               cart.push({
+                   id: itemId,
+                   name: name,
+                   price: price,
+                   image: image,
+                   quantity: 1
+               });
+           }
+
+           saveCart();
+           updateCartCount();
+
+           // Show success message
+           alert(`${ name } added to cart!`);
+       }
+
+       function updateCartCount() {
+           const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+           document.getElementById('cartCount').textContent = totalItems;
+       }
+
+       function updateCartDropdown() {
+           const cartItemsContainer = document.getElementById('cartItems');
+           const subtotalElement = document.querySelector('#cartDropdown .font-semibold');
+
+           if (cart.length === 0) {
+               cartItemsContainer.innerHTML = `
+                    <div class="text-gray-500 text-center py-4">
+                        Your cart is empty
+                    </div>
+                `;
+               subtotalElement.textContent = '₹0';
+               return;
+           }
+
+           let itemsHTML = '';
+           let subtotal = 0;
+
+           cart.forEach(item => {
+               const itemTotal = item.price * item.quantity;
+               subtotal += itemTotal;
+
+               itemsHTML += `
+                    <div class="flex items-center justify-between py-2 border-b">
+                        <div class="flex items-center gap-3">
+                            <img src="${item.image}" class="w-12 h-12 object-cover rounded" alt="${item.name}">
+                            <div>
+                                <h4 class="font-medium">${item.name}</h4>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <button class="text-xs w-5 h-5 flex items-center justify-center border rounded" 
+                                        onclick="updateCartItemQuantity(${item.id}, -1, event)">-</button>
+                                    <span>${item.quantity}</span>
+                                    <button class="text-xs w-5 h-5 flex items-center justify-center border rounded" 
+                                        onclick="updateCartItemQuantity(${item.id}, 1, event)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="font-semibold">₹${itemTotal.toFixed(2)}</div>
+                    </div>
+                `;
+           });
+
+           cartItemsContainer.innerHTML = itemsHTML;
+           subtotalElement.textContent = `₹${ subtotal.toFixed(2) }`;
+       }
+
+       function updateCartItemQuantity(itemId, change, event) {
+           event.stopPropagation();
+           const item = cart.find(item => item.id == itemId);
+
+           if (item) {
+               item.quantity += change;
+
+               if (item.quantity <= 0) {
+                   cart = cart.filter(i => i.id != itemId);
+               }
+
+               saveCart();
+               updateCartCount();
+               updateCartDropdown();
+           }
+       }
+
+       function saveCart() {
+           localStorage.setItem('cart', JSON.stringify(cart));
+       }
     </script>
 </body>
 </html>

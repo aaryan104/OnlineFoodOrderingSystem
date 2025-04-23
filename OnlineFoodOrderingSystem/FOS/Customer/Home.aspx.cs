@@ -23,13 +23,14 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
         SqlCommand cmd;
         SqlDataAdapter sda;
         DataTable dt;
-        public static String eml = String.Empty;
+        public static string eml = string.Empty;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["s_eml"] != null)
             {
                 eml = Session["s_eml"].ToString();
+                fnFetchUser();
             }
             else
             {
@@ -57,6 +58,20 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
             catch (Exception ex)
             {
                 Response.Write("Error: " + ex.ToString());
+            }
+        }
+
+        public void fnFetchUser()
+        {
+            funcon();
+            string qry = "SELECT FirstName FROM Users WHERE Email=@u_eml";
+            SqlCommand cmd = new SqlCommand(qry, conn);
+            cmd.Parameters.AddWithValue("@u_eml", eml);
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            if (dr.Read())
+            {
+                txtName.Text = dr["FirstName"].ToString();
             }
         }
 
@@ -103,9 +118,6 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
                 sda = new SqlDataAdapter(cmd);
                 dt = new DataTable();
                 sda.Fill(dt);
-
-                // Debugging to check data
-                //Response.Write("Rows fetched: " + dt.Rows.Count);
 
                 if (dt.Rows.Count > 0)
                 {
