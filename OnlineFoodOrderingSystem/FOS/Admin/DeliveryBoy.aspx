@@ -1,6 +1,312 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/FOS/Admin/Admin.Master" AutoEventWireup="true" CodeBehind="DeliveryBoy.aspx.cs" Inherits="OnlineFoodOrderingSystem.FOS.Admin.DeliveryBoy" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Delivery Agents</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: "#FEA116", secondary: "#0F172A" },
+                    borderRadius: {
+                        none: "0px",
+                        sm: "4px",
+                        DEFAULT: "8px",
+                        md: "12px",
+                        lg: "16px",
+                        xl: "20px",
+                        "2xl": "24px",
+                        "3xl": "32px",
+                        full: "9999px",
+                        button: "8px",
+                    },
+                },
+            },
+        };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet" />
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #FEA116;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px);
+        }
+
+        @media (max-width: 640px) {
+            .responsive-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+    </style>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    This is Delivery Boy page.
+
+    <body class="bg-gray-50 min-h-screen">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-3xl font-bold text-primary">Manage Delivery Agents</h1>
+                <a href="agent-register.html"
+                    class="bg-primary text-white px-4 py-2 !rounded-button whitespace-nowrap flex items-center">
+                    <div class="w-5 h-5 flex items-center justify-center mr-2">
+                        <i class="ri-user-add-line"></i>
+                    </div>
+                    Add New Agent
+                </a>
+            </div>
+            <div class="bg-white rounded shadow-md p-6 mb-8 relative">
+                <h2 class="text-xl font-semibold mb-6 text-gray-800">
+                    Update Agent Information
+                </h2>
+                <form id="agentForm" runat="server">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                            <input type="text" id="firstName" name="firstName"
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                                placeholder="Enter first name" />
+                        </div>
+                        <div>
+                            <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                            <input type="text" id="lastName" name="lastName"
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                                placeholder="Enter last name" />
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="email" name="email"
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                                placeholder="Enter email address" />
+                        </div>
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                            <input type="text" id="password" name="password"
+                                class="w-full px-4 py-2 border border-gray-300 rounded bg-gray-100 cursor-not-allowed"
+                                placeholder="Password" readonly />
+                        </div>
+                        <div>
+                            <label for="phoneNumber" class="block text-sm font-medium text-gray-700 mb-1">Phone
+                                Number</label>
+                            <input type="tel" id="phoneNumber" name="phoneNumber"
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                                placeholder="Enter phone number" />
+                        </div>
+                        <div>
+                            <label for="vehicleNumber" class="block text-sm font-medium text-gray-700 mb-1">Vehicle
+                                Number</label>
+                            <input type="text" id="vehicleNumber" name="vehicleNumber"
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                                placeholder="Enter vehicle number" />
+                        </div>
+                        <div>
+                            <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                            <div class="relative">
+                                <select id="status" name="status"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary appearance-none pr-8">
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                    <div class="w-5 h-5 flex items-center justify-center text-gray-500">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                            <textarea id="address" name="address" rows="3"
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                                placeholder="Enter full address"></textarea>
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-8">
+                        <button id="resetBtn"
+                            class="absolute top-6 right-6 text-gray-500 hover:text-primary transition-colors w-10 h-10 flex items-center justify-center">
+                            <i class="ri-refresh-line ri-lg"></i>
+                        </button>
+                        <button type="submit"
+                            class="px-5 py-2 bg-primary text-white !rounded-button whitespace-nowrap hover:bg-primary/90 transition-colors">
+                            Update Agent
+                        </button>
+                    </div>
+                    <div class="message text-center flex flex-col items-center  ">
+                        <asp:Label ID="msg" runat="server" ForeColor="red" Text=""></asp:Label>
+                    </div>
+            </div>
+            <div class="bg-white rounded shadow-md p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold text-gray-800">
+                        All Delivery Agents
+                    </h2>
+                    <div class="relative">
+                        <input type="text" id="searchAgent" placeholder="Search agents..."
+                            class="pl-10 pr-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" />
+                        <div
+                            class="absolute left-0 top-0 h-full flex items-center pl-3 pointer-events-none w-5 h-5 text-gray-500">
+                            <i class="ri-search-line"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="overflow-x-auto responsive-table">
+                    <asp:GridView ID="GridViewDeliveryAgents" runat="server" AutoGenerateColumns="False" CssClass="min-w-full divide-y divide-gray-200" 
+                        GridLines="None" HeaderStyle-BackColor="#F9FAFB" HeaderStyle-ForeColor="Gray" HeaderStyle-Font-Bold="true" 
+                        RowStyle-BackColor="White" AlternatingRowStyle-BackColor="#F9FAFB" DataKeyNames="DeliveryAgentId">
+    
+                        <Columns>
+                            <asp:BoundField DataField="FirstName" HeaderText="First Name" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-center" />
+                            <asp:BoundField DataField="LastName" HeaderText="Last Name" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-center" />
+                            <asp:BoundField DataField="Email" HeaderText="Email" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-center" />
+                            <asp:BoundField DataField="PhoneNumber" HeaderText="Phone" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-center" />
+                            <asp:BoundField DataField="VehicleNumber" HeaderText="Vehicle" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-center" />
+        
+                            <asp:TemplateField HeaderText="Status"> 
+                                <ItemTemplate>
+                                    <asp:Label ID="lblStatus" runat="server" Text='<%# Eval("Status") %>' 
+                                        CssClass='<%# Eval("Status").ToString() == "Active" ? "px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" : 
+                                                                                                "px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800" %>'>
+                                    </asp:Label>
+                                </ItemTemplate>
+                                <ItemStyle CssClass="px-6 py-4 whitespace-nowrap" />
+                            </asp:TemplateField>
+
+                            <asp:BoundField DataField="Address" HeaderText="Address" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center" />
+    
+                            <asp:TemplateField HeaderText="Actions">
+                                <ItemTemplate>
+                                    <div class="flex items-center space-x-3">
+                                        <asp:LinkButton ID="btnEdit" runat="server" CommandName="Edit" CssClass="text-primary hover:text-primary/80 w-8 h-8 flex items-center justify-center">
+                                            <i class="ri-edit-line ri-lg"></i>
+                                        </asp:LinkButton>
+                                        <asp:LinkButton ID="btnDelete" runat="server" OnClick="btnDelete_Click" CommandArgument='<%# Eval("DeliveryAgentId") %>' CssClass="text-red-500 hover:text-red-700 w-8 h-8 flex items-center justify-center" 
+                                            OnClientClick="return confirm('Are you sure you want to delete this agent?');">
+                                            <i class="ri-delete-bin-line ri-lg"></i>
+                                        </asp:LinkButton>
+                                    </div>
+                                </ItemTemplate>
+                                <ItemStyle CssClass="px-6 py-4 whitespace-nowrap text-sm font-medium" />
+                            </asp:TemplateField>
+                        </Columns>
+                    </asp:GridView>
+                </form>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Reset form button
+                const resetBtn = document.getElementById("resetBtn");
+                const agentForm = document.getElementById("agentForm");
+                resetBtn.addEventListener("click", function () {
+                    agentForm.reset();
+                });
+                // Edit agent functionality
+                const editButtons = document.querySelectorAll(".text-primary");
+                editButtons.forEach((button) => {
+                    button.addEventListener("click", function () {
+                        const row = this.closest("tr");
+                        const cells = row.querySelectorAll("td");
+                        // Fill the form with data from the selected row
+                        document.getElementById("firstName").value = cells[1].textContent;
+                        document.getElementById("lastName").value = cells[2].textContent;
+                        document.getElementById("email").value = cells[3].textContent;
+                        document.getElementById("password").value = "********"; // Placeholder for password
+                        document.getElementById("phoneNumber").value = cells[4].textContent;
+                        document.getElementById("vehicleNumber").value = cells[5].textContent;
+                        document.getElementById("status").value =
+                            cells[6].textContent.trim().toLowerCase() === "active"
+                                ? "active"
+                                : "inactive";
+                        document.getElementById("address").value = cells[7].textContent;
+                        // Scroll to form
+                        document
+                            .querySelector(".bg-white")
+                            .scrollIntoView({ behavior: "smooth" });
+                    });
+                });
+                // Delete confirmation
+                const deleteButtons = document.querySelectorAll(".text-red-500");
+                deleteButtons.forEach((button) => {
+                    button.addEventListener("click", function () {
+                        const row = this.closest("tr");
+                        const name =
+                            row.querySelectorAll("td")[1].textContent +
+                            " " +
+                            row.querySelectorAll("td")[2].textContent;
+                        if (confirm(`Are you sure you want to delete ${name}?`)) {
+                            row.remove();
+                            alert("Agent deleted successfully!");
+                        }
+                    });
+                });
+                // Search functionality
+                const searchInput = document.getElementById("searchAgent");
+                searchInput.addEventListener("input", function () {
+                    const searchTerm = this.value.toLowerCase();
+                    const rows = document.querySelectorAll("tbody tr");
+                    rows.forEach((row) => {
+                        const text = row.textContent.toLowerCase();
+                        row.style.display = text.includes(searchTerm) ? "" : "none";
+                    });
+                });
+            });
+        </script>
+    </body>
+
 </asp:Content>

@@ -149,30 +149,39 @@
             <div class="flex flex-col md:flex-row items-center">
                 <div class="flex flex-col items-center mb-6 md:mb-0 md:mr-10">
                     <div class="w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-primary/10">
-                        <img src=""
-                            alt="Profile Picture" class="w-full h-full object-cover object-top" />
+                        <asp:Image ID="imgProfile" runat="server" CssClass="rounded-full w-32 h-32" />
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800">James Davis</h2>
+                    <h2 class="text-2xl font-bold text-gray-800"><asp:Label ID="lblName" runat="server" CssClass="text-2xl font-bold text-gray-800"></asp:Label></h2>
                     <div class="flex items-center mt-1 mb-2">
-                        <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
-                        <span class="text-green-600 font-medium">%Status%</span>
+                        <span class="w-3 h-3 rounded-full mr-2 
+                            <%= lblStatus.Text.ToLower() == "active" ? "bg-green-500" : 
+                                (lblStatus.Text.ToLower() == "inactive" ? "bg-red-500" : "bg-gray-500") %>"></span>
+                        <span class="font-medium 
+                            <%= lblStatus.Text.ToLower() == "active" ? "text-green-600" : 
+                                (lblStatus.Text.ToLower() == "inactive" ? "text-red-600" : "text-gray-600") %>">
+                            <asp:Label ID="lblStatus" runat="server"></asp:Label>
+                        </span>
                     </div>
-                    <p class="text-gray-500">ID: #%ID%</p>
+                    <p class="text-gray-500">ID: #<asp:Label ID="lblID" runat="server" CssClass="text-gray-500"></asp:Label></p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
                     <div>
                         <h3 class="text-gray-500 mb-1">Email</h3>
                         <p class="text-gray-800 font-medium">
-                            %Email%
+                            <asp:Label ID="lblEmail" runat="server" CssClass="text-gray-800 font-medium"></asp:Label>
                         </p>
                     </div>
                     <div>
                         <h3 class="text-gray-500 mb-1">Phone</h3>
-                        <p class="text-gray-800 font-medium">%Phone%</p>
+                        <p class="text-gray-800 font-medium"><asp:Label ID="lblPhone" runat="server" CssClass="text-gray-800 font-medium"></asp:Label></p>
                     </div>
                     <div>
                         <h3 class="text-gray-500 mb-1">Address</h3>
-                        <p class="text-gray-800 font-medium">%Address%</p>
+                        <p class="text-gray-800 font-medium"><asp:Label ID="lblAddress" runat="server" CssClass="text-gray-800 font-medium"></asp:Label></p>
+                    </div>
+                    <div>
+                        <h3 class="text-gray-500 mb-1">Vehical Number</h3>
+                        <p class="text-gray-800 font-medium"><asp:Label ID="lblVehicle" runat="server" CssClass="text-gray-800 font-medium"></asp:Label></p>
                     </div>
                 </div>
             </div>
@@ -236,27 +245,23 @@
                 <div class="space-y-4">
                     <div>
                         <h3 class="text-sm text-gray-500 mb-1">Full Name</h3>
-                        <p class="text-gray-800">%FullName%</p>
+                        <asp:Label ID="lblFullname" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
                     </div>
                     <div>
                         <h3 class="text-sm text-gray-500 mb-1">Contact Number</h3>
-                        <p class="text-gray-800">%number%</p>
+                        <asp:Label ID="lblPhonenumber" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
                     </div>
                     <div>
                         <h3 class="text-sm text-gray-500 mb-1">Email Address</h3>
-                        <p class="text-gray-800">%email%</p>
+                        <asp:Label ID="lblMail" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
                     </div>
                     <div>
                         <h3 class="text-sm text-gray-500 mb-1">Home Address</h3>
-                        <p class="text-gray-800">
-                            %Address%
-                        </p>
+                        <asp:Label ID="lblAdd" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
                     </div>
                     <div>
                         <h3 class="text-sm text-gray-500 mb-1">Emergency Contact</h3>
-                        <p class="text-gray-800">
-                            +91 9601292692
-                        </p>
+                        <asp:Label ID="Label1" runat="server" CssClass="text-gray-800" Text="+91 9601292692"></asp:Label>
                     </div>
                 </div>
             </div>
@@ -268,15 +273,15 @@
                 <div class="space-y-4">
                     <div>
                         <h3 class="text-sm text-gray-500 mb-1">Employee ID</h3>
-                        <p class="text-gray-800">#%id%</p>
+                        #<asp:Label ID="lblIds" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
                     </div>
                     <div>
                         <h3 class="text-sm text-gray-500 mb-1">Working Area</h3>
-                        <p class="text-gray-800">%address%</p>
+                        <asp:Label ID="lblAddres" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
                     </div>
                     <div>
                         <h3 class="text-sm text-gray-500 mb-1">Supervisor</h3>
-                        <p class="text-gray-800">Shivam Dholeriya</p>
+                        <asp:Label ID="Label2" runat="server" CssClass="text-gray-800" Text="Shivam Dholeriya"></asp:Label>
                     </div>
                 </div>
             </div>
@@ -770,63 +775,61 @@
                     <i class="ri-close-line ri-lg"></i>
                 </button>
             </div>
-            <form id="editProfileForm" class="p-6">
+            <form runat="server" id="editProfileForm" class="p-6">
+                <div class="message text-center flex flex-col items-center">
+                    <asp:Label ID="msg" runat="server" ForeColor="red" Text=""></asp:Label>
+                </div>
                 <div class="mb-6">
                     <div class="flex items-center justify-center mb-4">
                         <div class="relative">
                             <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-primary/10">
-                                <img id="profilePreview"
-                                    src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20a%20delivery%20man%20with%20short%20hair%2C%20friendly%20smile%2C%20wearing%20a%20blue%20uniform%2C%20high%20quality%2C%20photorealistic%2C%20studio%20lighting%2C%20clear%20background&width=300&height=300&seq=12345&orientation=squarish"
-                                    alt="Profile Picture" class="w-full h-full object-cover" />
+                                <asp:Image ID="profilePreview" runat="server" CssClass="w-full h-full object-cover" />
                             </div>
                             <label for="profilePicture"
                                 class="absolute bottom-0 right-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center cursor-pointer">
                                 <i class="ri-camera-line"></i>
                             </label>
-                            <input type="file" id="profilePicture" class="hidden" accept="image/*" />
+                            <asp:FileUpload ID="profilePicture" runat="server" class="hidden" accept="image/*" />
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2" for="fullName">Full Name</label>
-                            <input type="text" id="fullName"
-                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                                value="James Robert Davis" required />
+                            <label class="block text-sm font-medium text-gray-700 mb-2" for="fullName">First Name</label>
+                            <asp:TextBox ID="firstName" runat="server"
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"></asp:TextBox>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" for="fullName">Last Name</label>
+                            <asp:TextBox ID="lastName" runat="server"
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"></asp:TextBox>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2" for="email">
-                                Email
-                                Address</label>
-                            <input type="email" id="email"
-                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                                value="james.davis@deliverease.com" required />
+                                Email Address</label>
+                            <asp:TextBox ID="email" runat="server"
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"></asp:TextBox>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2" for="phone">Phone Number</label>
-                            <input type="tel" id="phone"
-                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                                value="+1 (415) 555-7890" required />
+                            <asp:TextBox ID="phone" runat="server"
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"></asp:TextBox>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2" for="workingArea">
                                 Working
-                                Area</label>
-                            <select id="workingArea"
-                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                                required>
-                                <option value="downtown">San Francisco, Downtown</option>
-                                <option value="marina">San Francisco, Marina</option>
-                                <option value="mission">San Francisco, Mission</option>
-                                <option value="richmond">San Francisco, Richmond</option>
-                            </select>
-                        </div>
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-2" for="address">
-                                Home
-                                Address</label>
-                            <input type="text" id="address"
-                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                                value="1234 Market Street, Apt 5B, San Francisco, CA 94103" required />
+                                Area Address</label>
+                            <asp:DropDownList ID="workingArea" runat="server"
+                                class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
+                                <asp:ListItem>-- Select area --</asp:ListItem>
+                                <asp:ListItem>Katargam. Surat</asp:ListItem>
+                                <asp:ListItem>Adajan, Surat</asp:ListItem>
+                                <asp:ListItem>Varachha, Surat</asp:ListItem>
+                                <asp:ListItem>Nana Varachha, Surat</asp:ListItem>
+                                <asp:ListItem>Mota Varachha, Surat</asp:ListItem>
+                                <asp:ListItem>Kamrej, Surat</asp:ListItem>
+                                <asp:ListItem>Vesu, Surat</asp:ListItem>
+                                <asp:ListItem>New Katargam, Surat</asp:ListItem>
+                            </asp:DropDownList>
                         </div>
                     </div>
                 </div>
@@ -835,10 +838,8 @@
                         class="px-6 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 !rounded-button">
                         Cancel
                     </button>
-                    <button type="submit"
-                        class="px-6 py-2 bg-primary text-white rounded hover:bg-primary/90 !rounded-button">
-                        Save Changes
-                    </button>
+                    <asp:Button ID="btnSave" runat="server" Text="Save Changes" 
+                        class="px-6 py-2 bg-primary text-white rounded hover:bg-primary/90 !rounded-button" OnClick="btnSave_Click"/>
                 </div>
             </form>
         </div>
@@ -930,91 +931,7 @@
                     hidePasswordModal();
                 }
             });
-            passwordChangeForm.addEventListener("submit", (e) => {
-                e.preventDefault();
-
-                const currentPassword = document.getElementById("currentPassword").value;
-                const newPassword = newPasswordInput.value;
-                const confirmPassword = confirmPasswordInput.value;
-                if (!currentPassword || !newPassword || !confirmPassword) {
-                    const errorModal = document.createElement("div");
-                    errorModal.className =
-                        "fixed inset-0 flex items-center justify-center z-50";
-                    errorModal.innerHTML = `
-                        <div class="bg-white rounded-lg p-6 shadow-xl max-w-sm mx-4">
-                            <div class="text-red-500 mb-4">
-                                <i class="ri-error-warning-line ri-2x"></i>
-                            </div>
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Error</h3>
-                            <p class="text-gray-600 mb-4">Please fill in all password fields.</p>
-                            <button class="w-full px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 !rounded-button">OK</button>
-                        </div>
-                    `;
-                    document.body.appendChild(errorModal);
-                    errorModal.querySelector("button").onclick = () => {
-                        errorModal.remove();
-                    };
-                    return;
-                }
-                if (!validatePassword(newPassword)) {
-                    const errorModal = document.createElement("div");
-                    errorModal.className =
-                        "fixed inset-0 flex items-center justify-center z-50";
-                    errorModal.innerHTML = `
-                        <div class="bg-white rounded-lg p-6 shadow-xl max-w-sm mx-4">
-                            <div class="text-red-500 mb-4">
-                                <i class="ri-error-warning-line ri-2x"></i>
-                            </div>
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Invalid Password</h3>
-                            <p class="text-gray-600 mb-4">Please ensure your new password meets all requirements.</p>
-                            <button class="w-full px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 !rounded-button">OK</button>
-                        </div>
-                    `;
-                    document.body.appendChild(errorModal);
-                    errorModal.querySelector("button").onclick = () => {
-                        errorModal.remove();
-                    };
-                    return;
-                }
-                if (newPassword !== confirmPassword) {
-                    const errorModal = document.createElement("div");
-                    errorModal.className =
-                        "fixed inset-0 flex items-center justify-center z-50";
-                    errorModal.innerHTML = `
-                        <div class="bg-white rounded-lg p-6 shadow-xl max-w-sm mx-4">
-                            <div class="text-red-500 mb-4">
-                                <i class="ri-error-warning-line ri-2x"></i>
-                            </div>
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">Password Mismatch</h3>
-                            <p class="text-gray-600 mb-4">New password and confirmation do not match.</p>
-                            <button class="w-full px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 !rounded-button">OK</button>
-                        </div>
-                    `;
-                    document.body.appendChild(errorModal);
-                    errorModal.querySelector("button").onclick = () => {
-                        errorModal.remove();
-                    };
-                    return;
-                }
-                const successModal = document.createElement("div");
-                successModal.className =
-                    "fixed inset-0 flex items-center justify-center z-50";
-                successModal.innerHTML = `
-                    <div class="bg-white rounded-lg p-6 shadow-xl max-w-sm mx-4">
-                        <div class="text-green-500 mb-4">
-                            <i class="ri-checkbox-circle-line ri-2x"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Success!</h3>
-                        <p class="text-gray-600 mb-4">Your password has been changed successfully.</p>
-                        <button class="w-full px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 !rounded-button">OK</button>
-                    </div>
-                `;
-                document.body.appendChild(successModal);
-                successModal.querySelector("button").onclick = () => {
-                    successModal.remove();
-                    hidePasswordModal();
-                };
-            });
+           
             const notificationSettingsBtn = document.getElementById(
                 "notificationSettingsBtn",
             );
@@ -1103,60 +1020,6 @@
                     };
                     reader.readAsDataURL(file);
                 }
-            });
-            editProfileForm.addEventListener("submit", (e) => {
-                e.preventDefault();
-                const formData = {
-                    fullName: document.getElementById("fullName").value,
-                    email: document.getElementById("email").value,
-                    phone: document.getElementById("phone").value,
-                    workingArea: document.getElementById("workingArea").value,
-                    address: document.getElementById("address").value,
-                };
-                if (
-                    !formData.fullName ||
-                    !formData.email ||
-                    !formData.phone ||
-                    !formData.workingArea ||
-                    !formData.address
-                ) {
-                    const errorModal = document.createElement("div");
-                    errorModal.className =
-                        "fixed inset-0 flex items-center justify-center z-50";
-                    errorModal.innerHTML = `
-                        <div class="bg-white rounded-lg p-6 shadow-xl max-w-sm mx-4">
-                        <div class="text-red-500 mb-4">
-                        <i class="ri-error-warning-line ri-2x"></i>
-                        </div>
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Validation Error</h3>
-                        <p class="text-gray-600 mb-4">Please fill in all required fields.</p>
-                        <button class="w-full px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 !rounded-button">OK</button>
-                        </div>
-                    `;
-                    document.body.appendChild(errorModal);
-                    errorModal.querySelector("button").onclick = () => {
-                        errorModal.remove();
-                    };
-                    return;
-                }
-                const successModal = document.createElement("div");
-                successModal.className =
-                    "fixed inset-0 flex items-center justify-center z-50";
-                successModal.innerHTML = `
-                    <div class="bg-white rounded-lg p-6 shadow-xl max-w-sm mx-4">
-                    <div class="text-green-500 mb-4">
-                    <i class="ri-checkbox-circle-line ri-2x"></i>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Success!</h3>
-                    <p class="text-gray-600 mb-4">Your profile has been updated successfully.</p>
-                    <button class="w-full px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 !rounded-button">OK</button>
-                    </div>
-                 `;
-                document.body.appendChild(successModal);
-                successModal.querySelector("button").onclick = () => {
-                    successModal.remove();
-                    hideModal();
-                };
             });
         });
     </script>

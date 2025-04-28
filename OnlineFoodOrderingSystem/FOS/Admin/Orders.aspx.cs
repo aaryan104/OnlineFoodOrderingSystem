@@ -57,10 +57,18 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
         public void fungrid(string status = "All")
         {
             funcon();
-            String qry = "SELECT O.OrderId, U.FirstName, U.LastName, U.Email, O.OrderDate, O.TotalAmount AS Amount, O.OrderStatus AS Status " +
-                         "FROM dbo.Orders O " +
-                         "JOIN dbo.Users U " +
-                         "ON O.UserId = U.UserId";
+            String qry = @"SELECT O.OrderId, U.FirstName, U.LastName, U.Email, O.OrderDate, O.TotalAmount AS Amount, O.OrderStatus AS Status 
+                            FROM dbo.Orders O JOIN dbo.Users U ON O.UserId = U.UserId 
+                            ORDER BY 
+                            CASE 
+                                WHEN o.OrderStatus = 'Pending' THEN 1
+                                WHEN o.OrderStatus = 'Delivered' THEN 2
+                                WHEN o.OrderStatus = 'Preparing' THEN 3
+                                WHEN o.OrderStatus = 'Out for Delivery' THEN 4
+                                WHEN o.OrderStatus = 'Delayed' THEN 5
+                                WHEN o.OrderStatus = 'Cancelled' THEN 6
+                                ELSE 7
+                            END, o.OrderDate DESC";
 
             if (status != "All")
             {
@@ -145,12 +153,32 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
                 }
                 conn.Close();
 
+                LoadOrderProducts(orderId);
+
                 orderDetailsModal.Style["display"] = "block";
             }
             catch (Exception ex)
             {
                 msg.Text = ex.Message;
             }
+        }
+
+        private void LoadOrderProducts(string orderId)
+        {
+            string qry = @"SELECT M.Name AS ProductName, OD.Quantity, OD.Subtotal AS Price
+                         FROM dbo.OrderDetails OD
+                         JOIN dbo.MenuItems M ON OD.ItemId = M.ItemId
+                         WHERE OD.OrderId = @OrderId";
+
+            cmd = new SqlCommand(qry, conn);
+            cmd.Parameters.AddWithValue("@OrderId", orderId);
+
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+
+            rptProducts.DataSource = dt;
+            rptProducts.DataBind();
         }
     }
 }

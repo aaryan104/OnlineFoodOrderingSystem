@@ -59,7 +59,7 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
             {
                 funcon();
 
-                string qry = "SELECT DeliveryAgentId FROM DeliveryAgents WHERE Email=@eml AND PasswordHash=@pwd";
+                string qry = "SELECT DeliveryAgentId, FirstName FROM DeliveryAgents WHERE Email=@eml AND PasswordHash=@pwd";
                 cmd = new SqlCommand(qry, conn);
                 cmd.Parameters.AddWithValue("eml", email);
                 cmd.Parameters.AddWithValue("pwd", pass);
@@ -68,6 +68,7 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
                 if (result != null)
                 {
                     Session["DeliveryAgentId"] = result.ToString();
+                    Session["FirstName"] = result.ToString();
                     Response.Redirect("~/FOS/DeliveryAgent/DeliveryAgentDashboard.aspx");
                 }
                 else

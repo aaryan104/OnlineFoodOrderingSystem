@@ -24,6 +24,16 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
                 fungrid();
                 fetchOrder();
             }
+            else
+            {
+                string eventTarget = Request["__EVENTTARGET"];
+                string eventArgument = Request["__EVENTARGUMENT"];
+
+                if (eventTarget == "FilterOrders")
+                {
+                    fungrid(); // Filter orders based on the selected status
+                }
+            }
         }
 
         public void funcon()
@@ -46,16 +56,35 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
         public void fungrid()
         {
             funcon();
-            String qry = "SELECT O.OrderId, U.FirstName, U.LastName, U.Email, O.OrderDate, O.TotalAmount AS Amount, O.OrderStatus AS Status " +
-                "FROM  dbo.Orders O " +
-                "JOIN dbo.Users U " +
-                "ON O.UserId = U.UserId;";
+            String qry = @"SELECT O.OrderId, U.FirstName, U.LastName, U.Email, O.OrderDate, O.TotalAmount AS Amount, O.OrderStatus AS Status 
+                            FROM dbo.Orders O JOIN dbo.Users U ON O.UserId = U.UserId 
+                            ORDER BY 
+                            CASE 
+                                WHEN o.OrderStatus = 'Pending' THEN 1
+                                WHEN o.OrderStatus = 'Delivered' THEN 2
+                                WHEN o.OrderStatus = 'Preparing' THEN 3
+                                WHEN o.OrderStatus = 'Out for Delivery' THEN 4
+                                WHEN o.OrderStatus = 'Delayed' THEN 5
+                                WHEN o.OrderStatus = 'Cancelled' THEN 6
+                                ELSE 7
+                            END, o.OrderDate DESC";
+
             cmd = new SqlCommand(qry, conn);
             sda = new SqlDataAdapter(cmd);
             DataSet ds = new DataSet();
             sda.Fill(ds);
-            gvDashboard.DataSource = ds;
-            gvDashboard.DataBind();
+
+            if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+            {
+                gvDashboard.DataSource = ds;
+                gvDashboard.DataBind();
+            }
+            else
+            {
+                gvDashboard.DataSource = null;
+                gvDashboard.DataBind();
+            }
+
             conn.Close();
         }
 
@@ -100,6 +129,62 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
             cmd = new SqlCommand(qry7, conn);
             int rowCount7 = (int)cmd.ExecuteScalar();
             lblCompleted.Text = rowCount7.ToString();
+        }
+
+        protected void btnShow_Click(object sender, EventArgs e)
+        {
+            LinkButton btnShow = (LinkButton)sender;
+            string orderId = btnShow.CommandArgument;
+
+            try
+            {
+                funcon();
+                string qry = "SELECT O.OrderId, U.FirstName, U.LastName, U.Email, O.OrderDate, O.TotalAmount AS Amount, O.OrderStatus AS Status " +
+                             "FROM dbo.Orders O " +
+                             "JOIN dbo.Users U ON O.UserId = U.UserId " +
+                             "WHERE O.OrderId = @OrderId";
+                cmd = new SqlCommand(qry, conn);
+                cmd.Parameters.AddWithValue("@OrderId", orderId);
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                if (dr.Read())
+                {
+                    lblFirstname.Text = dr["FirstName"].ToString();
+                    lblLastname.Text = dr["LastName"].ToString();
+                    lblEmail.Text = dr["Email"].ToString();
+                    lblId.Text = dr["OrderId"].ToString();
+                    lblDate.Text = Convert.ToDateTime(dr["OrderDate"]).ToString("MMM dd, yyyy HH:mm");
+                    lblStatus.Text = dr["Status"].ToString();
+                    lblAmount.Text = dr["Amount"].ToString();
+                }
+                conn.Close();
+
+                LoadOrderProducts(orderId);
+
+                orderDetailsModal.Style["display"] = "block";
+            }
+            catch (Exception ex)
+            {
+                msg.Text = ex.Message;
+            }
+        }
+
+        private void LoadOrderProducts(string orderId)
+        {
+            string qry = @"SELECT M.Name AS ProductName, OD.Quantity, OD.Subtotal AS Price
+                         FROM dbo.OrderDetails OD
+                         JOIN dbo.MenuItems M ON OD.ItemId = M.ItemId
+                         WHERE OD.OrderId = @OrderId";
+
+            cmd = new SqlCommand(qry, conn);
+            cmd.Parameters.AddWithValue("@OrderId", orderId);
+
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+
+            rptProducts.DataSource = dt;
+            rptProducts.DataBind();
         }
     }
 }

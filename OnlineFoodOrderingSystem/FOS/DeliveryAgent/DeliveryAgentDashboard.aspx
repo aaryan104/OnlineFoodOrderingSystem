@@ -140,7 +140,7 @@
                                 <i class="ri-user-line ri-lg text-gray-600"></i>
                             </div>
                             <span class="text-sm font-medium text-gray-700 hidden md:block">
-                                %Name%
+                                <asp:Label ID="txtName" runat="server" Text="***"></asp:Label>
                             </span>
                             <i class="ri-arrow-down-s-line ml-1 hidden md:block text-gray-500"></i>
                         </div>

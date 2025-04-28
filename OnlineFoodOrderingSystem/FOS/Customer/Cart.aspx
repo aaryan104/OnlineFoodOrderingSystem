@@ -195,6 +195,10 @@
             color: white;
         }
 
+        .coupon-applied {
+            color: green;
+            font-weight: bold;
+        }
         
         @media (max-width: 768px) {
             .cart-content {
@@ -204,81 +208,113 @@
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
-    <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <span class="text-2xl font-['Pacifico'] text-primary">
-                    <img src="../../Asset/Library/img/logo.jpg" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14" alt="Logo" /></span>
+    <form id="form1" runat="server">
+        <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
+            <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl font-['Pacifico'] text-primary">
+                        <img src="../../Asset/Library/img/logo.jpg" class="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14" alt="Logo" /></span>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div>
+                        <a href="../Index.aspx"><i class="ri-logout-box-line" style="font-size: 20px; cursor: pointer" title="Logout"></i></a>
+                    </div>
+                    <div class="relative cursor-pointer" id="cartButton">
+                        <i class="ri-shopping-cart-line text-xl"></i>
+                        <span class="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" id="cartCount">0</span>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer">
+                        <a href="UserProfile.aspx"><i class="ri-user-line"></i></a>
+                    </div>
+                </div>
             </div>
-            <div class="flex items-center gap-6">
-                <div>
-                    <a href="../Index.aspx"><i class="ri-logout-box-line" style="font-size: 20px; cursor: pointer" title="Logout"></i></a>
-                </div>
-                <div class="relative cursor-pointer" id="cartButton">
-                    <i class="ri-shopping-cart-line text-xl"></i>
-                    <span class="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" id="cartCount">0</span>
-                </div>
-                <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer">
-                    <a href="UserProfile.aspx"><i class="ri-user-line"></i></a>
-                </div>
-            </div>
-        </div>
-    </header>
+        </header>
 
-    <div class="cart-container pt-24">
-        <div class="cart-header">
-            <h1>Your Shopping Cart</h1>
-            <p>Review and checkout your items</p>
-        </div>
+        <div class="cart-container pt-24">
+            <div class="cart-header">
+                <h1>Your Shopping Cart</h1>
+                <p>Review and checkout your items</p>
+            </div>
         
-        <div class="cart-content">
-            <div class="product-section" id="cartItemsContainer">
-                <!-- Cart items will be loaded here -->
-                <div class="text-gray-500 text-center py-10">
-                    Loading your cart...
+            <div class="cart-content">
+                <div class="product-section" id="cartItemsContainer">
+                    <!-- Cart items will be loaded here -->
+                    <div class="text-gray-500 text-center py-10">
+                        Loading your cart...
+                    </div>
                 </div>
-            </div>
+
+                <asp:HiddenField ID="hfCartData" runat="server" />
             
-            <div class="cart-summary">
-                <h2 class="summary-title">Order Summary</h2>
+                <div class="cart-summary">
+                    <h2 class="summary-title">Order Summary</h2>
                 
-                <div class="summary-row">
-                    <span>Subtotal (<span id="itemCount">0</span> items)</span>
-                    <span id="subtotal">₹0</span>
-                </div>
+                    <div class="summary-row">
+                        <span>Subtotal (<span id="itemCount">0</span> items)</span>
+                        <span id="subtotal">₹0</span>
+                    </div>
                 
-                <div class="summary-row">
-                    <span>Delivery Fee</span>
-                    <span id="deliveryFee">FREE</span>
-                </div>
+                    <div class="summary-row" id="discountRow" style="display:none;">
+                        <span>Discount (<span id="couponCodeDisplay"></span>)</span>
+                        <span id="discountAmount">-₹0</span>
+                    </div>
                 
-                <div class="summary-row">
-                    <span>Tax (5%)</span>
-                    <span id="tax">₹0</span>
-                </div>
+                    <div class="summary-row">
+                        <span>Delivery Fee</span>
+                        <span id="deliveryFee">FREE</span>
+                    </div>
                 
-                <div class="summary-row total-row">
-                    <span>Total</span>
-                    <span id="total">₹0</span>
-                </div>
+                    <div class="summary-row">
+                        <span>Tax (5%)</span>
+                        <span id="tax">₹0</span>
+                    </div>
+                
+                    <div class="summary-row total-row">
+                        <span>Total</span>
+                        <span id="total">₹0</span>
+                    </div>
 
-                <div class="button-container">
-                    <a href="scratch.aspx" class="continue-btn">Scratch Coupon</a>
-                    <a href="Home.aspx" class="continue-btn">Continue Shopping</a>
-                </div>
-
+                    <div class="button-container">
+                        <a href="scratch.aspx" class="continue-btn">Scratch Coupon</a>
+                        <a href="Home.aspx" class="continue-btn">Continue Shopping</a>
+                    </div>
                 
-                <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+                
+                    <asp:Button ID="btnProceedToCheckout" runat="server" Text="Proceed to Checkout" CssClass="checkout-btn" OnClick="btnProceedToCheckout_Click"  />
+                </div>
             </div>
         </div>
-    </div>
-
+    </form>
     <script>
+            document.getElementById('<%= btnProceedToCheckout.ClientID %>').addEventListener('click', function () {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+            if (cart.length === 0) {
+                alert('Cart is empty!');
+                return;
+            }
+
+            // Hidden field me cart ka JSON set karo
+            document.getElementById('<%= hfCartData.ClientID %>').value = JSON.stringify(cart);
+
+            // No need to call form.submit() manually
+            // ASP.NET button apne aap form post karega
+        });
+
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let appliedCoupon = JSON.parse(localStorage.getItem('appliedCoupon')) || null;
 
         updateCartCount();
-
         displayCartItems();
+
+        // Check for coupon in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const couponCode = urlParams.get('code');
+        const discountPercentage = urlParams.get('discount');
+
+        if (couponCode && discountPercentage) {
+            applyCoupon(couponCode, parseFloat(discountPercentage));
+        }
 
         function updateCartCount() {
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -331,6 +367,11 @@
 
             cartItemsContainer.innerHTML = itemsHTML;
             updateOrderSummary(subtotal);
+
+            // Apply coupon if exists
+            if (appliedCoupon) {
+                applyCoupon(appliedCoupon.code, appliedCoupon.discount);
+            }
         }
 
         function updateQuantity(itemId, change) {
@@ -345,12 +386,12 @@
 
                 saveCart();
                 updateCartCount();
-                displayCartItems(); 
+                displayCartItems();
             }
         }
 
         function updateQuantityInput(itemId) {
-            const input = document.getElementById(quantity-`${itemId}`);
+            const input = document.getElementById('quantity-' + itemId);
             const newQuantity = parseInt(input.value) || 1;
 
             const item = cart.find(item => item.id == itemId);
@@ -366,20 +407,59 @@
             cart = cart.filter(item => item.id != itemId);
             saveCart();
             updateCartCount();
-            displayCartItems(); 
+            displayCartItems();
         }
 
         function updateOrderSummary(subtotal) {
             const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-            const tax = subtotal * 0.05; 
-            const total = subtotal + tax;
+
+            let discount = 0;
+
+            if (appliedCoupon) {
+                discount = (subtotal * appliedCoupon.discount) / 100;
+            }
+
+            let deliveryFee = 20; // Fixed ₹20 Delivery Fee
+
+            // Subtotal after applying discount
+            const subtotalAfterDiscount = subtotal - discount;
+
+            const subtotalPlusDelivery = subtotalAfterDiscount + deliveryFee;
+
+            const tax = subtotalPlusDelivery * 0.05; // 5% tax on subtotal + delivery
+
+            const total = subtotalPlusDelivery + tax;
 
             document.getElementById('itemCount').textContent = itemCount;
-            document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+            document.getElementById('subtotal').textContent = `₹${subtotalAfterDiscount.toFixed(2)}`;
+            document.getElementById('deliveryFee').textContent = `₹${deliveryFee.toFixed(2)}`;
             document.getElementById('tax').textContent = `₹${tax.toFixed(2)}`;
             document.getElementById('total').textContent = `₹${total.toFixed(2)}`;
 
             document.getElementById('checkoutBtn').disabled = itemCount === 0;
+        }
+
+
+        function applyCoupon(code, discountPercentage) {
+            const subtotal = parseFloat(document.getElementById('subtotal').textContent.replace('₹', ''));
+            const discount = (subtotal * discountPercentage) / 100;
+
+            appliedCoupon = {
+                code: code,
+                discount: discountPercentage,
+                amount: discount
+            };
+
+            localStorage.setItem('appliedCoupon', JSON.stringify(appliedCoupon));
+
+            document.getElementById('discountRow').style.display = 'flex';
+            document.getElementById('couponCodeDisplay').textContent = code;
+            document.getElementById('discountAmount').textContent = `-₹${ discount.toFixed(2) }`;
+            document.getElementById('couponCodeDisplay').className = 'coupon-applied';
+
+            updateOrderSummary(subtotal);
+
+            window.history.replaceState({}, document.title, window.location.pathname);
         }
 
         function saveCart() {
@@ -388,7 +468,16 @@
 
         document.getElementById('checkoutBtn').addEventListener('click', function () {
             if (cart.length > 0) {
-                alert('Proceeding to checkout!');
+                const checkoutData = {
+                    items: cart,
+                    coupon: appliedCoupon,
+                    subtotal: parseFloat(document.getElementById('subtotal').textContent.replace('₹', '')),
+                    tax: parseFloat(document.getElementById('tax').textContent.replace('₹', '')),
+                    total: parseFloat(document.getElementById('total').textContent.replace('₹', ''))
+                };
+
+                console.log('Proceeding to checkout with:', checkoutData);
+                alert('Proceeding to checkout with total: ₹' + checkoutData.total.toFixed(2));
             }
         });
     </script>

@@ -7,29 +7,29 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
+namespace OnlineFoodOrderingSystem.FOS.Customer
 {
 
 
-    public partial class LiveTracking
+    public partial class trackOrder
     {
 
         /// <summary>
-        /// form1 control.
+        /// msg control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.Label msg;
 
         /// <summary>
-        /// lblTracking control.
+        /// rptOrders control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTracking;
+        protected global::System.Web.UI.WebControls.Repeater rptOrders;
     }
 }

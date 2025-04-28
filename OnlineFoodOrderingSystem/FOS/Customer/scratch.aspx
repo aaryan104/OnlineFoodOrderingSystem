@@ -173,7 +173,7 @@
 
             <div id="resultSection" class="hidden mt-8 animate-fadeIn">
                 <div class="rounded-xl p-6 mb-6 border" id="resultContent">
-
+                    <!-- Content will be filled dynamically -->
                 </div>
 
                 <div class="text-center">
@@ -197,10 +197,12 @@
             let discountPercentage = 0;
             let couponRevealed = false;
 
+            // Track total plays and wins
             let totalScratches = parseInt(localStorage.getItem('scratchCount') || '0');
             let totalWins = parseInt(localStorage.getItem('winCount') || '0');
             let sessionAttempts = parseInt(localStorage.getItem('sessionAttempts') || '0');
 
+            // Initialize the game
             initGame();
 
             function initGame() {
@@ -233,17 +235,19 @@
                 localStorage.setItem('scratchCount', totalScratches);
                 localStorage.setItem('sessionAttempts', sessionAttempts);
 
+                // Ensure at least 2 wins in 10 attempts
                 if (sessionAttempts % 10 === 0 && totalWins < 2) {
                     sessionAttempts = 0;
                     localStorage.setItem('sessionAttempts', '0');
                     return { hasWon: true, discount: getRandomDiscount() };
                 }
 
+                // Normal probability (20% chance to win)
                 const random = Math.random() * 100;
                 let hasWon = false;
                 let discount = 0;
 
-                if (random < 20) { 
+                if (random < 20) { // 20% chance to win
                     hasWon = true;
                     discount = getRandomDiscount();
                 }
@@ -272,8 +276,10 @@
             }
 
             function initScratchSurface() {
+                // Clear canvas
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+                // Draw scratchable surface
                 const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
                 gradient.addColorStop(0, "#FFD700");
                 gradient.addColorStop(0.5, "#FFA500");
@@ -281,6 +287,7 @@
                 ctx.fillStyle = gradient;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+                // Add some sparkles
                 ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
                 for (let i = 0; i < 50; i++) {
                     const size = 1 + Math.random() * 3;
@@ -291,6 +298,7 @@
                     ctx.fill();
                 }
 
+                // Add text
                 ctx.font = "bold 18px 'Poppins'";
                 ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
                 ctx.textAlign = "center";
@@ -302,6 +310,7 @@
             function scratch(e) {
                 if (!isDrawing || couponRevealed) return;
 
+                // Get position
                 let x, y;
                 if (e.type.includes('touch')) {
                     const touch = e.touches[0] || e.changedTouches[0];
@@ -314,6 +323,7 @@
                     y = e.clientY - rect.top;
                 }
 
+                // Draw scratch effect
                 ctx.globalCompositeOperation = 'destination-out';
                 ctx.beginPath();
                 const size = 15 + Math.random() * 10;
@@ -361,10 +371,12 @@
                         </div>
                     `;
 
+                    // Create confetti effect
                     for (let i = 0; i < 30; i++) {
                         setTimeout(() => createConfetti(), i * 100);
                     }
 
+                    // Copy button functionality
                     document.getElementById('copyButton').addEventListener('click', () => {
                         navigator.clipboard.writeText(selectedCoupon);
                         const button = document.getElementById('copyButton');
@@ -389,7 +401,7 @@
                 const confetti = document.createElement('div');
                 confetti.className = 'confetti';
                 confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.backgroundColor = hsl(`${Math.random() * 60 + 20}, 100%, 50%`);
+                confetti.style.backgroundColor = `hsl(${Math.random() * 60 + 20}, 100%, 50%)`;
                 confetti.style.width = (Math.random() * 10 + 5) + 'px';
                 confetti.style.height = (Math.random() * 5 + 3) + 'px';
                 confetti.style.borderRadius = '2px';
@@ -399,11 +411,13 @@
                 setTimeout(() => confetti.remove(), 2000);
             }
 
+            // Event listeners for mouse
             canvas.addEventListener('mousedown', () => isDrawing = true);
             canvas.addEventListener('mousemove', scratch);
             canvas.addEventListener('mouseup', () => isDrawing = false);
             canvas.addEventListener('mouseleave', () => isDrawing = false);
 
+            // Event listeners for touch
             canvas.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 isDrawing = true;
@@ -415,46 +429,49 @@
             });
             canvas.addEventListener('touchend', () => isDrawing = false);
 
+            // Instant reveal button
             document.getElementById('revealAll').addEventListener('click', () => {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 revealResult();
             });
 
+            // Redeem button - always visible after reveal
             document.getElementById('redeemButton').addEventListener('click', () => {
                 if (discountPercentage > 0) {
-                    const redeemUrl = Cart.aspx ? code = `${encodeURIComponent(selectedCoupon)}&discount=${discountPercentage}`;
-                    window.location.href = redeemUrl;
-                 } else {
-                    window.location.href = "Cart.aspx";
-                }
+                    const redeemUrl = `Cart.aspx?code=${encodeURIComponent(selectedCoupon)}&discount=${discountPercentage}`;
+                window.location.href = redeemUrl;
+            } else {
+                window.location.href = "Cart.aspx";
+            }
             });
 
-            let timeLeft = 300;
-            const timerElement = document.getElementById('timer');
-            const remainingTimeElement = document.getElementById('remainingTime');
+        // Timer functionality
+        let timeLeft = 300; // 5 minutes in seconds
+        const timerElement = document.getElementById('timer');
+        const remainingTimeElement = document.getElementById('remainingTime');
 
-            const updateTimerDisplay = () => {
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                const timeString = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                timerElement.textContent = timeString;
-                remainingTimeElement.textContent = timeString;
+        const updateTimerDisplay = () => {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const timeString = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        timerElement.textContent = timeString;
+        remainingTimeElement.textContent = timeString;
             };
 
-            updateTimerDisplay();
+        updateTimerDisplay();
 
-            const timer = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay();
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    revealResult();
-                }
-                if (timeLeft <= 60) {
-                    timerElement.classList.add('text-red-500', 'animate-pulse');
-                    remainingTimeElement.classList.add('text-red-500');
-                }
-            }, 1000);
+        const timer = setInterval(() => {
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                revealResult();
+            }
+            if (timeLeft <= 60) {
+                timerElement.classList.add('text-red-500', 'animate-pulse');
+                remainingTimeElement.classList.add('text-red-500');
+            }
+        }, 1000);
         });
     </script>
 </body>

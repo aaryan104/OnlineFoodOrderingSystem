@@ -368,6 +368,7 @@
                             <div class="space-y-2">
                                 <p class="text-sm text-gray-700"><span class="text-gray-500">Order ID:</span> <asp:Label ID="lblId" runat="server" Text="***"></asp:Label></p>
                                 <p class="text-sm text-gray-700"><span class="text-gray-500">Date:</span> <asp:Label ID="lblDate" runat="server" Text="***"></asp:Label></p>
+                                <p class="text-sm text-gray-700"><span class="text-gray-500">Amount:</span> <asp:Label ID="lblAmount" runat="server" Text="***"></asp:Label></p>
                                 <p class="text-sm text-gray-700"><span class="text-gray-500">Status:</span> 
                                     <span class="px-2 py-1 text-xs rounded-full bg-purple-100 text-purple-800"><asp:Label ID="lblStatus" runat="server" Text="***"></asp:Label></span>
                                 </p>
@@ -376,28 +377,30 @@
                         <div class="col-span-2">
                             <h4 class="text-sm font-medium text-gray-900 mb-4">Products</h4>
                             <div class="border border-gray-200 rounded-lg overflow-hidden">
-                                <table class="w-full">
-                                    <thead>
-                                        <tr class="bg-gray-50">
-                                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-900">Product</th>
-                                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-900">Quantity</th>
-                                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-900">Price</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                <asp:Repeater ID="rptProducts" runat="server">
+                                    <HeaderTemplate>
+                                        <table class="w-full">
+                                            <thead>
+                                                <tr class="bg-gray-50">
+                                                    <th class="py-3 px-4 text-left text-sm font-medium text-gray-900">Product</th>
+                                                    <th class="py-3 px-4 text-left text-sm font-medium text-gray-900">Quantity</th>
+                                                    <th class="py-3 px-4 text-left text-sm font-medium text-gray-900">Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
                                         <tr class="border-b border-gray-200">
-                                            <td class="py-3 px-4 text-sm text-gray-700"><asp:Label ID="lblProduct" runat="server" Text="***"></asp:Label></td>
-                                            <td class="py-3 px-4 text-sm text-gray-700"><asp:Label ID="lblQty" runat="server" Text="***"></asp:Label></td>
-                                            <td class="py-3 px-4 text-sm text-gray-700"><asp:Label ID="lblPrice" runat="server" Text="***"></asp:Label></td>
+                                            <td class="py-3 px-4 text-sm text-gray-700"><%# Eval("ProductName") %></td>
+                                            <td class="py-3 px-4 text-sm text-gray-700"><%# Eval("Quantity") %></td>
+                                            <td class="py-3 px-4 text-sm text-gray-700"><%# Eval("Price") %></td>
                                         </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr class="bg-gray-50">
-                                            <td colspan="2" class="py-3 px-4 text-sm font-medium text-gray-900">Total</td>
-                                            <td class="py-3 px-4 text-sm font-medium text-gray-900"><asp:Label ID="lblAmount" runat="server" Text="***"></asp:Label></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                    </ItemTemplate>
+                                    <FooterTemplate>
+                                            </tbody>
+                                        </table>
+                                    </FooterTemplate>
+                                </asp:Repeater>
                             </div>
                         </div>
                     </div>

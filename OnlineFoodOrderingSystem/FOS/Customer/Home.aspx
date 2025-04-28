@@ -340,7 +340,7 @@
            document.getElementById("modalTitle").textContent = currentItem.name;
            document.getElementById("modalImage").src = currentItem.image;
            document.getElementById("modalDescription").textContent = currentItem.description;
-           document.getElementById("modalPrice").textContent = `₹${ currentItem.price }`;
+           document.getElementById("modalPrice").textContent = `₹${currentItem.price}`;
            document.getElementById("modalQuantity").textContent = currentQuantity;
 
            const modalContent = document.querySelector("#foodModal .p-6");
@@ -390,7 +390,7 @@
            closeModal();
 
            // Show success message
-           alert(`${ currentItem.name } added to cart!`);   
+           alert(`${currentItem.name} added to cart!`);
        }
 
        function addToCartDirect(itemId, name, price, image) {
@@ -413,7 +413,7 @@
            updateCartCount();
 
            // Show success message
-           alert(`${ name } added to cart!`);
+           alert(`${name} added to cart!`);
        }
 
        function updateCartCount() {
@@ -463,7 +463,7 @@
            });
 
            cartItemsContainer.innerHTML = itemsHTML;
-           subtotalElement.textContent = `₹${ subtotal.toFixed(2) }`;
+           subtotalElement.textContent = `₹${subtotal.toFixed(2)}`;
        }
 
        function updateCartItemQuantity(itemId, change, event) {
@@ -486,6 +486,6 @@
        function saveCart() {
            localStorage.setItem('cart', JSON.stringify(cart));
        }
-    </script>
+   </script>
 </body>
 </html>

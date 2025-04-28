@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 
 namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
 {
@@ -16,6 +17,7 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
         SqlCommand cmd;
         SqlDataAdapter sda;
         public static int Id;
+        public static string IDs = string.Empty;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -23,7 +25,9 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
             {
                 if (Session["DeliveryAgentId"] != null)
                 {
+                    IDs = Session["DeliveryAgentId"].ToString();
                     LoadAssignedOrders();
+                    fetchUsername();
                     fetchOrder();
                 }
                 else
@@ -52,6 +56,20 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
             catch (Exception ex)
             {
                 Response.Write(ex.ToString());
+            }
+        }
+
+        public void fetchUsername()
+        {
+            funcon();   
+            string qry = "SELECT FirstName FROM DeliveryAgents WHERE DeliveryAgentId=@id";
+            SqlCommand cmd = new SqlCommand(qry, conn);
+            cmd.Parameters.AddWithValue("@id", IDs);
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            if (dr.Read())
+            {
+                txtName.Text = dr["FirstName"].ToString();
             }
         }
 
