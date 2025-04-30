@@ -22,8 +22,10 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
         {
             if (!IsPostBack)
             {
-                fungrid(); // Load all orders by default
-                fetchOrder(); // Fetch order counts
+                ViewState["CurrentFilter"] = "All"; // Default filter
+                fungrid();
+                fetchOrder();
+                LoadAgents();
             }
             else
             {
@@ -32,8 +34,16 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
 
                 if (eventTarget == "FilterOrders")
                 {
-                    fungrid(eventArgument); // Filter orders based on the selected status
+                    ViewState["CurrentFilter"] = eventArgument;
+                    fungrid(eventArgument);
                 }
+            }
+
+            if (Request["__EVENTTARGET"] == "AssignAgentPostback")
+            {
+                string orderId = hiddenOrderId.Value;
+                string agentId = hiddenAgentId.Value;
+                AssignOrderToAgent(orderId, agentId);
             }
         }
 
@@ -58,21 +68,25 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
         {
             funcon();
             String qry = @"SELECT O.OrderId, U.FirstName, U.LastName, U.Email, O.OrderDate, O.TotalAmount AS Amount, O.OrderStatus AS Status 
-                            FROM dbo.Orders O JOIN dbo.Users U ON O.UserId = U.UserId 
-                            ORDER BY 
-                            CASE 
-                                WHEN o.OrderStatus = 'Pending' THEN 1
-                                WHEN o.OrderStatus = 'Delivered' THEN 2
-                                WHEN o.OrderStatus = 'Preparing' THEN 3
-                                WHEN o.OrderStatus = 'Out for Delivery' THEN 4
-                                WHEN o.OrderStatus = 'Delayed' THEN 5
-                                WHEN o.OrderStatus = 'Cancelled' THEN 6
-                                ELSE 7
-                            END, o.OrderDate DESC";
+                    FROM dbo.Orders O JOIN dbo.Users U ON O.UserId = U.UserId 
+                    {0}
+                    ORDER BY 
+                    CASE 
+                        WHEN O.OrderStatus = 'Pending' THEN 1
+                        WHEN O.OrderStatus = 'Preparing' THEN 2
+                        WHEN O.OrderStatus = 'Out for Delivery' THEN 3
+                        WHEN O.OrderStatus = 'Delivered' THEN 4
+                        WHEN O.OrderStatus = 'Cancelled' THEN 5
+                        ELSE 6
+                    END, O.OrderDate DESC";
 
             if (status != "All")
             {
-                qry += " WHERE O.OrderStatus = @Status";
+                qry = string.Format(qry, "WHERE O.OrderStatus = @Status");
+            }
+            else
+            {
+                qry = string.Format(qry, "");
             }
 
             cmd = new SqlCommand(qry, conn);
@@ -90,11 +104,13 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
             {
                 gvDashboard.DataSource = ds;
                 gvDashboard.DataBind();
+                lblNoData.Visible = false;
             }
             else
             {
                 gvDashboard.DataSource = null;
                 gvDashboard.DataBind();
+                lblNoData.Visible = true;
             }
 
             conn.Close();
@@ -180,5 +196,58 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
             rptProducts.DataSource = dt;
             rptProducts.DataBind();
         }
+
+        private void LoadAgents()
+        {
+            funcon();
+            string qry = @"
+                SELECT DA.DeliveryAgentId, DA.FirstName, DA.LastName,
+                       CASE WHEN EXISTS (
+                           SELECT 1 FROM OrderAssignments OA
+                           WHERE OA.DeliveryAgentId = DA.DeliveryAgentId
+                           AND OA.AssignmentStatus='Assigned'
+                       ) THEN 1 ELSE 0 END AS HasOrder
+                FROM DeliveryAgents DA";
+
+            SqlCommand cmd = new SqlCommand(qry, conn);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+            rptAgents.DataSource = dt;
+            rptAgents.DataBind();
+        }
+
+        public void AssignOrderToAgent(string orderId, string agentId)
+        {
+            if (string.IsNullOrEmpty(orderId))
+            {
+                msg.Text = "Please select exactly one order.";
+                return;
+            }
+
+            try
+            {
+                funcon();
+                string insertQry = @"INSERT INTO OrderAssignments (OrderId, DeliveryAgentId, AssignmentStatus, AssignedAt) 
+                             VALUES (@OrderId, @AgentId, 'Assigned', GETDATE())";
+                SqlCommand cmdInsert = new SqlCommand(insertQry, conn);
+                cmdInsert.Parameters.AddWithValue("@OrderId", orderId);
+                cmdInsert.Parameters.AddWithValue("@AgentId", agentId);
+                cmdInsert.ExecuteNonQuery();
+
+                SqlCommand cmdUpdate = new SqlCommand("UPDATE Orders SET OrderStatus='Preparing' WHERE OrderId=@OrderId", conn);
+                cmdUpdate.Parameters.AddWithValue("@OrderId", orderId);
+                cmdUpdate.ExecuteNonQuery();
+
+                msg.ForeColor = System.Drawing.Color.Green;
+                msg.Text = "Order assigned successfully.";
+                fungrid();
+            }
+            catch (Exception ex)
+            {
+                msg.Text = "Error: " + ex.Message;
+            }
+        }
+
     }
 }

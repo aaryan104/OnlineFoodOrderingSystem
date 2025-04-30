@@ -55,6 +55,7 @@
 
 <body class="bg-gray-50 min-h-screen">
     <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" />
         <asp:HiddenField ID="hfSubtotal" runat="server" />
         <asp:HiddenField ID="hfTax" runat="server" />
         <asp:HiddenField ID="hfDeliveryFee" runat="server" />
@@ -88,7 +89,7 @@
                                 <span class="font-medium">Google Pay</span>
                             </div>
                         </label>
-                        <div id="gpayDetails" class="hidden mt-4 space-y-4">
+                        <div id="gpayDetails" class="mt-4 space-y-4" style="display: none;">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Google Pay ID</label>
                                 <input type="text"
@@ -110,7 +111,7 @@
                                 <span class="font-medium">Apple Pay</span>
                             </div>
                         </label>
-                        <div id="applePayDetails" class="hidden mt-4 space-y-4">
+                        <div id="applePayDetails" class="mt-4 space-y-4" style="display: none;">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Apple ID</label>
                                 <input type="text"
@@ -198,9 +199,11 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col space-y-4">
-                <asp:Button ID="btnPay" runat="server" Text="Pay Now" 
-                    CssClass="w-full bg-primary text-white font-medium py-4 px-6 rounded-button hover:bg-primary/90 transition-colors" OnClick="btnPay_Click"/>
+            <div class="flex flex-col space-y-4"> 
+                <asp:Button ID="btnPay" runat="server"
+                    Text="Pay Now"
+                    CssClass="bg-primary text-white py-3 px-6 rounded-lg hover:bg-yellow-400 transition-colors font-semibold"
+                    OnClick="btnPay_Click" />
                 <button
                     class="w-full bg-gray-100 text-gray-700 font-medium py-4 px-6 rounded-button hover:bg-gray-200 transition-colors cursor-pointer">
                     Cancel
@@ -292,32 +295,33 @@
         cvvHelp.addEventListener("mouseleave", () => {
             cvvTooltip.style.display = "none";
         });
-        const payButton = document.getElementById("payButton");
+
+        <%--const payButton = document.getElementById('<%= btnPay.ClientID %>');
         const successModal = document.getElementById("successModal");
-        payButton.addEventListener("click", () => {
+
+        payButton.addEventListener("click", function (e) {
+            e.preventDefault(); // Stop default refresh
             payButton.disabled = true;
-            payButton.innerHTML =
-                '<i class="ri-loader-4-line animate-spin mr-2"></i> Processing...';
-            setTimeout(() => {
-                successModal.style.display = "flex";
-                payButton.disabled = false;
-                payButton.innerHTML = "Pay ₹299.99";
+            payButton.innerHTML = '<i class="ri-loader-4-line animate-spin mr-2"></i> Processing...';
+
+            setTimeout(function () {
+                // Correct ASP.NET way to trigger server-side click
+                __doPostBack('<%= btnPay.UniqueID %>', '');
             }, 2000);
         });
+
         function closeSuccessModal() {
             successModal.style.display = "none";
-        }
-        document.querySelectorAll('input[name="payment"]').forEach((radio) => {
-            radio.addEventListener("change", (e) => {
-                const cardDetails = document.getElementById("cardDetails");
-                const gpayDetails = document.getElementById("gpayDetails");
-                const applePayDetails = document.getElementById("applePayDetails");
-                cardDetails.style.display = e.target.value === "card" ? "block" : "none";
-                gpayDetails.style.display = e.target.value === "gpay" ? "block" : "none";
-                applePayDetails.style.display =
-                    e.target.value === "apple" ? "block" : "none";
+        }--%>
+
+        document.querySelectorAll('input[name="payment"]').forEach(function (el) {
+            el.addEventListener('change', function () {
+                document.getElementById('gpayDetails').style.display = this.value === 'gpay' ? 'block' : 'none';
+                document.getElementById('applePayDetails').style.display = this.value === 'apple' ? 'block' : 'none';
+                document.getElementById('cardDetails').style.display = this.value === 'card' ? 'block' : 'none';
             });
         });
+
     </script>
 </body>
 

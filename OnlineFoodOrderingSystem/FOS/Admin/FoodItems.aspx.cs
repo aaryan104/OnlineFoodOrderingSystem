@@ -251,30 +251,5 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
                 msg.Text = ex.ToString();
             }
         }
-
-        protected void searchInput_TextChanged(object sender, EventArgs e)
-        {           
-            try
-            {
-                string search = searchInput.Text;
-
-                funcon();
-                String qry = "SELECT * from MenuItems WHERE Name LIKE @search + '%'";
-                cmd = new SqlCommand(qry, conn);
-                cmd.Parameters.AddWithValue("@search", search);
-                sda = new SqlDataAdapter(cmd);
-                DataSet ds = new DataSet();
-                sda.Fill(ds);
-                MenuItems.DataSource = ds;
-                MenuItems.DataBind();
-                conn.Close();
-                //MessageBox.Show(search);
-            }
-            catch (Exception ex)
-            {
-                //Response.Write("Error");
-                msg.Text = ex.ToString();
-            }
-        }
     }
 }

@@ -129,6 +129,29 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
             cmd = new SqlCommand(qry7, conn);
             int rowCount7 = (int)cmd.ExecuteScalar();
             lblCompleted.Text = rowCount7.ToString();
+
+            string qry8 = "SELECT COUNT(*) FROM MenuItems";
+            cmd = new SqlCommand(qry8, conn);
+            int rowCount8 = (int)cmd.ExecuteScalar();
+            //string items = rowCount8.ToString();
+
+            int items = rowCount8 - 1;
+            lblFood.Text = items + "+ Items";
+
+            string qry9 = "SELECT COUNT(*) FROM DeliveryAgents";
+            cmd = new SqlCommand(qry9, conn);
+            int rowCount9 = (int)cmd.ExecuteScalar();
+            lblAgents.Text = rowCount9.ToString();
+
+            string qry10 = "SELECT COUNT(*) FROM Orders WHERE OrderStatus='Pending'";
+            cmd = new SqlCommand(qry10, conn);
+            int rowCount10 = (int)cmd.ExecuteScalar();
+            lblPending.Text = rowCount10.ToString();
+
+            string qry11 = "SELECT COUNT(*) FROM Payments WHERE PaymentStatus='Successful'";
+            cmd = new SqlCommand(qry11, conn);
+            int rowCount11 = (int)cmd.ExecuteScalar();
+            lblPayment.Text = rowCount11.ToString();
         }
 
         protected void btnShow_Click(object sender, EventArgs e)

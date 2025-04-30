@@ -146,28 +146,5 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
                 }
             }
         }
-
-        //protected void searchInput_TextChanged(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        string search = searchInput.Text;
-
-        //        funcon();
-        //        string qry = "SELECT * FROM MenuItems WHERE Name LIKE @search + '%'";
-        //        cmd = new SqlCommand(qry, conn);
-        //        cmd.Parameters.AddWithValue("@search", search);
-        //        sda = new SqlDataAdapter(cmd);
-        //        DataSet ds = new DataSet();
-        //        sda.Fill(ds);
-        //        MenuItemsRepeater.DataSource = ds;
-        //        MenuItemsRepeater.DataBind();
-        //        conn.Close();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write(ex.ToString());
-        //    }
-        //}
     }
 }

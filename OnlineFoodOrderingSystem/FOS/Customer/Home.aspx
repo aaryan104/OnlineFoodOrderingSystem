@@ -26,6 +26,29 @@
         .category-tab:hover {
             background-color: darkgrey;
         }
+
+        .category-tab {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            letter-spacing: 0.025em;
+        }
+
+        .category-tab.active {
+            background-color: rgba(254, 161, 22, 0.15) !important;
+            color: #FEA116 !important;
+            border-bottom: 2px solid #FEA116;
+            font-weight: 600;
+        }
+
+        .category-tab:not(.active) {
+            color: rgb(107, 114, 128);
+            background-color: transparent;
+        }
+
+        .category-tab:not(.active):hover {
+            background-color: #FEA116;
+            color: white;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -54,6 +77,7 @@
 </head>
 
 <body class="bg-gray-100 min-h-screen">
+<form id="form1" runat="server">
     <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
         <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -67,7 +91,8 @@
                     <div class="absolute inset-y-0 left-3 flex items-center">
                         <i class="ri-map-pin-line text-gray-400"></i>
                     </div>
-                    <input type="text" placeholder="Search for food or restaurants"
+                    <asp:TextBox ID="SearchInput" runat="server" ClientIDMode="Static"
+                        placeholder="Search for food or restaurants"
                         class="w-full pl-9 pr-9 py-1 rounded-full border border-gray-200 focus:outline-none focus:border-primary" />
                     <div class="absolute inset-y-0 right-3 flex items-center">
                         <i class="ri-search-line text-gray-400"></i>
@@ -88,14 +113,12 @@
                                     Your cart is empty
                                 </div>
                             </div>
-                            <%--<div class="border-t mt-4 pt-4">--%>
                             <br />
-                                <div class="flex justify-between mb-2">
-                                    <span>Subtotal:</span>
-                                    <h3 class="font-semibold mb-2">Shopping Cart</h3>
-                                </div>
-                                <a href="Cart.aspx" class="w-full bg-primary text-white py-2 rounded-button font-semibold hover:bg-opacity-90 block text-center">View Cart</a>
-                            <%--</div>--%>
+                            <div class="flex justify-between mb-2">
+                                <span>Subtotal:</span>
+                                <h3 class="font-semibold mb-2">Shopping Cart</h3>
+                            </div>
+                            <a href="Cart.aspx" class="w-full bg-primary text-white py-2 rounded-button font-semibold hover:bg-opacity-90 block text-center">View Cart</a>
                         </div>
                     </div>
                 </div>
@@ -106,67 +129,69 @@
         </div>
     </header>
     <main class="max-w-7xl mx-auto px-4 pt-24 pb-16">
-        <form id="form1" runat="server">
             <input type="hidden" id="hiddenCategory" name="hiddenCategory" />
             <div class="categories mb-8">
                 <div class="flex gap-4 overflow-x-auto py-2" id="categoryTabs">
-                    <button class="category-tab px-6 py-2 rounded-full bg-primary text-white whitespace-nowrap" data-category="all" onclick="filterItems(this)">
+                    <button class="category-tab px-6 py-2 rounded-button active" 
+                            data-category="all" onclick="filterItems(this, 'all')">
                         All
                     </button>
-                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap"
-                        data-category="Breakfast" onclick="filterItems(this)">
+                    <button class="category-tab px-6 py-2 rounded-button" 
+                            data-category="Breakfast" onclick="filterItems(this, 'Breakfast')">
                         Breakfast
                     </button>
-                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap"
-                        data-category="Lunch" onclick="filterItems(this)">
+                    <button class="category-tab px-6 py-2 rounded-button" 
+                            data-category="Lunch" onclick="filterItems(this, 'Lunch')">
                         Lunch
                     </button>
-                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap"
-                        data-category="Dinner" onclick="filterItems(this)">
+                    <button class="category-tab px-6 py-2 rounded-button" 
+                            data-category="Dinner" onclick="filterItems(this, 'Dinner')">
                         Dinner
                     </button>
-                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap"
-                        data-category="Drinks" onclick="filterItems(this)">
+                    <button class="category-tab px-6 py-2 rounded-button" 
+                            data-category="Drinks" onclick="filterItems(this, 'Drinks')">
                         Drinks
                     </button>
-                    <button class="category-tab px-6 py-2 rounded-full bg-gray-200 text-gray-600 whitespace-nowrap"
-                        data-category="Fast-Food" onclick="filterItems(this)">
+                    <button class="category-tab px-6 py-2 rounded-button" 
+                            data-category="Fast-Food" onclick="filterItems(this, 'Fast-Food')">
                         Fast Food
                     </button>
                 </div>
             </div>
-        </form>
         <div class="popular-dishes mb-12">
             <h2 class="text-2xl font-semibold mb-6 text-left">
                 <div class="message flex flex-col items-start">
                     <asp:Label ID="msg" runat="server" Text="Popular All Dishes"></asp:Label>
                 </div>
             </h2>
-            <div class="grid gap-4 md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2" id="foodGrid">
-                <asp:Repeater ID="MenuItemsRepeater" runat="server">
-                    <ItemTemplate>
-                        <div class="rounded-t-2xl overflow-hidden shadow-md hover:shadow-lg cursor-pointer">
-                            <img src='<%# Eval("ImageUrl") %>' class="w-full h-48 object-cover" alt='<%# Eval("Name") %>'>
-                            <div class="p-4">
-                                <div class="flex justify-between items-start mb-2">
-                                    <h3 class="font-semibold text-lg"><%# Eval("Name") %></h3>
-                                    <span class="text-xs px-2 py-1 bg-white-100 rounded-full capitalize"><%# Eval("Category") %></span>
-                                </div>
-                                <p class="text-gray-600 text-sm mb-4 line-clamp-2"><%# Eval("Description") %></p>
-                                <div class="flex items-center justify-between">
-                                    <div class="flex flex-col">
-                                        <span class="text-primary font-semibold text-lg">₹<%# Eval("Price") %></span>
-                                        <span class="text-xs text-gray-500">Inclusive of taxes</span>
+            <div id="menuContainer">
+                <div class="grid gap-4 md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2" id="foodGrid">
+                    <asp:Repeater ID="MenuItemsRepeater" runat="server">
+                        <ItemTemplate>
+                            <h1 id="noItemsMessage" class="text-center text-primary-500 text-2xl mt-6 hidden"><br /><br />No item found<br /></h1>
+                            <div class="menu-item rounded-t-2xl overflow-hidden shadow-md hover:shadow-lg cursor-pointer">
+                                <img src='<%# Eval("ImageUrl") %>' class="w-full h-48 object-cover" alt='<%# Eval("Name") %>'>
+                                <div class="p-4">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <h3 class="font-semibold text-lg"><%# Eval("Name") %></h3>
+                                        <span class="text-xs px-2 py-1 bg-white-100 rounded-full capitalize"><%# Eval("Category") %></span>
                                     </div>
-                                    <button class="px-4 py-2 bg-primary text-white rounded-button hover:bg-opacity-90 whitespace-nowrap"
-                                        onclick="addToCartDirect(<%# Eval("ItemId") %>, '<%# Eval("Name") %>', <%# Eval("Price") %>, '<%# Eval("ImageUrl") %>')">
-                                        Add to Cart
-                                    </button>
+                                    <p class="text-gray-600 text-sm mb-4 line-clamp-2"><%# Eval("Description") %></p>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex flex-col">
+                                            <span class="text-primary font-semibold text-lg">₹<%# Eval("Price") %></span>
+                                            <span class="text-xs text-gray-500">Inclusive of taxes</span>
+                                        </div>
+                                        <button class="px-4 py-2 bg-primary text-white rounded-button hover:bg-opacity-90 whitespace-nowrap"
+                                            onclick="addToCartDirect(<%# Eval("ItemId") %>, '<%# Eval("Name") %>', <%# Eval("Price") %>, '<%# Eval("ImageUrl") %>')">
+                                            Add to Cart
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </ItemTemplate>
-                </asp:Repeater>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </div>
             </div>
         </div>
     </main>
@@ -274,14 +299,55 @@
             </div>
         </div>
     </footer>
-
+</form>
    <script>
-       // Cart functionality
+       function filterItems(button, category) {
+           document.querySelectorAll('.category-tab').forEach(btn => {
+               btn.classList.remove('active');
+           });
+
+           button.classList.add('active');
+
+           document.getElementById('hiddenCategory').value = category;
+           document.getElementById('form1').submit();
+       }
+
+       document.addEventListener('DOMContentLoaded', function () {
+            const currentCategory = '<%= Request.Form["hiddenCategory"] ?? "all" %>';
+            const activeButton = document.querySelector(`.category-tab[data-category="${currentCategory}"]`);
+            if (activeButton) {
+                activeButton.classList.add('active');
+            }
+       });
+
+       document.addEventListener("DOMContentLoaded", function () {
+           const searchInput = document.getElementById("SearchInput");
+           const noItemsMessage = document.getElementById("noItemsMessage");
+
+           searchInput.addEventListener("input", function () {
+               const searchTerm = this.value.toLowerCase();
+               const items = document.querySelectorAll(".menu-item");
+               let visibleCount = 0;
+
+               items.forEach(item => {
+                   const text = item.textContent.toLowerCase();
+                   const isVisible = text.includes(searchTerm);
+                   item.style.display = isVisible ? "" : "none";
+                   if (isVisible) visibleCount++;
+               });
+
+               if (visibleCount === 0) {
+                   noItemsMessage.classList.remove("hidden");
+               } else {
+                   noItemsMessage.classList.add("hidden");
+               }
+           });
+       });
+
        let cart = JSON.parse(localStorage.getItem('cart')) || [];
        let currentQuantity = 1;
        let currentItem = null;
 
-       // Update cart count on page load
        updateCartCount();
 
        const cartButton = document.getElementById('cartButton');
@@ -292,7 +358,6 @@
            updateCartDropdown();
        });
 
-       // Close the dropdown if clicked outside
        document.addEventListener('click', (e) => {
            if (!cartButton.contains(e.target) && !cartDropdown.contains(e.target)) {
                cartDropdown.classList.add('hidden');
@@ -327,7 +392,6 @@
        }
 
        function openModal(itemId) {
-           // This would be populated from your actual data
            currentItem = {
                id: itemId,
                name: "Sample Item",
@@ -370,7 +434,6 @@
        function addToCart() {
            if (!currentItem) return;
 
-           // Check if item already exists in cart
            const existingItem = cart.find(item => item.id === currentItem.id);
 
            if (existingItem) {
@@ -389,12 +452,10 @@
            updateCartCount();
            closeModal();
 
-           // Show success message
            alert(`${currentItem.name} added to cart!`);
        }
 
        function addToCartDirect(itemId, name, price, image) {
-           // Check if item already exists in cart
            const existingItem = cart.find(item => item.id == itemId);
 
            if (existingItem) {
@@ -412,7 +473,6 @@
            saveCart();
            updateCartCount();
 
-           // Show success message
            alert(`${name} added to cart!`);
        }
 

@@ -53,10 +53,35 @@
             -webkit-appearance: none;
             margin: 0;
         }
+
+        .filter-button {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            letter-spacing: 0.025em;
+            background-color: white;
+            color: black;
+        }
+
+        .filter-button.active {
+            background-color: rgba(254, 161, 22, 0.1); /* primary-100 equivalent */
+            color: #FEA116; /* primary-600 equivalent */
+            font-weight: 600;
+        }
+
+        .filter-button:not(.active):hover {
+            background-color: #FEA116; /* primary color */
+            color: white;
+        }
+
+        /* Remove default button styles */
+        button {
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <%--<main class="flex-1 ml-64 p-8">--%>
     <body class="bg-gray-100">
         <div class="max-w-[1600px] mx-auto">
             <div class="flex items-center justify-between mb-8">
@@ -66,7 +91,6 @@
                     <nav class="flex" aria-label="Breadcrumb">
                         <ol class="flex items-center space-x-2">
                             <li>
-                                <%--<!-- https://readdy.ai/home/15001af8-6742-4526-b709-111685bc59a5/266cf3f9-faba-4994-887b-84e82c842178 -->--%>
                                 <a href="Dashboard.aspx"
                                     data-readdy="true"
                                     class="text-sm text-gray-500 hover:text-gray-700">Dashboard</a>
@@ -89,7 +113,6 @@
                             <i class="ri-search-line"></i>
                         </div>
                     </div>
-                    <%--<!-- https://readdy.ai/home/15001af8-6742-4526-b709-111685bc59a5/35a3eebd-84ed-4de5-8dab-3dc3d7e0dd86 -->--%>
                     <a href="newOrder.aspx"
                         data-readdy="true"
                         class="flex items-center gap-2 px-4 py-2 rounded-button bg-primary text-white text-sm !rounded-button whitespace-nowrap">
@@ -162,187 +185,198 @@
                     <p class="text-sm text-gray-500">Cancelled Orders</p>
                 </div>
             </div>
-            <div class="bg-white rounded shadow-sm mb-8">
-                <div class="p-6 border-b">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <button class="px-4 py-2 text-sm filter-button bg-primary/10 text-primary rounded-button" onclick="filterOrders('All')">
-                                All Orders
-                            </button>
-                            <button class="px-4 py-2 text-sm filter-button text-gray-500 hover:bg-gray-100 rounded-button" onclick="filterOrders('Preparing')">
-                                Preparing
-                            </button>
-                            <button class="px-4 py-2 text-sm filter-button text-gray-500 hover:bg-gray-100 rounded-button" onclick="filterOrders('Delivered')">
-                                Delivered
-                            </button>
-                            <button class="px-4 py-2 text-sm filter-button text-gray-500 hover:bg-gray-100 rounded-button" onclick="filterOrders('Out for Delivery')">
-                                Out for Delivery
-                            </button>
-                            <button class="px-4 py-2 text-sm filter-button text-gray-500 hover:bg-gray-100 rounded-button" onclick="filterOrders('Pending')">
-                                Pending
-                            </button>
-                            <button class="px-4 py-2 text-sm filter-button text-gray-500 hover:bg-gray-100 rounded-button" onclick="filterOrders('Cancelled')">
-                                Cancelled
-                            </button>
+            <form runat="server">
+                <asp:HiddenField ID="hiddenOrderId" runat="server" ClientIDMode="Static" />
+                <asp:HiddenField ID="hiddenAgentId" runat="server" ClientIDMode="Static" />
+                    <div class="bg-white rounded shadow-sm mb-8">
+                        <div class="p-6 border-b bg-gray-100">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <button class="px-4 py-2 text-sm filter-button rounded-button active" 
+                                            onclick="filterOrders('All', this)" data-filter="All">
+                                        All Orders
+                                    </button>
+                                    <button class="px-4 py-2 text-sm filter-button rounded-button" 
+                                            onclick="filterOrders('Preparing', this)" data-filter="Preparing">
+                                        Preparing
+                                    </button>
+                                    <button class="px-4 py-2 text-sm filter-button rounded-button" 
+                                            onclick="filterOrders('Delivered', this)" data-filter="Delivered">
+                                        Delivered
+                                    </button>
+                                    <button class="px-4 py-2 text-sm filter-button rounded-button" 
+                                            onclick="filterOrders('Out for Delivery', this)" data-filter="Out for Delivery">
+                                        Out for Delivery
+                                    </button>
+                                    <button class="px-4 py-2 text-sm filter-button rounded-button" 
+                                            onclick="filterOrders('Pending', this)" data-filter="Pending">
+                                        Pending
+                                    </button>
+                                    <button class="px-4 py-2 text-sm filter-button rounded-button" 
+                                            onclick="filterOrders('Cancelled', this)" data-filter="Cancelled">
+                                        Cancelled
+                                    </button>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <div class="relative">
+                                        <input type="text" placeholder="Filter by date..."
+                                            class="pl-10 pr-4 py-2 rounded-button bg-gray-50 border-none text-sm w-48" />
+                                        <div
+                                            class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 flex items-center justify-center text-gray-400">
+                                            <i class="ri-calendar-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="relative" id="exportDropdown">
+                                        <button onclick="toggleExportMenu()"
+                                            class="flex items-center gap-2 px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 rounded-button">
+                                            <i class="ri-download-line"></i>
+                                            Export
+                                        </button>
+                                        <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10"
+                                            id="exportMenu">
+                                            <div class="py-1">
+                                                <button
+                                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                                                    onclick="exportData('csv')">
+                                                    <i class="ri-file-text-line"></i>
+                                                    Export as CSV
+                                                </button>
+                                                <button
+                                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                                                    onclick="exportData('excel')">
+                                                    <i class="ri-file-excel-line"></i>
+                                                    Export as Excel
+                                                </button>
+                                                <button
+                                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                                                    onclick="exportData('pdf')">
+                                                    <i class="ri-file-pdf-line"></i>
+                                                    Export as PDF
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="exportNotification"
+                                        class="hidden fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 z-50">
+                                        <div id="exportLoading" class="hidden flex items-center gap-3">
+                                            <div
+                                                class="animate-spin rounded-full h-5 w-5 border-2 border-primary border-t-transparent">
+                                            </div>
+                                            <p class="text-sm text-gray-600">Exporting data...</p>
+                                        </div>
+                                        <div id="exportSuccess" class="hidden flex items-center gap-3 text-green-600">
+                                            <i class="ri-checkbox-circle-line"></i>
+                                            <p class="text-sm text-gray-600">Export completed successfully!</p>
+                                        </div>
+                                    </div>
+                                    <div class="relative inline-block text-left" id="assignDropdown">
+                                        <asp:Button ID="btnAssignOrder" runat="server" 
+                                            CssClass="inline-flex justify-center items-center bg-primary text-white px-4 py-2 rounded-button text-sm hover:bg-opacity-90 transition-colors"
+                                            Text="Assign Order" 
+                                            OnClientClick="toggleAssignDropdown(); return false;" />
+    
+                                        <div id="assignMenu" class="hidden absolute right-0 mt-2 w-56 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50 divide-y divide-gray-100">
+                                            <div class="py-1">
+                                                <asp:Repeater ID="rptAgents" runat="server">
+                                                    <ItemTemplate>
+                                                        <asp:LinkButton ID="lnkAssignAgent" runat="server"
+                                                            CssClass="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full text-left"
+                                                            OnClientClick='<%# "return assignOrderToAgent(\"" + Eval("DeliveryAgentId") + "\");" %>'>
+                                                            <div class="flex items-center">
+                                                                <span class="mr-3">
+                                                                    <i class="ri-user-line"></i>
+                                                                </span>
+                                                                <span><%# Eval("FirstName") + " " + Eval("LastName") %></span>
+                                                            </div>
+                                                        </asp:LinkButton>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </div>
+                                            <div class="py-1">
+                                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" onclick="toggleAssignDropdown(); return false;">
+                                                    <i class="ri-close-line mr-2"></i> Cancel
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex items-center gap-4">
-                            <div class="relative">
-                                <input type="text" placeholder="Filter by date..."
-                                    class="pl-10 pr-4 py-2 rounded-button bg-gray-50 border-none text-sm w-48" />
-                                <div
-                                    class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 flex items-center justify-center text-gray-400">
-                                    <i class="ri-calendar-line"></i>
-                                </div>
-                            </div>
-                            <div class="relative" id="exportDropdown">
-                                <button onclick="toggleExportMenu()"
-                                    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 rounded-button">
-                                    <i class="ri-download-line"></i>
-                                    Export
-                                </button>
-                                <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10"
-                                    id="exportMenu">
-                                    <div class="py-1">
-                                        <button
-                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                                            onclick="exportData('csv')">
-                                            <i class="ri-file-text-line"></i>
-                                            Export as CSV
-                                        </button>
-                                        <button
-                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                                            onclick="exportData('excel')">
-                                            <i class="ri-file-excel-line"></i>
-                                            Export as Excel
-                                        </button>
-                                        <button
-                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-                                            onclick="exportData('pdf')">
-                                            <i class="ri-file-pdf-line"></i>
-                                            Export as PDF
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="exportNotification"
-                                class="hidden fixed bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 z-50">
-                                <div id="exportLoading" class="hidden flex items-center gap-3">
-                                    <div
-                                        class="animate-spin rounded-full h-5 w-5 border-2 border-primary border-t-transparent">
-                                    </div>
-                                    <p class="text-sm text-gray-600">Exporting data...</p>
-                                </div>
-                                <div id="exportSuccess" class="hidden flex items-center gap-3 text-green-600">
-                                    <i class="ri-checkbox-circle-line"></i>
-                                    <p class="text-sm">Export completed successfully!</p>
-                                </div>
-                            </div>
-                            <div class="relative" id="bulkActionDropdown">
-                                <button onclick="toggleBulkActions()"
-                                    class="flex items-center gap-2 px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 rounded-button">
-                                    <i class="ri-more-2-fill"></i>
-                                    Bulk Actions
-                                </button>
-                                <div class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10"
-                                    id="bulkActionMenu">
-                                    <div class="py-1">
-                                        <button
-                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                            onclick="bulkAction('delete')">
-                                            Delete Selected
-                                        </button>
-                                        <button
-                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                            onclick="bulkAction('markComplete')">
-                                            Mark as Complete
-                                        </button>
-                                        <button
-                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                            onclick="bulkAction('markPending')">
-                                            Mark as Pending
-                                        </button>
-                                    </div>
-                                </div>
+                        <div class="overflow-x-auto">
+                                <asp:Label ID="lblNoData" runat="server" Text="No orders found." Visible="false" CssClass="text-gray-500"></asp:Label>
+                                <asp:GridView ID="gvDashboard" runat="server" AutoGenerateColumns="False"   
+                                    CssClass="min-w-full divide-y divide-gray-200 shadow-sm rounded-lg overflow-hidden">
+                                    <HeaderStyle CssClass="bg-gray-50" />
+                                    <RowStyle CssClass="hover:bg-gray-50" />
+                                    <AlternatingRowStyle CssClass="bg-white" />
+                                    <Columns>
+                                        <asp:TemplateField HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap">
+                                            <HeaderTemplate>
+                                                <input type="checkbox" id="chkSelectAll" onclick="toggleAllCheckboxes(this)" />
+                                            </HeaderTemplate>
+                                            <ItemTemplate>
+                                                <input type="checkbox" class="order-checkbox" value='<%# Eval("OrderID") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="Order ID" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap">
+                                            <ItemTemplate>
+                                                <div class="text-sm font-semibold text-gray-900">#<%# Eval("OrderID") %></div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="Customer" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4">
+                                            <ItemTemplate>
+                                                <div class="text-sm font-semibold text-gray-900"><%# Eval("FirstName") %> <%# Eval("LastName") %></div>
+                                                <div class="text-sm text-gray-500"><%# Eval("Email") %></div>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:BoundField DataField="OrderDate" HeaderText="Date"
+                                            HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                            DataFormatString="{0:MMM dd, yyyy}" />
+
+                                        <asp:BoundField DataField="Amount" HeaderText="Amount"
+                                            HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                            ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                            DataFormatString="₹{0:N2}" />
+
+                                        <asp:TemplateField HeaderText="Status" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap">
+                                            <ItemTemplate>
+                                                <span class='px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                                    <%# Eval("Status").ToString() == "Delivered" ? "bg-green-100 text-green-800" : 
+                                                       Eval("Status").ToString() == "Pending" ? "bg-yellow-100 text-yellow-800" : 
+                                                       Eval("Status").ToString() == "Preparing" ? "bg-blue-100 text-blue-800" : 
+                                                       Eval("Status").ToString() == "Out for Delivery" ? "bg-gray-100 text-gray-800" : 
+                                                       "bg-red-100 text-red-800" %>'>
+                                                    <%# Eval("Status") %>
+                                                </span>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <ItemTemplate>
+                                                <asp:LinkButton ID="btnShow" runat="server" CommandName="Show" CommandArgument='<%# Eval("OrderId") %>' OnClick="btnShow_Click"
+                                                    CssClass="text-indigo-600 hover:text-indigo-900 mr-3"
+                                                    OnClientClick='<%# "viewOrderDetails(\"" + Eval("OrderID") + "\"); return true;" %>'>
+                                                    <i class="ri-eye-fill" style="color: black;"></i>
+                                                </asp:LinkButton>
+                                                <asp:LinkButton ID="btnEdit" runat="server" CommandName="Edit" CommandArgument='<%# Eval("OrderId") %>'
+                                                    CssClass="text-yellow-600 hover:text-yellow-900 mr-3">
+                                                    <i class="ri-edit-fill" style="color: black;"></i>
+                                                </asp:LinkButton>
+                                                <asp:LinkButton ID="btnDelete" runat="server" CommandName="Delete" CommandArgument='<%# Eval("OrderId") %>'
+                                                    CssClass="text-red-600 hover:text-red-900">
+                                                    <i class="ri-delete-bin-fill" style="color: red;"></i>
+                                                </asp:LinkButton>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="overflow-x-auto">
-                    <form runat="server">
-                        <asp:Label ID="lblNoData" runat="server" Text="No orders found." Visible="false" CssClass="text-gray-500"></asp:Label>
-                        <asp:GridView ID="gvDashboard" runat="server" AutoGenerateColumns="False"   
-                            CssClass="min-w-full divide-y divide-gray-200 shadow-sm rounded-lg overflow-hidden">
-                            <HeaderStyle CssClass="bg-gray-50" />
-                            <RowStyle CssClass="hover:bg-gray-50" />
-                            <AlternatingRowStyle CssClass="bg-white" />
-                            <Columns>
-                                <asp:TemplateField HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap">
-                                    <HeaderTemplate>
-                                        <input type="checkbox" id="chkSelectAll" onclick="toggleAllCheckboxes(this)" />
-                                    </HeaderTemplate>
-                                    <ItemTemplate>
-                                        <input type="checkbox" class="order-checkbox" value='<%# Eval("OrderID") %>' />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-
-                                <asp:TemplateField HeaderText="Order ID" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap">
-                                    <ItemTemplate>
-                                        <div class="text-sm font-semibold text-gray-900">#<%# Eval("OrderID") %></div>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-
-                                <asp:TemplateField HeaderText="Customer" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4">
-                                    <ItemTemplate>
-                                        <div class="text-sm font-semibold text-gray-900"><%# Eval("FirstName") %> <%# Eval("LastName") %></div>
-                                        <div class="text-sm text-gray-500"><%# Eval("Email") %></div>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-
-                                <asp:BoundField DataField="OrderDate" HeaderText="Date"
-                                    HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                    ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                                    DataFormatString="{0:MMM dd, yyyy}" />
-
-                                <asp:BoundField DataField="Amount" HeaderText="Amount"
-                                    HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                    ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
-                                    DataFormatString="₹{0:N2}" />
-
-                                <asp:TemplateField HeaderText="Status" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap">
-                                    <ItemTemplate>
-                                        <span class='px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            <%# Eval("Status").ToString() == "Delivered" ? "bg-green-100 text-green-800" : 
-                                               Eval("Status").ToString() == "Pending" ? "bg-yellow-100 text-yellow-800" : 
-                                               Eval("Status").ToString() == "Preparing" ? "bg-blue-100 text-blue-800" : 
-                                               Eval("Status").ToString() == "Out for Delivery" ? "bg-gray-100 text-gray-800" : 
-                                               "bg-red-100 text-red-800" %>'>
-                                            <%# Eval("Status") %>
-                                        </span>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-
-                                <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <ItemTemplate>
-                                        <asp:LinkButton ID="btnShow" runat="server" CommandName="Show" CommandArgument='<%# Eval("OrderId") %>' OnClick="btnShow_Click"
-                                            CssClass="text-indigo-600 hover:text-indigo-900 mr-3"
-                                            OnClientClick='<%# "viewOrderDetails(\"" + Eval("OrderID") + "\"); return true;" %>'>
-                                            <i class="ri-eye-fill" style="color: black;"></i>
-                                        </asp:LinkButton>
-                                        <asp:LinkButton ID="btnEdit" runat="server" CommandName="Edit" CommandArgument='<%# Eval("OrderId") %>'
-                                            CssClass="text-yellow-600 hover:text-yellow-900 mr-3">
-                                            <i class="ri-edit-fill" style="color: black;"></i>
-                                        </asp:LinkButton>
-                                        <asp:LinkButton ID="btnDelete" runat="server" CommandName="Delete" CommandArgument='<%# Eval("OrderId") %>'
-                                            CssClass="text-red-600 hover:text-red-900">
-                                            <i class="ri-delete-bin-fill" style="color: red;"></i>
-                                        </asp:LinkButton>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                            </Columns>
-                        </asp:GridView>
-                    </form>
-                </div>
-            </div>
+                </form>
             <div class="message text-center flex flex-col items-center">
                 <asp:Label ID="msg" runat="server" ForeColor="red" Text=""></asp:Label>
             </div>
@@ -350,7 +384,7 @@
                 <div class="bg-white rounded-lg w-[800px] max-h-[90vh] overflow-y-auto">
                     <div class="p-6 border-b flex items-center justify-between">
                         <h3 class="text-xl font-semibold text-gray-900">Order Details
-                        </h3>
+                                            </h3>
                         <button onclick="closeOrderDetails()" class="text-gray-400 hover:text-gray-500">
                             <i class="ri-close-line text-xl"></i>
                         </button>
@@ -407,47 +441,90 @@
                 </div>
             </div>
             <script>
-                function filterOrders(status) {
-                    document.querySelectorAll('.filter-button').forEach(button => {
-                        button.classList.remove('bg-primary/10', 'text-primary');
-                        button.classList.add('text-gray-500', 'hover:bg-gray-100');
+                function filterOrders(filter, buttonElement) {
+
+                    //console.log("Activating button for filter:", filter, buttonElement);
+
+                    const buttons = document.querySelectorAll('.filter-button');
+                    buttons.forEach(btn => {
+                        btn.classList.remove('bg-primary/10', 'text-primary');
+
+                        if (!btn.classList.contains('text-gray-500')) {
+                            btn.classList.add('text-gray-500', 'hover:bg-gray-100');
+                        }
                     });
 
-                    const activeButton = document.querySelector(`[onclick="filterOrders('${status}')"]`);
-                    activeButton.classList.remove('text-gray-500', 'hover:bg-gray-100');
-                    activeButton.classList.add('bg-primary/10', 'text-primary');
+                    buttonElement.classList.remove('text-gray-500', 'hover:bg-gray-100');
+                    buttonElement.classList.add('bg-primary/10', 'text-primary');
 
-                    __doPostBack('FilterOrders', status);
+                    __doPostBack('FilterOrders', filter);
                 }
+
+                function toggleAssignDropdown() {
+                    const menu = document.getElementById("assignMenu");
+                    menu.classList.toggle("hidden");
+
+                    if (!menu.classList.contains("hidden")) {
+                        document.addEventListener('click', function outsideClick(e) {
+                            if (!e.target.closest('#assignDropdown')) {
+                                menu.classList.add("hidden");
+                                document.removeEventListener('click', outsideClick);
+                            }
+                        });
+                    }
+                }
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    const currentFilter = '<%= ViewState["CurrentFilter"] %>' || 'All';
+
+                    const activeButton = document.querySelector(`.filter-button[data-filter="${currentFilter}"]`);
+                    if (activeButton) {
+                        activeButton.classList.remove('text-gray-500', 'hover:bg-gray-100');
+                        activeButton.classList.add('bg-primary/10', 'text-primary');
+                    }
+                });
+
+                function assignOrderToAgent(agentId) {
+                    const selected = document.querySelectorAll(".order-checkbox:checked");
+                    if (selected.length !== 1) {
+                        alert("Please select exactly one order.");
+                        return false;
+                    }
+
+                    const orderId = selected[0].value;
+                    document.getElementById("hiddenOrderId").value = orderId;
+                    document.getElementById("hiddenAgentId").value = agentId;
+
+                    __doPostBack('AssignAgentPostback', '');
+                    return false;
+                }
+
+                function toggleAssignDropdown() {
+                    document.getElementById("assignMenu").classList.toggle("hidden");
+                }
+
+                function getSelectedOrderId() {
+                    const selected = [...document.querySelectorAll(".order-checkbox:checked")];
+                    if (selected.length !== 1) {
+                        alert("Please select exactly one order to assign.");
+                        return null;
+                    }
+                    return selected[0].value;
+                }
+
+                document.querySelectorAll("[id$='lnkAssignAgent']").forEach(link => {
+                    link.addEventListener("click", function (e) {
+                        const orderId = getSelectedOrderId();
+                        if (!orderId) {
+                            e.preventDefault();
+                        } else {
+                            const hiddenField = document.getElementById("hiddenOrderId");
+                            hiddenField.value = orderId;
+                        }
+                    });
+                });
 
                 
-                function toggleBulkActions() {
-                    const menu = document.getElementById("bulkActionMenu");
-                    menu.classList.toggle("hidden");
-                }
-                function bulkAction(action) {
-                    const selectedOrders = Array.from(
-                        document.querySelectorAll(".order-checkbox:checked"),
-                    );
-                    if (selectedOrders.length === 0) {
-                        alert("Please select at least one order");
-                        return;
-                    }
-                    switch (action) {
-                        case "delete":
-                            if (confirm(`Delete ${selectedOrders.length} selected orders?`)) {
-                                console.log("Deleting orders...");
-                            }
-                            break;
-                        case "markComplete":
-                            console.log("Marking orders as complete...");
-                            break;
-                        case "markPending":
-                            console.log("Marking orders as pending...");
-                            break;
-                    }
-                    toggleBulkActions();
-                }
                 function toggleAllCheckboxes(mainCheckbox) {
                     const checkboxes = document.querySelectorAll(".order-checkbox");
                     checkboxes.forEach((checkbox) => (checkbox.checked = mainCheckbox.checked));
@@ -456,14 +533,14 @@
                 function viewOrderDetails(orderId) {
                     const modal = document.getElementById("<%= orderDetailsModal.ClientID %>");
                     modal.classList.remove("hidden");
-                    modal.style.display = "block"; // Show the modal
-                    return false; // Prevent server-side postback
+                    modal.style.display = "block";
+                    return false;
                 }
 
                 function closeOrderDetails() {
                     const modal = document.getElementById("<%= orderDetailsModal.ClientID %>");
                     modal.style.display = "none";
-                    modal.classList.add("hidden"); // Add hidden class to ensure it is not visible
+                    modal.classList.add("hidden");
                 }
 
                 function editOrder(orderId) {
@@ -494,22 +571,21 @@
                     const notification = document.getElementById("exportNotification");
                     const loading = document.getElementById("exportLoading");
                     const success = document.getElementById("exportSuccess");
-                    // Hide export menu
+
                     document.getElementById("exportMenu").classList.add("hidden");
-                    // Show loading notification
+
                     notification.classList.remove("hidden");
                     loading.classList.remove("hidden");
                     success.classList.add("hidden");
-                    // Simulate export process
+
                     setTimeout(() => {
-                        // Hide loading and show success
                         loading.classList.add("hidden");
                         success.classList.remove("hidden");
-                        // Hide notification after 3 seconds
+
                         setTimeout(() => {
                             notification.classList.add("hidden");
                         }, 3000);
-                        // Mock download file based on format
+
                         const fileName = `orders_${new Date().toISOString().split("T")[0]}.${format}`;
                         console.log(`Downloading ${fileName}`);
                     }, 2000);
@@ -518,5 +594,4 @@
             </script>
         </div>
     </body>
-    <%--</main>--%>
 </asp:Content>

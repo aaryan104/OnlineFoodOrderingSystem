@@ -323,14 +323,15 @@
 
         function displayCartItems() {
             const cartItemsContainer = document.getElementById('cartItemsContainer');
+            const cart = JSON.parse(localStorage.getItem('cart')) || []; // VERY IMPORTANT: Fetch cart
 
             if (cart.length === 0) {
                 cartItemsContainer.innerHTML = `
-                    <div class="text-gray-500 text-center py-10">
-                        Your cart is empty
-                    </div>
-                `;
-                updateOrderSummary(0);
+            <div class="text-gray-500 text-center py-10">
+                Your cart is empty
+            </div>
+        `;
+                updateOrderSummary(0, cart);
                 document.getElementById('checkoutBtn').disabled = true;
                 return;
             }
@@ -366,13 +367,14 @@
             });
 
             cartItemsContainer.innerHTML = itemsHTML;
-            updateOrderSummary(subtotal);
 
-            // Apply coupon if exists
-            if (appliedCoupon) {
-                applyCoupon(appliedCoupon.code, appliedCoupon.discount);
-            }
+            // Now update order summary
+            updateOrderSummary(subtotal, cart);
+
+            // Enable or disable checkout button
+            document.getElementById('checkoutBtn').disabled = cart.length === 0;
         }
+
 
         function updateQuantity(itemId, change) {
             const item = cart.find(item => item.id == itemId);
@@ -411,34 +413,23 @@
         }
 
         function updateOrderSummary(subtotal) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
             const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
-            let discount = 0;
+            let deliveryFee = 20; // ₹20 fix delivery
+            let subtotalPlusDelivery = subtotal + deliveryFee;
 
-            if (appliedCoupon) {
-                discount = (subtotal * appliedCoupon.discount) / 100;
-            }
+            let tax = subtotalPlusDelivery * 0.05; // 5% Tax on (Subtotal + Delivery)
 
-            let deliveryFee = 20; // Fixed ₹20 Delivery Fee
+            let total = subtotalPlusDelivery + tax; // Total = Subtotal + Delivery + Tax
 
-            // Subtotal after applying discount
-            const subtotalAfterDiscount = subtotal - discount;
-
-            const subtotalPlusDelivery = subtotalAfterDiscount + deliveryFee;
-
-            const tax = subtotalPlusDelivery * 0.05; // 5% tax on subtotal + delivery
-
-            const total = subtotalPlusDelivery + tax;
-
+            // Display correct values
             document.getElementById('itemCount').textContent = itemCount;
-            document.getElementById('subtotal').textContent = `₹${subtotalAfterDiscount.toFixed(2)}`;
+            document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(2)}`;
             document.getElementById('deliveryFee').textContent = `₹${deliveryFee.toFixed(2)}`;
             document.getElementById('tax').textContent = `₹${tax.toFixed(2)}`;
             document.getElementById('total').textContent = `₹${total.toFixed(2)}`;
-
-            document.getElementById('checkoutBtn').disabled = itemCount === 0;
         }
-
 
         function applyCoupon(code, discountPercentage) {
             const subtotal = parseFloat(document.getElementById('subtotal').textContent.replace('₹', ''));

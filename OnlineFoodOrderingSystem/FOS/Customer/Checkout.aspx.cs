@@ -87,18 +87,18 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
                 decimal delivery = Convert.ToDecimal(hfDeliveryFee.Value);
                 decimal total = Convert.ToDecimal(hfTotal.Value);
 
-                // Insert Order
                 int orderId = InsertOrder(userId, total);
 
                 if (orderId > 0)
                 {
                     InsertOrderDetails(orderId);
                     InsertPayment(orderId, total);
+                    //Response.Write("<script>alert('OrderId: " + orderId + "');</script>");
 
-                    // Clear Cart after successful order
                     Session.Remove("CartItems");
 
-                    //Response.Redirect("OrderConfirmation.aspx?orderId=" + orderId);
+                    Response.Redirect("Home.aspx", false);
+                    Context.ApplicationInstance.CompleteRequest();
                 }
                 else
                 {
@@ -133,15 +133,17 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
         private int InsertOrder(int userId, decimal totalAmount)
         {
             int orderId = 0;
+            string status = "Pending";
+
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["conStr"].ConnectionString))
             {
                 conn.Open();
-                string query = "INSERT INTO Orders (UserId, OrderDate, TotalAmount, Status) OUTPUT INSERTED.OrderId VALUES (@UserId, @OrderDate, @TotalAmount, @Status)";
+                string query = "INSERT INTO Orders (UserId, OrderDate, TotalAmount, OrderStatus) OUTPUT INSERTED.OrderId VALUES (@UserId, @OrderDate, @TotalAmount, @Status)";
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@UserId", userId);
                 cmd.Parameters.AddWithValue("@OrderDate", DateTime.Now);
                 cmd.Parameters.AddWithValue("@TotalAmount", totalAmount);
-                cmd.Parameters.AddWithValue("@Status", "Pending");
+                cmd.Parameters.AddWithValue("@Status", status);
 
                 orderId = Convert.ToInt32(cmd.ExecuteScalar());
             }
@@ -158,12 +160,12 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
 
                 foreach (DataRow row in cartTable.Rows)
                 {
-                    string query = "INSERT INTO OrderDetails (OrderId, ItemId, Quantity, UnitPrice) VALUES (@OrderId, @ItemId, @Quantity, @UnitPrice)";
+                    string query = "INSERT INTO OrderDetails (OrderId, ItemId, Quantity, Subtotal) VALUES (@OrderId, @ItemId, @Quantity, @Price)";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@OrderId", orderId);
                     cmd.Parameters.AddWithValue("@ItemId", Convert.ToInt32(row["ItemId"]));
                     cmd.Parameters.AddWithValue("@Quantity", Convert.ToInt32(row["Quantity"]));
-                    cmd.Parameters.AddWithValue("@UnitPrice", Convert.ToDecimal(row["Price"]));
+                    cmd.Parameters.AddWithValue("@Price", Convert.ToDecimal(row["Price"]));
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -171,17 +173,28 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
 
         private void InsertPayment(int orderId, decimal amount)
         {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["conStr"].ConnectionString))
+            string status = "Successful";
+            string method = "PayPal";
+            try
             {
-                conn.Open();
-                string query = "INSERT INTO Payments (OrderId, Amount, PaymentStatus, PaymentDate) VALUES (@OrderId, @Amount, @PaymentStatus, @PaymentDate)";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@OrderId", orderId);
-                cmd.Parameters.AddWithValue("@Amount", amount);
-                cmd.Parameters.AddWithValue("@PaymentStatus", "Paid");
-                cmd.Parameters.AddWithValue("@PaymentDate", DateTime.Now);
-                cmd.ExecuteNonQuery();
+                using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["conStr"].ConnectionString))
+                {
+                    conn.Open();
+                    string query = "INSERT INTO Payments (OrderId, PaymentMethod, Amount, PaymentStatus, PaymentDate) VALUES (@OrderId, @Method, @Amount, @PaymentStatus, @PaymentDate)";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@OrderId", orderId);
+                    cmd.Parameters.AddWithValue("@Method", method);
+                    cmd.Parameters.AddWithValue("@Amount", amount);
+                    cmd.Parameters.AddWithValue("@PaymentStatus", status);
+                    cmd.Parameters.AddWithValue("@PaymentDate", DateTime.Now);
+                    cmd.ExecuteNonQuery();
+                }
             }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Payment Insert Error: " + ex.Message + "');</script>");
+            }
+
         }
     }
 }

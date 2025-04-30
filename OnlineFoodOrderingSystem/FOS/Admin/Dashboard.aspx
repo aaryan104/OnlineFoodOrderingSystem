@@ -46,7 +46,7 @@
             <div class="bg-white rounded p-6 shadow-sm">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                        <i class="ri-money-dollar-circle-line text-xl text-primary"></i>
+                        <i class="ri-money-rupee-circle-fill text-xl text-primary"></i>
                     </div>
                     <span class="text-sm text-green-500 flex items-center">
                         <i class="ri-arrow-up-line mr-1"></i>
@@ -87,6 +87,53 @@
                     <asp:Label ID="lblTodayOrder" runat="server" Text="****"></asp:Label>
                 </h3>
                 <p class="text-sm text-gray-500">Today's Orders</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                        <i class="ri-restaurant-line text-xl text-primary"></i>
+                    </div>
+                </div>
+                <h3 class="text-3xl font-bold text-gray-900 mb-1">
+                    <asp:Label ID="lblFood" runat="server" Text="****"></asp:Label>
+                </h3>
+                <p class="text-sm text-gray-500">Total Food Items</p>
+            </div>
+            <div class="bg-white rounded p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                        <i class="ri-truck-line text-xl text-primary"></i>
+                    </div>
+                </div>
+                <h3 class="text-3xl font-bold text-gray-900 mb-1">
+                    <asp:Label ID="lblAgents" runat="server" Text="****"></asp:Label>
+                </h3>
+                <p class="text-sm text-gray-500">Total Delivery Agents</p>
+            </div>
+            <div class="bg-white rounded p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                        <i class="ri-store-3-line text-xl text-primary"></i>
+                    </div>
+                </div>
+                <h3 class="text-3xl font-bold text-gray-900 mb-1">
+                    <asp:Label ID="lblPending" runat="server" Text="****"></asp:Label>
+                </h3>
+                <p class="text-sm text-gray-500">Pending Orders</p>
+            </div>
+            <div class="bg-white rounded p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                        <i class="ri-bank-card-2-fill text-xl text-primary"></i>
+                    </div>
+                </div>
+                <h3 class="text-3xl font-bold text-gray-900 mb-1">
+                    <asp:Label ID="lblPayment" runat="server" Text="****"></asp:Label>
+                </h3>
+                <p class="text-sm text-gray-500">Sucess Payments</p>
             </div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">

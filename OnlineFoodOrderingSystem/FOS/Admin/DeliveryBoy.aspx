@@ -250,23 +250,23 @@
         </div>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                // Reset form button
+
                 const resetBtn = document.getElementById("resetBtn");
                 const agentForm = document.getElementById("agentForm");
                 resetBtn.addEventListener("click", function () {
                     agentForm.reset();
                 });
-                // Edit agent functionality
+
                 const editButtons = document.querySelectorAll(".text-primary");
                 editButtons.forEach((button) => {
                     button.addEventListener("click", function () {
                         const row = this.closest("tr");
                         const cells = row.querySelectorAll("td");
-                        // Fill the form with data from the selected row
+
                         document.getElementById("firstName").value = cells[1].textContent;
                         document.getElementById("lastName").value = cells[2].textContent;
                         document.getElementById("email").value = cells[3].textContent;
-                        document.getElementById("password").value = "********"; // Placeholder for password
+                        document.getElementById("password").value = "********";
                         document.getElementById("phoneNumber").value = cells[4].textContent;
                         document.getElementById("vehicleNumber").value = cells[5].textContent;
                         document.getElementById("status").value =
@@ -274,13 +274,13 @@
                                 ? "active"
                                 : "inactive";
                         document.getElementById("address").value = cells[7].textContent;
-                        // Scroll to form
+
                         document
                             .querySelector(".bg-white")
                             .scrollIntoView({ behavior: "smooth" });
                     });
                 });
-                // Delete confirmation
+
                 const deleteButtons = document.querySelectorAll(".text-red-500");
                 deleteButtons.forEach((button) => {
                     button.addEventListener("click", function () {
@@ -295,7 +295,7 @@
                         }
                     });
                 });
-                // Search functionality
+
                 const searchInput = document.getElementById("searchAgent");
                 searchInput.addEventListener("input", function () {
                     const searchTerm = this.value.toLowerCase();

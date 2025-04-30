@@ -138,7 +138,8 @@
                             <div class="relative">
                                 <asp:TextBox ID="searchInput" placeholder="Search items..."
                                     class="pl-10 pr-40 py-2 border border-gray-300 rounded-button focus:ring-2 focus:ring-primary focus:border-primary text-sm"
-                                    runat="server" AutoPostBack="True" OnTextChanged="searchInput_TextChanged" onkeyup="debounceSearch()"></asp:TextBox>
+                                    runat="server" ClientIDMode="Static" oninput="filterMenuItems()">
+                                </asp:TextBox>
                                 <i class="ri-search-line absolute left-3 top-2.5 text-gray-400"></i>
                             </div>
                         </div>
@@ -162,7 +163,7 @@
                                     </asp:TemplateField>
                                 </Columns>
                                 <HeaderStyle CssClass="bg-gray-50" />
-                                <RowStyle CssClass="border-b border-gray-200" />
+                                <RowStyle CssClass="border-b border-gray-200 menu-row" />
                             </asp:GridView>
                         </div>
                     </div>
@@ -205,13 +206,28 @@
                 }
             }
 
-            let debounceTimer;
+            function filterMenuItems() {
+                const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+                const rows = document.querySelectorAll(".menu-row");
+                let visibleCount = 0;
 
-            function debounceSearch() {
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(function () {
-                    __doPostBack('<%= searchInput.ClientID %>', '');
-                }, 500);
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    const match = text.includes(searchTerm);
+                    row.style.display = match ? "" : "none";
+                    if (match) visibleCount++;
+                });
+
+                // Optional: Show a message if no results
+                let msg = document.getElementById("noResultsMsg");
+                if (!msg) {
+                    msg = document.createElement("h1");
+                    msg.id = "noResultsMsg";
+                    msg.className = "text-center text-gray-500 text-xl mt-6";
+                    msg.innerText = "No item found";
+                    document.querySelector(".overflow-x-auto").appendChild(msg);
+                }
+                msg.style.display = visibleCount === 0 ? "block" : "none";
             }
 
             function Conform() {
