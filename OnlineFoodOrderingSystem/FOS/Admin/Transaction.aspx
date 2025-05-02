@@ -144,7 +144,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <body class="bg-gray-50 min-h-screen">
+    <body>
         <div class="flex h-screen overflow-hidden">
             <div class="flex flex-col flex-1 w-0 overflow-hidden">
                 <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
@@ -165,9 +165,9 @@
                                             <i class="ri-search-line"></i>
                                         </div>
                                     </div>
-                                    <input type="text"
+                                    <input type="text" id="orderIdSearch" placeholder="Search by Order ID"
                                         class="pl-10 pr-3 py-2 w-full border border-gray-300 rounded focus:ring-primary focus:border-primary text-sm"
-                                        placeholder="Search by Order ID" />
+                                        onkeyup="filterTable()" />
                                 </div>
                                 <!-- Date Range -->
                                 <div class="grid grid-cols-2 gap-2">
@@ -191,11 +191,11 @@
                                     </div>
                                     <button
                                         class="px-3 py-2 w-full border border-gray-300 rounded focus:ring-primary focus:border-primary text-sm text-left pr-10 bg-white"
-                                        id="paymentMethodDropdown">
-                                        Payment Method
+                                        id="paymentStatusDropdown">
+                                        Payment Status
                                     </button>
                                     <div class="hidden absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md py-1"
-                                        id="paymentMethodOptions">
+                                        id="paymentStatusOptions">
                                         <div class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
                                             <input type="checkbox" class="mr-2" id="methodPending" />
                                             <label for="methodPending">Pending</label>
@@ -219,11 +219,11 @@
                                     </div>
                                     <button
                                         class="px-3 py-2 w-full border border-gray-300 rounded focus:ring-primary focus:border-primary text-sm text-left pr-10 bg-white"
-                                        id="paymentStatusDropdown">
-                                        Payment Status
+                                        id="paymentMethodDropdown">
+                                        Payment Methos
                                     </button>
                                     <div class="hidden absolute z-10 mt-1 w-full bg-white shadow-lg rounded-md py-1"
-                                        id="paymentStatusOptions">
+                                        id="paymentMethodOptions">
                                         <div class="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer flex items-center">
                                             <input type="checkbox" class="mr-2" id="statusCOD" />
                                             <label for="statusCOD">Cash on Delivery</label>
@@ -254,7 +254,7 @@
                                         Reset
                                     </div>
                                 </button>
-                                <button
+                                <button 
                                     class="px-4 py-2 bg-primary border border-primary rounded-button text-white hover:bg-primary/90 text-sm font-medium whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="w-4 h-4 mr-2 flex items-center justify-center">
@@ -264,142 +264,164 @@
                                     </div>
                                 </button>
                             </div>
-                        </div>                    
-                        <!-- Transactions Table -->
-                        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                <div class="flex items-center">
-                                                    Order ID
-                                                    <div
-                                                        class="w-4 h-4 ml-1 flex items-center justify-center text-gray-400">
-                                                        <i class="ri-arrow-up-down-line"></i>
-                                                    </div>
-                                                </div>
-                                            </th>
-                                            <th scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                <div class="flex items-center">
-                                                    Payment Method
-                                                    <div
-                                                        class="w-4 h-4 ml-1 flex items-center justify-center text-gray-400">
-                                                        <i class="ri-arrow-up-down-line"></i>
-                                                    </div>
-                                                </div>
-                                            </th>
-                                            <th scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                <div class="flex items-center">
-                                                    Amount
-                                                    <div
-                                                        class="w-4 h-4 ml-1 flex items-center justify-center text-gray-400">
-                                                        <i class="ri-arrow-up-down-line"></i>
-                                                    </div>
-                                                </div>
-                                            </th>
-                                            <th scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                <div class="flex items-center">
-                                                    Payment Status
-                                                    <div
-                                                        class="w-4 h-4 ml-1 flex items-center justify-center text-gray-400">
-                                                        <i class="ri-arrow-up-down-line"></i>
-                                                    </div>
-                                                </div>
-                                            </th>
-                                            <th scope="col"
-                                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                <div class="flex items-center">
-                                                    Payment Date
-                                                    <div
-                                                        class="w-4 h-4 ml-1 flex items-center justify-center text-gray-400">
-                                                        <i class="ri-arrow-up-down-line"></i>
-                                                    </div>
-                                                </div>
-                                            </th>
-                                            <th scope="col"
-                                                class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                Actions
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="bg-white divide-y divide-gray-200">
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                #1003
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                <span class="status-badge payment-method-successful">Successful</span>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                ₹304.00
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                <span class="status-badge payment-status-credit">Credit Card</span>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                Apr 25, 2025
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <div class="flex justify-end space-x-2">
-                                                    <button class="p-1 text-primary hover:text-primary/80" title="Edit">
-                                                        <div class="w-5 h-5 flex items-center justify-center">
-                                                            <i class="ri-pencil-line"></i>
-                                                        </div>
-                                                    </button>
-                                                    <button class="p-1 text-red-500 hover:text-red-700" title="Delete">
-                                                        <div class="w-5 h-5 flex items-center justify-center">
-                                                            <i class="ri-delete-bin-line"></i>
-                                                        </div>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                #2007
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                <span class="status-badge payment-method-pending">Pending</span>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                ₹470.00
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                <span class="status-badge payment-status-cod">
-                                                    Cash on Delivery</span>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                Apr 24, 2025
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <div class="flex justify-end space-x-2">
-                                                    <button class="p-1 text-primary hover:text-primary/80" title="Edit">
-                                                        <div class="w-5 h-5 flex items-center justify-center">
-                                                            <i class="ri-pencil-line"></i>
-                                                        </div>
-                                                    </button>
-                                                    <button class="p-1 text-red-500 hover:text-red-700" title="Delete">
-                                                        <div class="w-5 h-5 flex items-center justify-center">
-                                                            <i class="ri-delete-bin-line"></i>
-                                                        </div>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                        </div>     
+                        <div class="message text-center flex flex-col items-center  ">
+                            <asp:Label ID="msg" runat="server" ForeColor="red" Text=""></asp:Label>
                         </div>
+                        <!-- Transactions Table -->
+                        <form runat="server">
+                            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                                <div class="overflow-x-auto">
+                                    <asp:GridView ID="gvOrders" runat="server" AutoGenerateColumns="False" CssClass="min-w-full divide-y divide-gray-200"
+                                        GridLines="None" ShowHeader="true">
+                                        <HeaderStyle CssClass="bg-white text-center" />
+                                        <RowStyle CssClass="hover:bg-white" />
+                                        <Columns>
+                                            <asp:TemplateField>
+                                                <HeaderTemplate>
+                                                    <input type="checkbox" class="chk custom-checkbox" id="select-all" />
+                                                </HeaderTemplate>
+                                                <ItemTemplate>
+                                                    <input type="checkbox" class="chk custom-checkbox row-checkbox" />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+
+                                            <asp:BoundField DataField="OrderId" HeaderText="Order ID"
+                                                HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" />
+        
+                                            <asp:TemplateField HeaderText="Customer"
+                                                HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                ItemStyle-CssClass="px-6 py-4 whitespace-nowrap">
+                                                <ItemTemplate>
+                                                    <div class="flex items-center">
+                                                        <div class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full bg-black-100 text-black-600">
+                                                            <span class="text-xs font-medium">
+                                                                <%# Eval("UserId") %>
+                                                            </span>
+                                                        </div>
+                                                        <div class="ml-3">
+                                                            <p class="text-sm font-medium text-gray-900"><%# Eval("FullName") %></p>
+                                                            <p class="text-xs text-gray-500"><%# Eval("PhoneNumber") %></p>
+                                                        </div>
+                                                    </div>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+        
+                                            <asp:TemplateField HeaderText="Payment Status"
+                                                HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" 
+                                                    ItemStyle-CssClass="px-6 py-4 whitespace-nowrap">
+                                                    <ItemTemplate>
+                                                        <span class='px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                                        <%# Eval("PaymentStatus").ToString() == "Failed" ? "bg-red-100 text-red-800" : 
+                                                            Eval("PaymentStatus").ToString() == "Successful" ? "bg-green-100 text-green-800" : 
+                                                            Eval("PaymentStatus").ToString() == "Pending" ? "bg-yellow-100 text-yellow-800" : 
+                                                            "bg-gray-100 text-gray-800" %>'>
+                                                        <%# Eval("PaymentStatus") %>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+        
+                                            <asp:BoundField DataField="TotalAmount" HeaderText="Amount"
+                                                HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                                DataFormatString="{0:C}" HtmlEncode="false" />
+        
+                                            <asp:TemplateField HeaderText="Payment Method"
+                                                HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" 
+                                                ItemStyle-CssClass="px-6 py-4 whitespace-nowrap">
+                                                <ItemTemplate>
+                                                    <span class='px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                                    <%# Eval("PaymentMethod").ToString() == "Cash on Delivery" ? "bg-purple-100 text-purple-800" : 
+                                                        Eval("PaymentMethod").ToString() == "PayPal" ? "bg-purple-100 text-purple-800" : 
+                                                        Eval("PaymentMethod").ToString() == "Debit Card" ? "bg-purple-100 text-purple-800" : 
+                                                        Eval("PaymentMethod").ToString() == "Credit Card" ? "bg-yellow-100 text-" : 
+                                                        "bg-gray-100 text-gray-800" %>'>
+                                                        <%# Eval("PaymentMethod") %>
+                                                    </span>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+        
+                                            <asp:TemplateField HeaderText="Payment Date"
+                                                HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <ItemTemplate>
+                                                    <%# Convert.ToDateTime(Eval("PaymentDate")).ToString("MMM dd, yyyy - hh:mm tt") %>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+
+                                            <asp:TemplateField HeaderText="Order Date"
+                                                HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <ItemTemplate>
+                                                    <%# Convert.ToDateTime(Eval("OrderDate")).ToString("MMM dd, yyyy - hh:mm:ss tt") %>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+        
+                                            <asp:TemplateField HeaderText="Actions"
+                                                HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                                ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <ItemTemplate>
+                                                    <div class="flex justify-end space-x-2">
+                                                        <asp:LinkButton ID="btnDelete" runat="server" OnClick="btnDelete_Click" CommandArgument='<%# Eval("OrderId") %>' CssClass="text-red-500 hover:text-red-700 w-8 h-8 flex items-center justify-center" 
+                                                            OnClientClick="return confirm('Are you sure you want to delete this agent?');">
+                                                            <i class="ri-delete-bin-line ri-lg"></i>
+                                                        </asp:LinkButton>
+                                                    </div>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                    </asp:GridView>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </main>
             </div>
         </div>
         <script>
+            function filterTable() {
+                var input = document.getElementById("orderIdSearch");
+                var filter = input.value.toLowerCase();
+                var table = document.querySelector("#<%= gvOrders.ClientID %>");
+                var tr = table.getElementsByTagName("tr");
+
+                for (var i = 1; i < tr.length; i++) {
+                    var td = tr[i].getElementsByTagName("td")[1];
+                    if (td) {
+                        var txtValue = td.textContent || td.innerText;
+                        tr[i].style.display = txtValue.toLowerCase().indexOf(filter) > -1 ? "" : "none";
+                    }
+                }
+            }
+
+            function applyAdvancedFilters() {
+                var orderIdFilter = document.getElementById("orderIdSearch").value.toLowerCase();
+                var dateFrom = document.querySelector('input[type="date"]:first-of-type').value;
+                var dateTo = document.querySelector('input[type="date"]:last-of-type').value;
+                var table = document.querySelector("#<%= gvOrders.ClientID %>");
+                var tr = table.getElementsByTagName("tr");
+
+                for (var i = 1; i < tr.length; i++) {
+                    var row = tr[i];
+                    var orderId = row.cells[1].innerText.toLowerCase();
+                    var paymentStatus = row.cells[3].innerText.toLowerCase();
+                    var paymentMethod = row.cells[4].innerText.toLowerCase();
+                    var paymentDate = new Date(row.cells[5].innerText);
+                    var match = true;
+
+                    if (orderIdFilter && !orderId.includes(orderIdFilter)) match = false;
+                    if (dateFrom && new Date(dateFrom) > paymentDate) match = false;
+                    if (dateTo && new Date(dateTo) < paymentDate) match = false;
+
+                    // Add your payment status/method check here as needed
+
+                    row.style.display = match ? "" : "none";
+                }
+            }
+
+            document.querySelector("button:has(.ri-filter-line)").addEventListener("click", applyAdvancedFilters);
+
             document.addEventListener("DOMContentLoaded", function () {
                 const tableBody = document.querySelector("tbody");
                 const originalTableContent = tableBody.innerHTML;
@@ -407,30 +429,30 @@
                     const loadingRow = document.createElement("tr");
                     loadingRow.id = "loadingIndicator";
                     loadingRow.innerHTML = `
-              <td colspan="6" class="px-6 py-12 text-center">
-                <div class="flex items-center justify-center">
-                  <div class="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                  <span class="ml-2 text-gray-600">Filtering transactions...</span>
-                </div>
-              </td>
-            `;
+                      <td colspan="6" class="px-6 py-12 text-center">
+                        <div class="flex items-center justify-center">
+                          <div class="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                          <span class="ml-2 text-gray-600">Filtering transactions...</span>
+                        </div>
+                      </td>
+                    `;
                     tableBody.innerHTML = "";
                     tableBody.appendChild(loadingRow);
                 }
                 function showNoResults() {
                     tableBody.innerHTML = `
-              <tr>
-                <td colspan="6" class="px-6 py-12 text-center">
-                  <div class="flex flex-col items-center justify-center text-gray-500">
-                    <div class="w-16 h-16 mb-4 flex items-center justify-center text-gray-400">
-                      <i class="ri-inbox-line ri-3x"></i>
-                    </div>
-                    <p class="text-gray-600 font-medium">No matching transactions found</p>
-                    <p class="mt-1 text-sm text-gray-500">Try adjusting your filters</p>
-                  </div>
-                </td>
-              </tr>
-            `;
+                      <tr>
+                        <td colspan="6" class="px-6 py-12 text-center">
+                          <div class="flex flex-col items-center justify-center text-gray-500">
+                            <div class="w-16 h-16 mb-4 flex items-center justify-center text-gray-400">
+                              <i class="ri-inbox-line ri-3x"></i>
+                            </div>
+                            <p class="text-gray-600 font-medium">No matching transactions found</p>
+                            <p class="mt-1 text-sm text-gray-500">Try adjusting your filters</p>
+                          </div>
+                        </td>
+                      </tr>
+                    `;
                 }
                 function applyFilters() {
                     const searchText = document

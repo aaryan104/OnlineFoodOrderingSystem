@@ -207,7 +207,7 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
                            WHERE OA.DeliveryAgentId = DA.DeliveryAgentId
                            AND OA.AssignmentStatus='Assigned'
                        ) THEN 1 ELSE 0 END AS HasOrder
-                FROM DeliveryAgents DA";
+                FROM DeliveryAgents DA WHERE Status='Active'";
 
             SqlCommand cmd = new SqlCommand(qry, conn);
             SqlDataAdapter da = new SqlDataAdapter(cmd);

@@ -28,6 +28,14 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
                     IDs = Session["DeliveryAgentId"].ToString();
                     LoadAssignedOrders();
                     fetchUsername();
+                    ClientScript.RegisterStartupScript(this.GetType(), "setStatus", $@"
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {{
+                                const currentStatus = document.getElementById('current-status');
+                                currentStatus.textContent = '{hiddenStatus.Value}';
+                            }});
+                        </script>", false);
+
                     fetchOrder();
                 }
                 else
@@ -61,8 +69,8 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
 
         public void fetchUsername()
         {
-            funcon();   
-            string qry = "SELECT FirstName FROM DeliveryAgents WHERE DeliveryAgentId=@id";
+            funcon();
+            string qry = "SELECT FirstName, Status FROM DeliveryAgents WHERE DeliveryAgentId = @id";
             SqlCommand cmd = new SqlCommand(qry, conn);
             cmd.Parameters.AddWithValue("@id", IDs);
             SqlDataReader dr = cmd.ExecuteReader();
@@ -70,8 +78,13 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
             if (dr.Read())
             {
                 txtName.Text = dr["FirstName"].ToString();
+                string status = dr["Status"].ToString();
+
+                // Set status on page (use hidden field or Label)
+                hiddenStatus.Value = status;
             }
         }
+
 
         public void fetchOrder()
         {
@@ -164,5 +177,22 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
             gvOrders.DataSource = dt;
             gvOrders.DataBind();
         }
+
+        [System.Web.Services.WebMethod]
+        public static string UpdateAgentStatus(string agentId, string newStatus)
+        {
+            string conStr = ConfigurationManager.ConnectionStrings["conStr"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(conStr))
+            {
+                conn.Open();
+                string qry = "UPDATE DeliveryAgents SET Status = @Status WHERE DeliveryAgentId = @Id";
+                SqlCommand cmd = new SqlCommand(qry, conn);
+                cmd.Parameters.AddWithValue("@Status", newStatus);
+                cmd.Parameters.AddWithValue("@Id", agentId);
+                int rows = cmd.ExecuteNonQuery();
+                return rows > 0 ? "success" : "fail";
+            }
+        }
+
     }
 }

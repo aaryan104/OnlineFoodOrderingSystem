@@ -98,7 +98,7 @@
                             </div>
                             <div class="flex justify-center">
                                 <div class="bg-gray-100 p-4 rounded-lg w-48 h-48 flex items-center justify-center">
-                                    <img src="https://public.readdy.ai/ai/img_res/41bb8eb863138636f04edf16b32fec5a.jpg"
+                                    <img src="../../Asset/Library/img/PaymentCode.png"
                                         alt="Google Pay QR Code" class="w-full h-full object-contain" />
                                 </div>
                             </div>

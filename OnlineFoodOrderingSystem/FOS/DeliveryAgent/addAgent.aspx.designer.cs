@@ -105,13 +105,13 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
         protected global::System.Web.UI.WebControls.TextBox vehicleNumber;
 
         /// <summary>
-        /// address control.
+        /// workingArea control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox address;
+        protected global::System.Web.UI.WebControls.DropDownList workingArea;
 
         /// <summary>
         /// signupButton control.

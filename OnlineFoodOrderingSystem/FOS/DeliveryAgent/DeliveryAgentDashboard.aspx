@@ -267,6 +267,7 @@
                 </div>
                 <%--OnRowDataBound="gvOrders_RowDataBound"--%>
                 <form runat="server">
+                    <asp:HiddenField ID="hiddenStatus" runat="server" />
                     <asp:GridView ID="gvOrders" runat="server" AutoGenerateColumns="False" CssClass="min-w-full divide-y divide-gray-200"
                         GridLines="None" ShowHeader="true">
                         <HeaderStyle CssClass="bg-white text-center" />

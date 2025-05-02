@@ -60,6 +60,15 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
         protected global::System.Web.UI.WebControls.Label lblCancel;
 
         /// <summary>
+        /// hiddenStatus control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hiddenStatus;
+
+        /// <summary>
         /// gvOrders control.
         /// </summary>
         /// <remarks>

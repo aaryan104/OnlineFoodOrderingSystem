@@ -121,317 +121,315 @@
 </head>
 
 <body class="bg-gray-50 min-h-screen">
-    <!-- Header -->
-    <header class="bg-white shadow-sm py-4 px-6 flex items-center justify-between">
-        <div class="flex items-center space-x-4">
-            <a href="#" class="flex items-center">
-                <span class="text-2xl font-['Pacifico'] text-primary">Kastabhanjan</span>
-            </a>
-        </div>
+    <form id="form1" runat="server">
+        <!-- Header -->
+        <header class="bg-white shadow-sm py-4 px-6 flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <a href="#" class="flex items-center">
+                    <span class="text-2xl font-['Pacifico'] text-primary">Kastabhanjan</span>
+                </a>
+            </div>
 
-    </header>
-    <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-4 py-8">
-        <!-- Back Button -->
-        <div class="mb-6">
-            <a href="DeliveryAgentDashboard.aspx" class="inline-flex items-center text-gray-600 hover:text-primary transition-colors">
-                <i class="ri-arrow-left-line ri-lg mr-2"></i>
-                <span>Back to Dashboard</span>
-            </a>
-        </div>
-        <!-- Profile Header Card -->
-        <div class="bg-white rounded shadow-sm p-8 mb-8 relative">
-            <button id="editProfileBtn"
-                class="absolute top-6 right-6 text-primary hover:text-primary/80 flex items-center space-x-1 !rounded-button">
-                <i class="ri-edit-line ri-lg"></i>
-                <span class="whitespace-nowrap">Edit Profile</span>
-            </button>
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="flex flex-col items-center mb-6 md:mb-0 md:mr-10">
-                    <div class="w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-primary/10">
-                        <asp:Image ID="imgProfile" runat="server" CssClass="rounded-full w-32 h-32" />
-                    </div>
-                    <h2 class="text-2xl font-bold text-gray-800"><asp:Label ID="lblName" runat="server" CssClass="text-2xl font-bold text-gray-800"></asp:Label></h2>
-                    <div class="flex items-center mt-1 mb-2">
-                        <span class="w-3 h-3 rounded-full mr-2 
-                            <%= lblStatus.Text.ToLower() == "active" ? "bg-green-500" : 
-                                (lblStatus.Text.ToLower() == "inactive" ? "bg-red-500" : "bg-gray-500") %>"></span>
-                        <span class="font-medium 
-                            <%= lblStatus.Text.ToLower() == "active" ? "text-green-600" : 
-                                (lblStatus.Text.ToLower() == "inactive" ? "text-red-600" : "text-gray-600") %>">
-                            <asp:Label ID="lblStatus" runat="server"></asp:Label>
-                        </span>
-                    </div>
-                    <p class="text-gray-500">ID: #<asp:Label ID="lblID" runat="server" CssClass="text-gray-500"></asp:Label></p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
-                    <div>
-                        <h3 class="text-gray-500 mb-1">Email</h3>
-                        <p class="text-gray-800 font-medium">
-                            <asp:Label ID="lblEmail" runat="server" CssClass="text-gray-800 font-medium"></asp:Label>
-                        </p>
-                    </div>
-                    <div>
-                        <h3 class="text-gray-500 mb-1">Phone</h3>
-                        <p class="text-gray-800 font-medium"><asp:Label ID="lblPhone" runat="server" CssClass="text-gray-800 font-medium"></asp:Label></p>
-                    </div>
-                    <div>
-                        <h3 class="text-gray-500 mb-1">Address</h3>
-                        <p class="text-gray-800 font-medium"><asp:Label ID="lblAddress" runat="server" CssClass="text-gray-800 font-medium"></asp:Label></p>
-                    </div>
-                    <div>
-                        <h3 class="text-gray-500 mb-1">Vehical Number</h3>
-                        <p class="text-gray-800 font-medium"><asp:Label ID="lblVehicle" runat="server" CssClass="text-gray-800 font-medium"></asp:Label></p>
-                    </div>
-                </div>
+        </header>
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <!-- Back Button -->
+            <div class="mb-6">
+                <a href="DeliveryAgentDashboard.aspx" class="inline-flex items-center text-gray-600 hover:text-primary transition-colors">
+                    <i class="ri-arrow-left-line ri-lg mr-2"></i>
+                    <span>Back to Dashboard</span>
+                </a>
             </div>
-        </div>
-        <!-- Performance Metrics -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded shadow-sm p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-gray-500">Total Deliveries</h3>
-                    <div class="w-10 h-10 flex items-center justify-center text-primary bg-primary/10 rounded-full">
-                        <i class="ri-box-3-line ri-lg"></i>
-                    </div>
+            <!-- Profile Header Card -->
+            <div class="bg-white rounded shadow-sm p-8 mb-8 relative">
+                <div class="absolute top-4 right-4">
+                    <button type="button" id="editProfileBtn" class="px-4 py-2 bg-primary text-white rounded">
+                        <i class="ri-edit-line ri-lg"></i>
+                        <span class="whitespace-nowrap">Edit Profile</span>
+                    </button>
                 </div>
-                <p class="text-3xl font-bold text-gray-800">1,287</p>
-                <p class="text-green-600 text-sm mt-2 flex items-center">
-                    <i class="ri-arrow-up-line ri-sm mr-1"></i>
-                    <span>12% from last month</span>
-                </p>
-            </div>
-            <div class="bg-white rounded shadow-sm p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-gray-500">On-time Rate</h3>
-                    <div class="w-10 h-10 flex items-center justify-center text-primary bg-primary/10 rounded-full">
-                        <i class="ri-time-line ri-lg"></i>
-                    </div>
-                </div>
-                <p class="text-3xl font-bold text-gray-800">98.7%</p>
-                <p class="text-green-600 text-sm mt-2 flex items-center">
-                    <i class="ri-arrow-up-line ri-sm mr-1"></i>
-                    <span>1.2% from last month</span>
-                </p>
-            </div>
-            <div class="bg-white rounded shadow-sm p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-gray-500">Average Rating</h3>
-                    <div class="w-10 h-10 flex items-center justify-center text-primary bg-primary/10 rounded-full">
-                        <i class="ri-star-line ri-lg"></i>
-                    </div>
-                </div>
-                <p class="text-3xl font-bold text-gray-800">4.92</p>
-                <div class="flex items-center mt-2">
-                    <div class="flex">
-                        <i class="ri-star-fill text-yellow-400"></i>
-                        <i class="ri-star-fill text-yellow-400"></i>
-                        <i class="ri-star-fill text-yellow-400"></i>
-                        <i class="ri-star-fill text-yellow-400"></i>
-                        <i class="ri-star-half-fill text-yellow-400"></i>
-                    </div>
-                    <span class="text-gray-500 text-sm ml-2">(432 reviews)</span>
-                </div>
-            </div>
-        </div>
-        <!-- Account Details -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <!-- Personal Information -->
-            <div class="bg-white rounded shadow-sm p-6">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold text-gray-800">Personal Information
-                    </h2>
-                </div>
-                <div class="space-y-4">
-                    <div>
-                        <h3 class="text-sm text-gray-500 mb-1">Full Name</h3>
-                        <asp:Label ID="lblFullname" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
-                    </div>
-                    <div>
-                        <h3 class="text-sm text-gray-500 mb-1">Contact Number</h3>
-                        <asp:Label ID="lblPhonenumber" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
-                    </div>
-                    <div>
-                        <h3 class="text-sm text-gray-500 mb-1">Email Address</h3>
-                        <asp:Label ID="lblMail" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
-                    </div>
-                    <div>
-                        <h3 class="text-sm text-gray-500 mb-1">Home Address</h3>
-                        <asp:Label ID="lblAdd" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
-                    </div>
-                    <div>
-                        <h3 class="text-sm text-gray-500 mb-1">Emergency Contact</h3>
-                        <asp:Label ID="Label1" runat="server" CssClass="text-gray-800" Text="+91 9601292692"></asp:Label>
-                    </div>
-                </div>
-            </div>
-            <!-- Employment Details -->
-            <div class="bg-white rounded shadow-sm p-6">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold text-gray-800">Employment Details</h2>
-                </div>
-                <div class="space-y-4">
-                    <div>
-                        <h3 class="text-sm text-gray-500 mb-1">Employee ID</h3>
-                        #<asp:Label ID="lblIds" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
-                    </div>
-                    <div>
-                        <h3 class="text-sm text-gray-500 mb-1">Working Area</h3>
-                        <asp:Label ID="lblAddres" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
-                    </div>
-                    <div>
-                        <h3 class="text-sm text-gray-500 mb-1">Supervisor</h3>
-                        <asp:Label ID="Label2" runat="server" CssClass="text-gray-800" Text="Shivam Dholeriya"></asp:Label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Recent Feedback -->
-        <div class="bg-white rounded shadow-sm p-6 mb-8">
-            <h2 class="text-xl font-bold text-gray-800 mb-6">Recent Customer Feedback
-            </h2>
-            <div class="space-y-6">
-                <div class="border-b border-gray-100 pb-6">
-                    <div class="flex items-center justify-between mb-2">
-                        <div class="flex items-center">
-                            <div class="flex mr-2">
-                                <i class="ri-star-fill text-yellow-400"></i>
-                                <i class="ri-star-fill text-yellow-400"></i>
-                                <i class="ri-star-fill text-yellow-400"></i>
-                                <i class="ri-star-fill text-yellow-400"></i>
-                                <i class="ri-star-fill text-yellow-400"></i>
-                            </div>
-                            <span class="font-medium text-gray-800">Emily Wilson</span>
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="flex flex-col items-center mb-6 md:mb-0 md:mr-10">
+                        <div class="w-32 h-32 rounded-full overflow-hidden mb-4 border-4 border-primary/10">
+                            <asp:Image ID="imgProfile" runat="server" CssClass="rounded-full w-32 h-32" />
                         </div>
-                        <span class="text-sm text-gray-500">April 14, 2025</span>
+                        <h2 class="text-2xl font-bold text-gray-800"><asp:Label ID="lblName" runat="server" CssClass="text-2xl font-bold text-gray-800"></asp:Label></h2>
+                        <div class="flex items-center mt-1 mb-2">
+                            <span class="w-3 h-3 rounded-full mr-2 
+                                <%= lblStatus.Text.ToLower() == "active" ? "bg-green-500" : 
+                                    (lblStatus.Text.ToLower() == "inactive" ? "bg-red-500" : "bg-gray-500") %>"></span>
+                            <span class="font-medium 
+                                <%= lblStatus.Text.ToLower() == "active" ? "text-green-600" : 
+                                    (lblStatus.Text.ToLower() == "inactive" ? "text-red-600" : "text-gray-600") %>">
+                                <asp:Label ID="lblStatus" runat="server"></asp:Label>
+                            </span>
+                        </div>
+                        <p class="text-gray-500">ID: #<asp:Label ID="lblID" runat="server" CssClass="text-gray-500"></asp:Label></p>
                     </div>
-                    <p class="text-gray-600">
-                        "James was incredibly professional and friendly. He delivered my
-                        package ahead of schedule and even helped carry it inside.
-                        Exceptional service!"
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1">
+                        <div>
+                            <h3 class="text-gray-500 mb-1">Email</h3>
+                            <p class="text-gray-800 font-medium">
+                                <asp:Label ID="lblEmail" runat="server" CssClass="text-gray-800 font-medium"></asp:Label>
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="text-gray-500 mb-1">Phone</h3>
+                            <p class="text-gray-800 font-medium"><asp:Label ID="lblPhone" runat="server" CssClass="text-gray-800 font-medium"></asp:Label></p>
+                        </div>
+                        <div>
+                            <h3 class="text-gray-500 mb-1">Address</h3>
+                            <p class="text-gray-800 font-medium"><asp:Label ID="lblAddress" runat="server" CssClass="text-gray-800 font-medium"></asp:Label></p>
+                        </div>
+                        <div>
+                            <h3 class="text-gray-500 mb-1">Vehical Number</h3>
+                            <p class="text-gray-800 font-medium"><asp:Label ID="lblVehicle" runat="server" CssClass="text-gray-800 font-medium"></asp:Label></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Performance Metrics -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-gray-500">Total Deliveries</h3>
+                        <div class="w-10 h-10 flex items-center justify-center text-primary bg-primary/10 rounded-full">
+                            <i class="ri-box-3-line ri-lg"></i>
+                        </div>
+                    </div>
+                    <p class="text-3xl font-bold text-gray-800">1,287</p>
+                    <p class="text-green-600 text-sm mt-2 flex items-center">
+                        <i class="ri-arrow-up-line ri-sm mr-1"></i>
+                        <span>12% from last month</span>
                     </p>
                 </div>
-            </div>
-        </div>
-        <!-- Account Settings -->
-        <div class="bg-white rounded shadow-sm p-6">
-            <h2 class="text-xl font-bold text-gray-800 mb-6">Account Settings</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <button id="changePasswordBtn"
-                    class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded hover:border-primary hover:bg-primary/5 transition-colors !rounded-button whitespace-nowrap">
-                    <div class="w-12 h-12 flex items-center justify-center text-primary mb-2">
-                        <i class="ri-lock-password-line ri-xl"></i>
-                    </div>
-                    <span class="text-gray-800 font-medium">Change Password</span>
-                </button>
-                <!-- Password Change Modal -->
-                <div id="passwordChangeModal"
-                    class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-                    <div class="bg-white rounded-lg w-full max-w-md mx-4 relative">
-                        <div class="p-6 border-b border-gray-200">
-                            <h2 class="text-xl font-bold text-gray-800">Change Password</h2>
-                            <button id="closePasswordModal"
-                                class="absolute top-6 right-6 text-gray-400 hover:text-gray-600">
-                                <i class="ri-close-line ri-lg"></i>
-                            </button>
+                <div class="bg-white rounded shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-gray-500">On-time Rate</h3>
+                        <div class="w-10 h-10 flex items-center justify-center text-primary bg-primary/10 rounded-full">
+                            <i class="ri-time-line ri-lg"></i>
                         </div>
-                        <form id="passwordChangeForm" class="p-6">
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2"
-                                        for="currentPassword">
-                                        Current Password</label>
-                                    <div class="relative">
-                                        <input type="password" id="currentPassword"
-                                            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                                            required />
-                                        <button type="button"
-                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 toggle-password">
-                                            <i class="ri-eye-line"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2" for="newPassword">
-                                        New
-                                        Password</label>
-                                    <div class="relative">
-                                        <input type="password" id="newPassword"
-                                            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                                            required />
-                                        <button type="button"
-                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 toggle-password">
-                                            <i class="ri-eye-line"></i>
-                                        </button>
-                                    </div>
-                                    <div class="mt-2 text-sm text-gray-500">
-                                        Password must contain:
-                                        <ul class="list-disc list-inside space-y-1">
-                                            <li id="lengthCheck" class="text-gray-400">At least 8 characters
-                                            </li>
-                                            <li id="upperCheck" class="text-gray-400">One uppercase letter
-                                            </li>
-                                            <li id="lowerCheck" class="text-gray-400">One lowercase letter
-                                            </li>
-                                            <li id="numberCheck" class="text-gray-400">One number
-                                            </li>
-                                            <li id="specialCheck" class="text-gray-400">One special character
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2"
-                                        for="confirmPassword">
-                                        Confirm New Password</label>
-                                    <div class="relative">
-                                        <input type="password" id="confirmPassword"
-                                            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                                            required />
-                                        <button type="button"
-                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 toggle-password">
-                                            <i class="ri-eye-line"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200 mt-6">
-                                <button type="button" id="cancelPasswordChange"
-                                    class="px-6 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 !rounded-button">
-                                    Cancel
-                                </button>
-                                <button type="submit"
-                                    class="px-6 py-2 bg-primary text-white rounded hover:bg-primary/90 !rounded-button">
-                                    Change Password
-                                </button>
-                            </div>
-                        </form>
+                    </div>
+                    <p class="text-3xl font-bold text-gray-800">98.7%</p>
+                    <p class="text-green-600 text-sm mt-2 flex items-center">
+                        <i class="ri-arrow-up-line ri-sm mr-1"></i>
+                        <span>1.2% from last month</span>
+                    </p>
+                </div>
+                <div class="bg-white rounded shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-gray-500">Average Rating</h3>
+                        <div class="w-10 h-10 flex items-center justify-center text-primary bg-primary/10 rounded-full">
+                            <i class="ri-star-line ri-lg"></i>
+                        </div>
+                    </div>
+                    <p class="text-3xl font-bold text-gray-800">4.92</p>
+                    <div class="flex items-center mt-2">
+                        <div class="flex">
+                            <i class="ri-star-fill text-yellow-400"></i>
+                            <i class="ri-star-fill text-yellow-400"></i>
+                            <i class="ri-star-fill text-yellow-400"></i>
+                            <i class="ri-star-fill text-yellow-400"></i>
+                            <i class="ri-star-half-fill text-yellow-400"></i>
+                        </div>
+                        <span class="text-gray-500 text-sm ml-2">(432 reviews)</span>
                     </div>
                 </div>
-                <button id="notificationSettingsBtn"
-                    class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded hover:border-primary hover:bg-primary/5 transition-colors !rounded-button whitespace-nowrap">
-                    <div class="w-12 h-12 flex items-center justify-center text-primary mb-2">
-                        <i class="ri-notification-4-line ri-xl"></i>
+            </div>
+            <!-- Account Details -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Personal Information -->
+                <div class="bg-white rounded shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-bold text-gray-800">Personal Information
+                        </h2>
                     </div>
-                    <span class="text-gray-800 font-medium">Notification Settings</span>
-                </button>
-                <!-- Notification Settings Modal -->
-                <div id="notificationSettingsModal"
-                    class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-                    <div class="bg-white rounded-lg w-full max-w-2xl mx-4 relative">
-                        <div class="p-6 border-b border-gray-200">
-                            <h2 class="text-xl font-bold text-gray-800">Notification Settings
-                            </h2>
-                            <button id="closeNotificationModal"
-                                class="absolute top-6 right-6 text-gray-400 hover:text-gray-600">
-                                <i class="ri-close-line ri-lg"></i>
-                            </button>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="text-sm text-gray-500 mb-1">Full Name</h3>
+                            <asp:Label ID="lblFullname" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
                         </div>
-                        <form id="notificationSettingsForm" class="p-6">
-                            <div class="space-y-6">
+                        <div>
+                            <h3 class="text-sm text-gray-500 mb-1">Contact Number</h3>
+                            <asp:Label ID="lblPhonenumber" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
+                        </div>
+                        <div>
+                            <h3 class="text-sm text-gray-500 mb-1">Email Address</h3>
+                            <asp:Label ID="lblMail" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
+                        </div>
+                        <div>
+                            <h3 class="text-sm text-gray-500 mb-1">Home Address</h3>
+                            <asp:Label ID="lblAdd" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
+                        </div>
+                        <div>
+                            <h3 class="text-sm text-gray-500 mb-1">Emergency Contact</h3>
+                            <asp:Label ID="Label1" runat="server" CssClass="text-gray-800" Text="+91 9601292692"></asp:Label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Employment Details -->
+                <div class="bg-white rounded shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-bold text-gray-800">Employment Details</h2>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="text-sm text-gray-500 mb-1">Employee ID</h3>
+                            #<asp:Label ID="lblIds" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
+                        </div>
+                        <div>
+                            <h3 class="text-sm text-gray-500 mb-1">Working Area</h3>
+                            <asp:Label ID="lblAddres" runat="server" CssClass="text-gray-800" Text="****"></asp:Label>
+                        </div>
+                        <div>
+                            <h3 class="text-sm text-gray-500 mb-1">Supervisor</h3>
+                            <asp:Label ID="Label2" runat="server" CssClass="text-gray-800" Text="Shivam Dholeriya"></asp:Label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Recent Feedback -->
+            <div class="bg-white rounded shadow-sm p-6 mb-8">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">Recent Customer Feedback
+                </h2>
+                <div class="space-y-6">
+                    <div class="border-b border-gray-100 pb-6">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center">
+                                <div class="flex mr-2">
+                                    <i class="ri-star-fill text-yellow-400"></i>
+                                    <i class="ri-star-fill text-yellow-400"></i>
+                                    <i class="ri-star-fill text-yellow-400"></i>
+                                    <i class="ri-star-fill text-yellow-400"></i>
+                                    <i class="ri-star-fill text-yellow-400"></i>
+                                </div>
+                                <span class="font-medium text-gray-800">Emily Wilson</span>
+                            </div>
+                            <span class="text-sm text-gray-500">April 14, 2025</span>
+                        </div>
+                        <p class="text-gray-600">
+                            "James was incredibly professional and friendly. He delivered my
+                            package ahead of schedule and even helped carry it inside.
+                            Exceptional service!"
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Account Settings -->
+            <div class="bg-white rounded shadow-sm p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-6">Account Settings</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <button id="changePasswordBtn"
+                        class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded hover:border-primary hover:bg-primary/5 transition-colors !rounded-button whitespace-nowrap">
+                        <div class="w-12 h-12 flex items-center justify-center text-primary mb-2">
+                            <i class="ri-lock-password-line ri-xl"></i>
+                        </div>
+                        <span class="text-gray-800 font-medium">Change Password</span>
+                    </button>
+                    <!-- Password Change Modal -->
+                    <div id="passwordChangeModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+                        <div class="bg-white rounded-lg w-full max-w-md mx-4 relative">
+                            <div class="p-6 border-b border-gray-200">
+                                <h2 class="text-xl font-bold text-gray-800">Change Password</h2>
+                                <button type="button" id="closePasswordModal"
+                                    class="absolute top-6 right-6 text-gray-400 hover:text-gray-600">
+                                    <i class="ri-close-line ri-lg"></i>
+                                </button>
+                            </div>
+                            <div class="message text-center flex flex-col items-center">
+                                <asp:Label ID="passMsg" runat="server" ForeColor="red" Text=""></asp:Label>
+                            </div>
+                            <div class="p-6">
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2"
+                                            for="currentPassword">
+                                            Current Password</label>
+                                        <div class="relative">
+                                            <asp:TextBox ID="currentPassword" runat="server" TextMode="Password"
+                                                CssClass="w-full px-4 py-2 border border-gray-300 rounded" />
+                                            <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 toggle-password"
+                                                data-target="currentPassword">
+                                                <i class="ri-eye-line"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2" for="newPassword">
+                                            New Password</label>
+                                        <div class="relative">
+                                            <asp:TextBox ID="newPassword" runat="server" TextMode="Password"
+                                                CssClass="w-full px-4 py-2 border border-gray-300 rounded" />
+                                            <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 toggle-password"
+                                                data-target="newPassword">
+                                                <i class="ri-eye-line"></i>
+                                            </button>
+                                        </div>
+                                        <div class="mt-2 text-sm text-gray-500">
+                                            Password must contain:
+                                            <ul class="list-disc list-inside space-y-1">
+                                                <li id="lengthCheck" class="text-gray-400">At least 8 characters
+                                                </li>
+                                                <li id="upperCheck" class="text-gray-400">One uppercase letter
+                                                </li>
+                                                <li id="lowerCheck" class="text-gray-400">One lowercase letter
+                                                </li>
+                                                <li id="numberCheck" class="text-gray-400">One number
+                                                </li>
+                                                <li id="specialCheck" class="text-gray-400">One special character
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2"
+                                            for="confirmPassword">
+                                            Confirm New Password</label>
+                                        <div class="relative">
+                                            <asp:TextBox ID="ConfirmPassword" runat="server" TextMode="Password"
+                                                CssClass="w-full px-4 py-2 border border-gray-300 rounded" />
+                                            <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 toggle-password"
+                                                data-target="ConfirmPassword">
+                                                <i class="ri-eye-line"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200 mt-6">
+                                    <button type="button" id="cancelPasswordChange"
+                                        class="px-6 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 !rounded-button">
+                                        Cancel
+                                    </button>
+                                    <asp:Button ID="btnChangePassword" runat="server" Text="Change Password"
+                                        CssClass="px-6 py-2 bg-primary text-white rounded hover:bg-primary/90 !rounded-button"
+                                        OnClick="btnChangePassword_Click" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="notificationSettingsBtn"
+                        class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded hover:border-primary hover:bg-primary/5 transition-colors !rounded-button whitespace-nowrap">
+                        <div class="w-12 h-12 flex items-center justify-center text-primary mb-2">
+                            <i class="ri-notification-4-line ri-xl"></i>
+                        </div>
+                        <span class="text-gray-800 font-medium">Notification Settings</span>
+                    </button>
+                    <!-- Notification Settings Modal -->
+                    <div id="notificationSettingsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+                        <div class="bg-white rounded-lg w-full max-w-md mx-4 relative">
+                            <div class="p-6 border-b border-gray-200">
+                                <h2 class="text-xl font-bold text-gray-800">Notification Settings</h2>
+                                <div class="p-6 border-b border-gray-200">
+                                    <h2 class="text-xl font-bold text-gray-800">Notification Settings</h2>
+                                    <button type="button" id="closeNotificationModal"
+                                        class="absolute top-6 right-6 text-gray-400 hover:text-gray-600">
+                                        <i class="ri-close-line ri-lg"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-6">
                                 <div>
-                                    <h3 class="text-lg font-medium text-gray-800 mb-4">Notification Types
-                                    </h3>
+                                    <h3 class="text-lg font-medium text-gray-800 mb-4">Notification Types </h3>
                                     <div class="space-y-4">
                                         <div class="flex items-center justify-between">
                                             <div>
@@ -561,35 +559,34 @@
                                 </div>
                             </div>
                             <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200 mt-6">
-                                <button type="button" id="cancelNotificationSettings"
-                                    class="px-6 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 !rounded-button">
-                                    Cancel
-                                </button>
                                 <button type="submit"
                                     class="px-6 py-2 bg-primary text-white rounded hover:bg-primary/90 !rounded-button">
                                     Save Changes
                                 </button>
+                                <button type="button" id="cancelNotificationSettings"
+                                    class="px-6 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 !rounded-button">
+                                    Cancel
+                                </button>
                             </div>
-                        </form>
+                        </div>
                     </div>
+                    <button
+                        class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded hover:border-primary hover:bg-primary/5 transition-colors !rounded-button whitespace-nowrap">
+                        <div class="w-12 h-12 flex items-center justify-center text-primary mb-2">
+                            <i class="ri-shield-user-line ri-xl"></i>
+                        </div>
+                        <span class="text-gray-800 font-medium">Privacy Settings</span>
+                    </button>
+                    <button
+                        class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded hover:border-primary hover:bg-primary/5 transition-colors !rounded-button whitespace-nowrap">
+                        <div class="w-12 h-12 flex items-center justify-center text-primary mb-2">
+                            <i class="ri-global-line ri-xl"></i>
+                        </div>
+                        <span class="text-gray-800 font-medium">Language Preferences</span>
+                    </button>
                 </div>
-                <button
-                    class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded hover:border-primary hover:bg-primary/5 transition-colors !rounded-button whitespace-nowrap">
-                    <div class="w-12 h-12 flex items-center justify-center text-primary mb-2">
-                        <i class="ri-shield-user-line ri-xl"></i>
-                    </div>
-                    <span class="text-gray-800 font-medium">Privacy Settings</span>
-                </button>
-                <button
-                    class="flex flex-col items-center justify-center p-4 border border-gray-200 rounded hover:border-primary hover:bg-primary/5 transition-colors !rounded-button whitespace-nowrap">
-                    <div class="w-12 h-12 flex items-center justify-center text-primary mb-2">
-                        <i class="ri-global-line ri-xl"></i>
-                    </div>
-                    <span class="text-gray-800 font-medium">Language Preferences</span>
-                </button>
             </div>
         </div>
-    </div>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Monthly Performance Chart
@@ -767,7 +764,7 @@
         });
     </script>
     <!-- Edit Profile Modal -->
-    <div id="editProfileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div id="editProfileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
         <div class="bg-white rounded-lg w-full max-w-2xl mx-4 relative">
             <div class="p-6 border-b border-gray-200">
                 <h2 class="text-xl font-bold text-gray-800">Edit Profile</h2>
@@ -775,7 +772,7 @@
                     <i class="ri-close-line ri-lg"></i>
                 </button>
             </div>
-            <form runat="server" id="editProfileForm" class="p-6">
+            <div class="p-6">
                 <div class="message text-center flex flex-col items-center">
                     <asp:Label ID="msg" runat="server" ForeColor="red" Text=""></asp:Label>
                 </div>
@@ -841,44 +838,14 @@
                     <asp:Button ID="btnSave" runat="server" Text="Save Changes" 
                         class="px-6 py-2 bg-primary text-white rounded hover:bg-primary/90 !rounded-button" OnClick="btnSave_Click"/>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
+    </form>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const changePasswordBtn = document.getElementById("changePasswordBtn");
-            const passwordChangeModal = document.getElementById("passwordChangeModal");
-            const closePasswordModal = document.getElementById("closePasswordModal");
-            const cancelPasswordChange = document.getElementById("cancelPasswordChange");
-            const passwordChangeForm = document.getElementById("passwordChangeForm");
             const newPasswordInput = document.getElementById("newPassword");
-            const confirmPasswordInput = document.getElementById("confirmPassword");
-            // Password validation checks
-            const lengthCheck = document.getElementById("lengthCheck");
-            const upperCheck = document.getElementById("upperCheck");
-            const lowerCheck = document.getElementById("lowerCheck");
-            const numberCheck = document.getElementById("numberCheck");
-            const specialCheck = document.getElementById("specialCheck");
-            function showPasswordModal() {
-                passwordChangeModal.classList.remove("hidden");
-                passwordChangeModal.classList.add("flex");
-                document.body.style.overflow = "hidden";
-            }
-            function hidePasswordModal() {
-                passwordChangeModal.classList.add("hidden");
-                passwordChangeModal.classList.remove("flex");
-                document.body.style.overflow = "";
-                passwordChangeForm.reset();
-                resetValidationChecks();
-            }
-            function resetValidationChecks() {
-                [lengthCheck, upperCheck, lowerCheck, numberCheck, specialCheck].forEach(
-                    (check) => {
-                        check.classList.remove("text-green-500");
-                        check.classList.add("text-gray-400");
-                    },
-                );
-            }
+
             function validatePassword(password) {
                 const checks = {
                     length: password.length >= 8,
@@ -906,23 +873,78 @@
             newPasswordInput.addEventListener("input", () => {
                 validatePassword(newPasswordInput.value);
             });
-            // Toggle password visibility
-            document.querySelectorAll(".toggle-password").forEach((button) => {
-                button.addEventListener("click", function () {
-                    const input = this.parentElement.querySelector("input");
-                    const icon = this.querySelector("i");
 
-                    if (input.type === "password") {
-                        input.type = "text";
-                        icon.classList.remove("ri-eye-line");
-                        icon.classList.add("ri-eye-off-line");
-                    } else {
-                        input.type = "password";
-                        icon.classList.remove("ri-eye-off-line");
-                        icon.classList.add("ri-eye-line");
+            // Toggle password visibility
+            document.querySelectorAll('.toggle-password').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const targetId = this.getAttribute('data-target');
+                    const input = document.getElementById(targetId);
+
+                    if (input) {
+                        if (input.type === 'password') {
+                            input.type = 'text';
+                            this.querySelector('i').classList.remove('ri-eye-line');
+                            this.querySelector('i').classList.add('ri-eye-off-line');
+                        } else {
+                            input.type = 'password';
+                            this.querySelector('i').classList.remove('ri-eye-off-line');
+                            this.querySelector('i').classList.add('ri-eye-line');
+                        }
                     }
                 });
             });
+
+            const changePasswordBtn = document.getElementById("changePasswordBtn");
+            const passwordChangeModal = document.getElementById("passwordChangeModal");
+            const closePasswordModal = document.getElementById("closePasswordModal");
+            const cancelPasswordChange = document.getElementById("cancelPasswordChange");
+            const passwordChangeForm = document.getElementById("passwordChangeForm");
+            const confirmPasswordInput = document.getElementById("confirmPassword");
+            // Password validation checks
+            const lengthCheck = document.getElementById("lengthCheck");
+            const upperCheck = document.getElementById("upperCheck");
+            const lowerCheck = document.getElementById("lowerCheck");
+            const numberCheck = document.getElementById("numberCheck");
+            const specialCheck = document.getElementById("specialCheck");
+            function showPasswordModal() {
+                passwordChangeModal.classList.remove("hidden");
+                passwordChangeModal.classList.add("flex");
+                document.body.style.overflow = "hidden";
+            }
+            function hidePasswordModal() {
+                passwordChangeModal.classList.add("hidden");
+                passwordChangeModal.classList.remove("flex");
+                document.body.style.overflow = "";
+                passwordChangeForm.reset();
+                resetValidationChecks();
+            }
+            changePasswordBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                passwordChangeModal.classList.remove("hidden");
+            });
+
+            closePasswordModal.addEventListener("click", function () {
+                passwordChangeModal.classList.add("hidden");
+            });
+            document.getElementById("editProfileBtn").addEventListener("click", function (e) {
+                e.preventDefault();
+                document.getElementById("editProfileModal").classList.remove("hidden");
+            });
+
+            document.getElementById("closeEditProfileModal").addEventListener("click", function () {
+                document.getElementById("editProfileModal").classList.add("hidden");
+            });
+
+            function resetValidationChecks() {
+                [lengthCheck, upperCheck, lowerCheck, numberCheck, specialCheck].forEach(
+                    (check) => {
+                        check.classList.remove("text-green-500");
+                        check.classList.add("text-gray-400");
+                    },
+                );
+            }
+            
+
             changePasswordBtn.addEventListener("click", showPasswordModal);
             closePasswordModal.addEventListener("click", hidePasswordModal);
             cancelPasswordChange.addEventListener("click", hidePasswordModal);
@@ -931,61 +953,31 @@
                     hidePasswordModal();
                 }
             });
-           
-            const notificationSettingsBtn = document.getElementById(
-                "notificationSettingsBtn",
-            );
-            const notificationSettingsModal = document.getElementById(
-                "notificationSettingsModal",
-            );
-            const closeNotificationModal = document.getElementById(
-                "closeNotificationModal",
-            );
-            const cancelNotificationSettings = document.getElementById(
-                "cancelNotificationSettings",
-            );
-            const notificationSettingsForm = document.getElementById(
-                "notificationSettingsForm",
-            );
-            function showNotificationModal() {
-                notificationSettingsModal.classList.remove("hidden");
-                notificationSettingsModal.classList.add("flex");
-                document.body.style.overflow = "hidden";
+
+            const notificationSettingsBtn = document.getElementById("notificationSettingsBtn");
+            const closeNotificationModal = document.getElementById("closeNotificationModal");
+            const cancelNotificationSettings = document.getElementById("cancelNotificationSettings");
+            const notificationSettingsModal = document.getElementById("notificationSettingsModal");
+
+            if (notificationSettingsBtn) {
+                notificationSettingsBtn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    notificationSettingsModal.classList.remove("hidden");
+                });
             }
-            function hideNotificationModal() {
-                notificationSettingsModal.classList.add("hidden");
-                notificationSettingsModal.classList.remove("flex");
-                document.body.style.overflow = "";
+
+            if (closeNotificationModal) {
+                closeNotificationModal.addEventListener("click", function () {
+                    notificationSettingsModal.classList.add("hidden");
+                });
             }
-            notificationSettingsBtn.addEventListener("click", showNotificationModal);
-            closeNotificationModal.addEventListener("click", hideNotificationModal);
-            cancelNotificationSettings.addEventListener("click", hideNotificationModal);
-            notificationSettingsModal.addEventListener("click", (e) => {
-                if (e.target === notificationSettingsModal) {
-                    hideNotificationModal();
-                }
-            });
-            notificationSettingsForm.addEventListener("submit", (e) => {
-                e.preventDefault();
-                const successModal = document.createElement("div");
-                successModal.className =
-                    "fixed inset-0 flex items-center justify-center z-50";
-                successModal.innerHTML = `
-                    <div class="bg-white rounded-lg p-6 shadow-xl max-w-sm mx-4">
-                    <div class="text-green-500 mb-4">
-                    <i class="ri-checkbox-circle-line ri-2x"></i>
-                    </div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Success!</h3>
-                    <p class="text-gray-600 mb-4">Your notification preferences have been updated successfully.</p>
-                    <button class="w-full px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 !rounded-button">OK</button>
-                    </div>
-                `;
-                document.body.appendChild(successModal);
-                successModal.querySelector("button").onclick = () => {
-                    successModal.remove();
-                    hideNotificationModal();
-                };
-            });
+
+            if (cancelNotificationSettings) {
+                cancelNotificationSettings.addEventListener("click", function () {
+                    notificationSettingsModal.classList.add("hidden");
+                });
+            }
+
             const editProfileBtn = document.getElementById("editProfileBtn");
             const editProfileModal = document.getElementById("editProfileModal");
             const closeModal = document.getElementById("closeModal");

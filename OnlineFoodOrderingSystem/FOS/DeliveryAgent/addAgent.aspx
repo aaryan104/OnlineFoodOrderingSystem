@@ -230,8 +230,20 @@
                         <div class="absolute top-3 left-0 flex items-start pl-3 pointer-events-none w-10 flex items-center justify-center">
                             <i class="ri-map-pin-line text-gray-400"></i>
                         </div>
-                        <asp:TextBox ID="address" runat="server" rows="3"
-                            class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded text-gray-700 focus:border-primary" placeholder="Enter your full address"></asp:TextBox>
+                        <asp:DropDownList ID="workingArea" runat="server"
+                            class="w-full px-10 py-2 border border-gray-300 rounded text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
+                            <asp:ListItem>-- Select area --</asp:ListItem>
+                            <asp:ListItem>Katargam, Surat</asp:ListItem>
+                            <asp:ListItem>Adajan, Surat</asp:ListItem>
+                            <asp:ListItem>Varachha, Surat</asp:ListItem>
+                            <asp:ListItem>Nana Varachha, Surat</asp:ListItem>
+                            <asp:ListItem>Mota Varachha, Surat</asp:ListItem>
+                            <asp:ListItem>Kamrej, Surat</asp:ListItem>
+                            <asp:ListItem>Vesu, Surat</asp:ListItem>
+                            <asp:ListItem>New Katargam, Surat</asp:ListItem>
+                        </asp:DropDownList>
+                        <%--<asp:TextBox ID="address" runat="server" rows="3"
+                            class="w-full pl-10 pr-3 py-3 border border-gray-300 rounded text-gray-700 focus:border-primary" placeholder="Enter your full address"></asp:TextBox>--%>
                     </div>
                 </div>
                 <div class="mb-6">

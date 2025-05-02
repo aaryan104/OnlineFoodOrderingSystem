@@ -21,10 +21,17 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
         {
             if (!IsPostBack)
             {
-                LoadDeliveryAgentProfile();
-                LoadDeliveryAgentInformation();
-                LoademployeeInformation();
-                EditDeliveryAgentProfile();
+                if (Session["DeliveryAgentId"] != null)
+                {
+                    LoadDeliveryAgentProfile();
+                    LoadDeliveryAgentInformation();
+                    LoademployeeInformation();
+                    EditDeliveryAgentProfile();
+                }
+                else
+                {
+                    Response.Redirect("AgentLogin.aspx");
+                }
             }
         }
 
@@ -141,7 +148,7 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
                 lastName.Text = reader["LastName"].ToString();
 
                 email.Text = reader["Email"].ToString();
-                phone.Text = "+91 " + reader["PhoneNumber"].ToString();
+                phone.Text = reader["PhoneNumber"].ToString();
 
                 string imagePath = reader["ImageURL"].ToString();
                 if (!string.IsNullOrEmpty(imagePath))
@@ -193,6 +200,48 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
             catch (Exception ex)
             {
                 msg.Text = ex.ToString();
+            }
+        }
+
+        protected void btnChangePassword_Click(object sender, EventArgs e)
+        {
+            string agentId = Session["DeliveryAgentId"].ToString();  // make sure session has user id
+            string cPassword = currentPassword.Text;
+            string nPassword = newPassword.Text;
+            string conPassword = ConfirmPassword.Text;
+
+            if(nPassword != conPassword)
+            {
+                passMsg.Text = "New password and confirmation do not match.";
+            }
+
+            try
+            {
+                funcon();
+
+                string checkQuery = "SELECT PasswordHash FROM DeliveryAgents WHERE DeliveryAgentId = @AgentId";
+                cmd = new SqlCommand(checkQuery, conn);
+                cmd.Parameters.AddWithValue("@AgentId", agentId);
+                string existingPassword = Convert.ToString(cmd.ExecuteScalar());
+
+                if (existingPassword != cPassword)
+                {
+                    passMsg.Text = "Current password is incorrect.";
+                    return;
+                }
+
+                string updateQuery = "UPDATE DeliveryAgents SET PasswordHash = @NewPassword WHERE DeliveryAgentId = @AgentId";
+                cmd = new SqlCommand(updateQuery, conn);
+                cmd.Parameters.AddWithValue("@NewPassword", nPassword);
+                cmd.Parameters.AddWithValue("@AgentId", agentId);
+                cmd.ExecuteNonQuery();
+
+                passMsg.ForeColor = System.Drawing.Color.Green;
+                passMsg.Text = "Password changed successfully.";
+            }
+            catch (Exception ex)
+            {
+                passMsg.Text = "Error: " + ex.Message;
             }
         }
     }

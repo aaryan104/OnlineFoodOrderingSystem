@@ -53,7 +53,7 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
 
             if (firstName.Text == string.Empty || lastName.Text == string.Empty || password.Text == string.Empty
                     || email.Text == string.Empty || phoneNumber.Text == string.Empty || vehicleNumber.Text == string.Empty
-                    || status.Text == string.Empty || address.Text == string.Empty || profilePhoto == null)
+                    || status.Text == string.Empty || workingArea.SelectedValue == "-- Select area --" || profilePhoto == null)
             {
                 msg.Text = "Please fill all fields.";
                 msg.ForeColor = System.Drawing.Color.Red;
@@ -71,7 +71,7 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
                 cmd.Parameters.AddWithValue("@phone", phoneNumber.Text);
                 cmd.Parameters.AddWithValue("@vehical", vehicleNumber.Text);
                 cmd.Parameters.AddWithValue("@status", status.Text);
-                cmd.Parameters.AddWithValue("@address", address.Text);
+                cmd.Parameters.AddWithValue("@address", workingArea.SelectedValue);
                 cmd.Parameters.AddWithValue("@image", img);
 
                 int res = cmd.ExecuteNonQuery();

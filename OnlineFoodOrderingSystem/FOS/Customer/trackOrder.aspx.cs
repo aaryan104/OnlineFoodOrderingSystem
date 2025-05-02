@@ -17,22 +17,27 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
         SqlCommand cmd;
         SqlDataAdapter sda;
         DataTable dt;
-        public static int userId; // int type hona chahiye!
+        public static int userId;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["s_eml"] == null)
+            {
+                Response.Redirect("~/FOS/Login.aspx");
+                return;
+            }
+
+            GetUserIdFromEmail();
+
             if (!IsPostBack)
             {
-                if (Session["s_eml"] == null)
-                {
-                    Response.Redirect("~/FOS/Login.aspx");
-                    return;
-                }
-                else
-                {
-                    GetUserIdFromEmail();
-                    LoadOrders();
-                }
+                LoadOrders();
+            }
+
+            // ✅ This now works because HiddenField is set from JS
+            if (IsPostBack && hiddenOrderId.Value != "")
+            {
+                LoadOrderDetails(hiddenOrderId.Value);
             }
         }
 
@@ -92,6 +97,64 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
 
             rptOrders.DataSource = dt;
             rptOrders.DataBind();
+        }
+
+        private void LoadOrderDetails(string orderId)
+        {
+            funcon();
+            //Response.Write("<script>alert('OrderId: " + orderId + "');</script>");
+            string query = @"SELECT TOP 1 
+                            o.OrderId,
+                            o.OrderDate,
+                            o.DeliveryDate,
+                            u.Address,
+                            u.FirstName + ' ' + u.LastName AS CustomerName,
+                            u.PhoneNumber,
+                            p.PaymentMethod
+                        FROM Orders o
+                        INNER JOIN Users u ON o.UserId = u.UserId
+                        LEFT JOIN Payments p ON o.OrderId = p.OrderId
+                        WHERE o.OrderId = @OrderId AND o.UserId = @UserId";
+
+            SqlCommand cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@OrderId", orderId);
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                lblCustomerName.Text = reader["CustomerName"].ToString();
+                lblContact.Text = reader["PhoneNumber"].ToString();
+                lblOrderId.Text = reader["OrderId"].ToString();
+                lblOrderDate.Text = Convert.ToDateTime(reader["OrderDate"]).ToString("MMMM dd, yyyy");
+                //lblEstimatedDelivery.Text = Convert.ToDateTime(reader["DeliveryDate"]).ToString("MMMM dd, yyyy");
+                lblShippingAddress.Text = reader["Address"].ToString();
+                lblPaymentMethod.Text = reader["PaymentMethod"].ToString();
+                lblDebug.Text = $"Loaded orderId = {orderId}, userId = {userId}";
+            }
+            reader.Close();
+
+
+            string itemQuery = @"SELECT m.Name AS ItemName, od.Quantity, od.Subtotal
+                     FROM OrderDetails od
+                     INNER JOIN MenuItems m ON od.ItemId = m.ItemId
+                     WHERE od.OrderId = @OrderId";
+
+            SqlCommand itemCmd = new SqlCommand(itemQuery, conn);
+            itemCmd.Parameters.AddWithValue("@OrderId", orderId);
+            SqlDataAdapter sda = new SqlDataAdapter(itemCmd);
+            DataTable dtItems = new DataTable();
+            sda.Fill(dtItems);
+
+            rptOrderItems.DataSource = dtItems;
+            rptOrderItems.DataBind();
+
+            decimal total = 0;
+            foreach (DataRow row in dtItems.Rows)
+            {
+                total += Convert.ToDecimal(row["Subtotal"]);
+            }
+            lblTotalAmount.Text = "₹" + total.ToString("F2");
         }
     }
 }

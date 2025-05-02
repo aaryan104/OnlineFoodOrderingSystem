@@ -104,6 +104,7 @@
     <Content Include="Asset\Library\img\menu24.jpg" />
     <Content Include="Asset\Library\img\menu25.jpg" />
     <Content Include="Asset\Library\img\menu26.jpg" />
+    <Content Include="Asset\Library\img\PaymentCode.png" />
     <Content Include="Asset\Library\img\team1.png" />
     <Content Include="Asset\Library\img\team2.png" />
     <Content Include="Asset\Library\img\team3.png" />
