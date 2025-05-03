@@ -70,6 +70,7 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
 
             string qry = @"
                 SELECT 
+                    dl.LogId,
                     o.OrderId,
                     dl.StatusUpdate AS Status,
                     dl.Timestamp AS Updated
@@ -151,6 +152,12 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
                     cmd.Parameters.AddWithValue("DeliveredAt", timestamp);
                     cmd.Parameters.AddWithValue("@AssignmentId", assignmentId);
                     cmd.ExecuteNonQuery();
+
+                    string qry5 = "UPDATE Orders SET DeliveryDate=@DeliveryDate WHERE OrderId=@OrderId";
+                    cmd = new SqlCommand(qry5, conn);
+                    cmd.Parameters.AddWithValue("DeliveryDate", timestamp);
+                    cmd.Parameters.AddWithValue("@OrderId", orderId);
+                    cmd.ExecuteNonQuery();
                 }
 
                 BindDeliveryLogs();
@@ -161,6 +168,38 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
             {
                 lblMessage.ForeColor = System.Drawing.Color.Red;
                 lblMessage.Text = "No order assigned with this ID!";
+            }
+        }
+
+        protected void btnDelete_Click(object sender, EventArgs e)
+        {
+            LinkButton btn = (LinkButton)sender;
+            string LogId = btn.CommandArgument;
+
+            try
+            {
+                //Response.Write("Your Selected Id id : " + LogId);
+                funcon();
+
+                String qry = "DELETE FROM DeliveryLogs WHERE LogId=@id";
+                SqlCommand cmd = new SqlCommand(qry, conn);
+                cmd.Parameters.AddWithValue("id", LogId);
+                int res = cmd.ExecuteNonQuery();
+
+                if (res > 0)
+                {
+                    msg.Text = "Data Remove!";
+                }
+                else
+                {
+                    msg.Text = "Data not Removed!";
+                    conn.Close();
+                }
+                BindDeliveryLogs();
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.ToString());
             }
         }
     }

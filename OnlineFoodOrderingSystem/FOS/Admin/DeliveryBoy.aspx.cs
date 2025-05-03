@@ -67,7 +67,7 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
                 //Response.Write("Your Selected Id id : " + deliveryId);
                 funcon();
 
-                String qry = "DELETE FROM MenuItems WHERE ItemId=@id";
+                String qry = "DELETE FROM DeliveryAgents WHERE DeliveryAgentId=@id";
                 SqlCommand cmd = new SqlCommand(qry, conn);
                 cmd.Parameters.AddWithValue("id", deliveryId);
                 int res = cmd.ExecuteNonQuery();

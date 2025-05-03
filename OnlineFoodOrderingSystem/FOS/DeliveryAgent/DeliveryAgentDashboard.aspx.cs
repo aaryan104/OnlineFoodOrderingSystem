@@ -193,6 +193,5 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
                 return rows > 0 ? "success" : "fail";
             }
         }
-
     }
 }

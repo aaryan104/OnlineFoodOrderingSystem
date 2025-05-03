@@ -1,6 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/FOS/Admin/Admin.Master" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="OnlineFoodOrderingSystem.FOS.Admin.Home" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <title>Admin Dashboard</title>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <body class="bg-gray-100">
@@ -217,6 +218,9 @@
                 </div>
             </div>
         </div>
+        <div class="message text-center flex flex-col items-center">
+            <asp:Label ID="msg" runat="server" ForeColor="red" style="font-size:larger" Text=""></asp:Label>
+        </div>
         <div class="bg-white rounded shadow-sm mb-8">
             <div class="p-6 border-b">
                 <div class="flex items-center justify-between">
@@ -254,17 +258,30 @@
                                 </ItemTemplate>
                             </asp:TemplateField>
 
+                            <asp:TemplateField HeaderText="Delivery Agent"
+                                HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                ItemStyle-CssClass="px-6 py-4 whitespace-nowrap">
+                                <ItemTemplate>
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full bg-black-100 text-black-600">
+                                            <span class="text-xs font-medium">
+                                                <%# Eval("DeliveryAgentId") %>
+                                            </span>
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm font-medium text-gray-900"><%# Eval("DeliveryAgentName") %></p>
+                                            <p class="text-xs text-gray-500"><%# Eval("DeliveryPhone") %></p>
+                                        </div>
+                                    </div>
+                                </ItemTemplate>
+                                </asp:TemplateField>
+
                             <asp:TemplateField HeaderText="Customer" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4">
                                 <ItemTemplate>
-                                    <div class="text-sm font-semibold text-gray-900"><%# Eval("FirstName") %> <%# Eval("LastName") %></div>
-                                    <div class="text-sm text-gray-500"><%# Eval("Email") %></div>
+                                    <div class="text-sm font-semibold text-gray-900"><%# Eval("CustomerName") %></div>
+                                    <div class="text-sm text-gray-500"><%# Eval("CustomerPhone") %></div>
                                 </ItemTemplate>
                             </asp:TemplateField>
-
-                            <asp:BoundField DataField="OrderDate" HeaderText="Date"
-                                HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
-                                DataFormatString="{0:MMM dd, yyyy}" />
 
                             <asp:BoundField DataField="Amount" HeaderText="Amount"
                                 HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -274,30 +291,25 @@
                             <asp:TemplateField HeaderText="Status" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap">
                                 <ItemTemplate>
                                     <span class='px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                        <%# Eval("Status").ToString() == "Delivered" ? "bg-green-100 text-green-800" : 
-                                            Eval("Status").ToString() == "Pending" ? "bg-yellow-100 text-yellow-800" : 
-                                            Eval("Status").ToString() == "Preparing" ? "bg-blue-100 text-blue-800" : 
-                                            Eval("Status").ToString() == "Out for Delivery" ? "bg-gray-100 text-gray-800" : 
+                                        <%# Eval("AssignmentStatus").ToString() == "Delivered" ? "bg-green-100 text-green-800" : 
+                                            Eval("AssignmentStatus").ToString() == "Assigned" ? "bg-blue-100 text-blue-800" : 
+                                            Eval("AssignmentStatus").ToString() == "Pending" ? "bg-yellow-100 text-yellow-800" : 
                                             "bg-red-100 text-red-800" %>'>
-                                        <%# Eval("Status") %>
+                                        <%# Eval("AssignmentStatus") %>
                                     </span>
                                 </ItemTemplate>
                             </asp:TemplateField>
 
-                            <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <asp:BoundField DataField="AssignedAt" HeaderText="Date"
+                                HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-sm text-gray-500"
+                                DataFormatString="{0:MMM dd, yyyy}" />
+
+                            <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="btnShow" runat="server" CommandName="Show" CommandArgument='<%# Eval("OrderId") %>' OnClick="btnShow_Click"
-                                        CssClass="text-indigo-600 hover:text-indigo-900 mr-3"
-                                        OnClientClick='<%# "viewOrderDetails(\"" + Eval("OrderID") + "\"); return true;" %>'>
-                                        <i class="ri-eye-fill" style="color: black;"></i>
-                                    </asp:LinkButton>
-                                    <asp:LinkButton ID="btnEdit" runat="server" CommandName="Edit" CommandArgument='<%# Eval("OrderId") %>'
-                                        CssClass="text-yellow-600 hover:text-yellow-900 mr-3">
-                                        <i class="ri-edit-fill" style="color: black;"></i>
-                                    </asp:LinkButton>
-                                    <asp:LinkButton ID="btnDelete" runat="server" CommandName="Delete" CommandArgument='<%# Eval("OrderId") %>'
-                                        CssClass="text-red-600 hover:text-red-900">
-                                        <i class="ri-delete-bin-fill" style="color: red;"></i>
+                                    <asp:LinkButton ID="btnDelete" runat="server" OnClick="btnDelete_Click" CommandArgument='<%# Eval("AssignmentId") %>' style="font-size: large"
+                                        OnClientClick="return confirm('Are you sure you want to delete this Assignment?');" CssClass="text-red-500 hover:text-red-700 w-8 h-8 flex items-center justify-center">
+                                        <i class="ri-delete-bin-line"></i>
                                     </asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -306,88 +318,6 @@
                 </form>
             </div>
         </div>
-        <div class="message text-center flex flex-col items-center">
-            <asp:Label ID="msg" runat="server" ForeColor="red" Text=""></asp:Label>
-        </div>
-        <div id="orderDetailsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" runat="server" style="display: none">
-            <div class="bg-white rounded-lg w-[800px] max-h-[90vh] overflow-y-auto">
-                <div class="p-6 border-b flex items-center justify-between">
-                    <h3 class="text-xl font-semibold text-gray-900">Order Details
-                    </h3>
-                    <button onclick="closeOrderDetails()" class="text-gray-400 hover:text-gray-500">
-                        <i class="ri-close-line text-xl"></i>
-                    </button>
-                </div>
-                <div class="grid grid-cols-2 gap-6 p-6">
-                    <div>
-                        <h4 class="text-sm font-medium text-gray-900 mb-4">Customer Information</h4>
-                        <div class="space-y-2">
-                            <p class="text-sm text-gray-700"><span class="text-gray-500">Name:</span> <asp:Label ID="lblFirstname" runat="server" Text="***"></asp:Label> <asp:Label ID="lblLastname" runat="server" Text="***"></asp:Label></p>
-                            <p class="text-sm text-gray-700"><span class="text-gray-500">Email:</span> <asp:Label ID="lblEmail" runat="server" Text="***"></asp:Label></p>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-medium text-gray-900 mb-4">Order Information</h4>
-                        <div class="space-y-2">
-                            <p class="text-sm text-gray-700"><span class="text-gray-500">Order ID:</span> <asp:Label ID="lblId" runat="server" Text="***"></asp:Label></p>
-                            <p class="text-sm text-gray-700"><span class="text-gray-500">Date:</span> <asp:Label ID="lblDate" runat="server" Text="***"></asp:Label></p>
-                            <p class="text-sm text-gray-700"><span class="text-gray-500">Amount:</span> <asp:Label ID="lblAmount" runat="server" Text="***"></asp:Label></p>
-                            <p class="text-sm text-gray-700"><span class="text-gray-500">Status:</span> 
-                                <span class="px-2 py-1 text-xs rounded-full bg-orange-100 text-orange-700">
-                                    <asp:Label ID="lblStatus" runat="server" Text="***"></asp:Label>
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-span-2">
-                        <h4 class="text-sm font-medium text-gray-900 mb-4">Products</h4>
-                        <div class="border border-gray-200 rounded-lg overflow-hidden">
-                            <asp:Repeater ID="rptProducts" runat="server">
-                                <HeaderTemplate>
-                                    <table class="w-full">
-                                        <thead>
-                                            <tr class="bg-gray-50">
-                                                <th class="py-3 px-4 text-left text-sm font-medium text-gray-900">Product</th>
-                                                <th class="py-3 px-4 text-left text-sm font-medium text-gray-900">Quantity</th>
-                                                <th class="py-3 px-4 text-left text-sm font-medium text-gray-900">Price</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                </HeaderTemplate>
-                                <ItemTemplate>
-                                    <tr class="border-b border-gray-200">
-                                        <td class="py-3 px-4 text-sm text-gray-700"><%# Eval("ProductName") %></td>
-                                        <td class="py-3 px-4 text-sm text-gray-700"><%# Eval("Quantity") %></td>
-                                        <td class="py-3 px-4 text-sm text-gray-700"><%# Eval("Price") %></td>
-                                    </tr>
-                                </ItemTemplate>
-                                <FooterTemplate>
-                                        </tbody>
-                                    </table>
-                                </FooterTemplate>
-                            </asp:Repeater>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <%--</div>--%>
-        <%--</main>
-    </div>--%>
-        <script>
-            function viewOrderDetails(orderId) {
-                const modal = document.getElementById("<%= orderDetailsModal.ClientID %>");
-                modal.classList.remove("hidden");
-                modal.style.display = "block"; // Show the modal
-                return false; // Prevent server-side postback
-            }
-
-            function closeOrderDetails() {
-                const modal = document.getElementById("<%= orderDetailsModal.ClientID %>");
-                modal.style.display = "none";
-                modal.classList.add("hidden"); // Add hidden class to ensure it is not visible
-            }
-        </script>
     </body>
 
 </asp:Content>

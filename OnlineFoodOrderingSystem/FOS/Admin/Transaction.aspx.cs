@@ -58,6 +58,7 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
                             u.PhoneNumber,
                             o.TotalAmount, 
                             o.OrderDate,
+                            p.PaymentId,
                             p.PaymentMethod, 
                             p.PaymentStatus, 
                             p.PaymentDate
@@ -98,13 +99,36 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
             }
         }
 
-
         protected void btnDelete_Click(object sender, EventArgs e)
         {
             LinkButton btn = (LinkButton)sender;
-            string orderId = btn.CommandArgument;
+            string PaymentId = btn.CommandArgument;
 
-            Response.Write("Your Selected Id id : " + orderId);
+            try
+            {
+                //Response.Write("Your Selected Id id : " + PaymentId);
+                funcon();
+
+                String qry = "DELETE FROM Payments WHERE PaymentId=@id";
+                SqlCommand cmd = new SqlCommand(qry, conn);
+                cmd.Parameters.AddWithValue("id", PaymentId);
+                int res = cmd.ExecuteNonQuery();
+
+                if (res > 0)
+                {
+                    msg.Text = "Data Remove!";
+                }
+                else
+                {
+                    msg.Text = "Data not Removed!";
+                    conn.Close();
+                }
+                LoadOrders();
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.ToString());
+            }
         }
     }
 }

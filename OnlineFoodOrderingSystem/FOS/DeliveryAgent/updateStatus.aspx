@@ -199,7 +199,9 @@
                             class="w-full bg-primary text-white py-3 px-6 rounded-button font-medium transition hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap flex items-center justify-center" OnClick="updateButton_Click"/>
                     </div>
             </div>
-
+            <div class="message text-center flex flex-col items-center  ">
+                <asp:Label ID="msg" runat="server" ForeColor="red" Text=""></asp:Label>
+            </div>
             <!-- Status Update History -->
             <div class="mt-8 bg-white rounded-lg shadow-sm border border-gray-100 p-6">
                 <h2 class="text-lg font-semibold text-gray-800 mb-4">
@@ -230,6 +232,19 @@
                             <asp:BoundField DataField="Updated" HeaderText="Updated" 
                                 HeaderStyle-CssClass="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                 ItemStyle-CssClass="px-4 py-3 whitespace-nowrap text-sm text-gray-500" DataFormatString="{0:MMM dd, yyyy - hh:mm tt}" />
+
+                            <asp:TemplateField HeaderText="Actions"
+                                HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                <ItemTemplate>
+                                    <div class="flex justify-end space-x-2">
+                                        <asp:LinkButton ID="btnDelete" runat="server" OnClick="btnDelete_Click" CommandArgument='<%# Eval("LogId") %>' 
+                                            OnClientClick="return confirm('Are you sure you want to delete this Log?');" CssClass="text-red-500 hover:text-red-700 w-8 h-8 flex items-center justify-center">
+                                            <i class="ri-delete-bin-line"></i>
+                                        </asp:LinkButton>
+                                    </div>
+                                </ItemTemplate>
+                            </asp:TemplateField>
                         </Columns>
                         <HeaderStyle CssClass="bg-gray-50" />
                         <RowStyle CssClass="bg-white hover:bg-gray-50" />

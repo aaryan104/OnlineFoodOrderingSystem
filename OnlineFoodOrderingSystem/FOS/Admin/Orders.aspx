@@ -186,6 +186,9 @@
                 </div>
             </div>
             <form runat="server">
+            <div class="message text-center flex flex-col items-center">
+                <asp:Label ID="msg" runat="server" ForeColor="red" Text=""></asp:Label>
+            </div>
                 <asp:HiddenField ID="hiddenOrderId" runat="server" ClientIDMode="Static" />
                 <asp:HiddenField ID="hiddenAgentId" runat="server" ClientIDMode="Static" />
                     <div class="bg-white rounded shadow-sm mb-8">
@@ -355,20 +358,16 @@
                                             </ItemTemplate>
                                         </asp:TemplateField>
 
-                                        <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <asp:TemplateField HeaderText="Actions" HeaderStyle-CssClass="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider" ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                             <ItemTemplate>
                                                 <asp:LinkButton ID="btnShow" runat="server" CommandName="Show" CommandArgument='<%# Eval("OrderId") %>' OnClick="btnShow_Click"
-                                                    CssClass="text-indigo-600 hover:text-indigo-900 mr-3"
+                                                    CssClass="text-indigo-600 hover:text-indigo-900 mr-3" style="font-size: larger"
                                                     OnClientClick='<%# "viewOrderDetails(\"" + Eval("OrderID") + "\"); return true;" %>'>
                                                     <i class="ri-eye-fill" style="color: black;"></i>
                                                 </asp:LinkButton>
-                                                <asp:LinkButton ID="btnEdit" runat="server" CommandName="Edit" CommandArgument='<%# Eval("OrderId") %>'
-                                                    CssClass="text-yellow-600 hover:text-yellow-900 mr-3">
-                                                    <i class="ri-edit-fill" style="color: black;"></i>
-                                                </asp:LinkButton>
-                                                <asp:LinkButton ID="btnDelete" runat="server" CommandName="Delete" CommandArgument='<%# Eval("OrderId") %>'
-                                                    CssClass="text-red-600 hover:text-red-900">
-                                                    <i class="ri-delete-bin-fill" style="color: red;"></i>
+                                                <asp:LinkButton ID="btnDelete" runat="server" OnClick="btnDelete_Click" CommandArgument='<%# Eval("OrderId") %>' style="font-size: larger"
+                                                    OnClientClick="return confirm('Are you sure you want to delete this Order?');" CssClass="text-red-600 hover:text-red-900 mr-3">
+                                                    <i class="ri-delete-bin-line"></i>
                                                 </asp:LinkButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -377,9 +376,6 @@
                             </div>
                         </div>
                 </form>
-            <div class="message text-center flex flex-col items-center">
-                <asp:Label ID="msg" runat="server" ForeColor="red" Text=""></asp:Label>
-            </div>
             <div id="orderDetailsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" runat="server" style="display: none">
                 <div class="bg-white rounded-lg w-[800px] max-h-[90vh] overflow-y-auto">
                     <div class="p-6 border-b flex items-center justify-between">

@@ -392,14 +392,33 @@
                     statusMenu.classList.add("hidden");
                 }
             });
+
             statusMenu.querySelectorAll("button").forEach((button) => {
                 button.addEventListener("click", () => {
-                    const status = button.querySelector("span:last-child").textContent;
-                    const color = button.dataset.color;
-                    updateStatus(status, color);
-                    statusMenu.classList.add("hidden");
+                    const newStatus = button.querySelector("span:last-child").textContent;
+                    const agentId = '<%= Session["DeliveryAgentId"] %>';
+
+                    fetch('DeliveryAgentDashboard.aspx/UpdateAgentStatus', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                        body: JSON.stringify({ agentId: agentId, newStatus: newStatus })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.d === "success") {
+                            const color = button.dataset.color;
+                            updateStatus(newStatus, color);
+                            alert("Status updated successfully!");
+                        } else {
+                            alert("Failed to update status.");
+                        }
+                        statusMenu.classList.add("hidden");
+                    })
+                    .catch(error => console.error('Error:', error));
                 });
             });
+
+
             const selectAllCheckbox = document.getElementById("select-all");
             const rowCheckboxes = document.querySelectorAll(".row-checkbox");
             selectAllCheckbox.addEventListener("change", function () {

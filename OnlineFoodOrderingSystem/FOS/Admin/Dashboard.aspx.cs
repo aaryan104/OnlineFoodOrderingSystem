@@ -56,18 +56,28 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
         public void fungrid()
         {
             funcon();
-            String qry = @"SELECT O.OrderId, U.FirstName, U.LastName, U.Email, O.OrderDate, O.TotalAmount AS Amount, O.OrderStatus AS Status 
-                            FROM dbo.Orders O JOIN dbo.Users U ON O.UserId = U.UserId 
-                            ORDER BY 
-                            CASE 
-                                WHEN o.OrderStatus = 'Pending' THEN 1
-                                WHEN o.OrderStatus = 'Delivered' THEN 2
-                                WHEN o.OrderStatus = 'Preparing' THEN 3
-                                WHEN o.OrderStatus = 'Out for Delivery' THEN 4
-                                WHEN o.OrderStatus = 'Delayed' THEN 5
-                                WHEN o.OrderStatus = 'Cancelled' THEN 6
-                                ELSE 7
-                            END, o.OrderDate DESC";
+            String qry = @"
+                SELECT 
+                    oa.AssignmentId,
+                    oa.OrderId,
+                    oa.DeliveryAgentId,
+                    u.FirstName + ' ' + u.LastName AS CustomerName,
+                    da.FirstName + ' ' + da.LastName AS DeliveryAgentName,
+                    u.PhoneNumber AS CustomerPhone,
+                    da.PhoneNumber AS DeliveryPhone,
+                    o.TotalAmount AS Amount,
+                    oa.AssignmentStatus,
+                    oa.AssignedAt
+                FROM 
+                    OrderAssignments oa
+                JOIN 
+                    Orders o ON oa.OrderId = o.OrderId
+                JOIN 
+                    Users u ON o.UserId = u.UserId
+                JOIN 
+                    DeliveryAgents da ON oa.DeliveryAgentId = da.DeliveryAgentId
+                ORDER BY 
+                    oa.AssignedAt DESC";
 
             cmd = new SqlCommand(qry, conn);
             sda = new SqlDataAdapter(cmd);
@@ -154,60 +164,36 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
             lblPayment.Text = rowCount11.ToString();
         }
 
-        protected void btnShow_Click(object sender, EventArgs e)
+        protected void btnDelete_Click(object sender, EventArgs e)
         {
-            LinkButton btnShow = (LinkButton)sender;
-            string orderId = btnShow.CommandArgument;
+            LinkButton btn = (LinkButton)sender;
+            string AssignmentId = btn.CommandArgument;
 
             try
             {
+                //Response.Write("Your Selected Id id : " + deliveryId);
                 funcon();
-                string qry = "SELECT O.OrderId, U.FirstName, U.LastName, U.Email, O.OrderDate, O.TotalAmount AS Amount, O.OrderStatus AS Status " +
-                             "FROM dbo.Orders O " +
-                             "JOIN dbo.Users U ON O.UserId = U.UserId " +
-                             "WHERE O.OrderId = @OrderId";
-                cmd = new SqlCommand(qry, conn);
-                cmd.Parameters.AddWithValue("@OrderId", orderId);
-                SqlDataReader dr = cmd.ExecuteReader();
 
-                if (dr.Read())
+                String qry = "DELETE FROM OrderAssignments WHERE AssignmentId=@id";
+                SqlCommand cmd = new SqlCommand(qry, conn);
+                cmd.Parameters.AddWithValue("id", AssignmentId);
+                int res = cmd.ExecuteNonQuery();
+
+                if (res > 0)
                 {
-                    lblFirstname.Text = dr["FirstName"].ToString();
-                    lblLastname.Text = dr["LastName"].ToString();
-                    lblEmail.Text = dr["Email"].ToString();
-                    lblId.Text = dr["OrderId"].ToString();
-                    lblDate.Text = Convert.ToDateTime(dr["OrderDate"]).ToString("MMM dd, yyyy HH:mm");
-                    lblStatus.Text = dr["Status"].ToString();
-                    lblAmount.Text = dr["Amount"].ToString();
+                    msg.Text = "Data Remove!";
                 }
-                conn.Close();
-
-                LoadOrderProducts(orderId);
-
-                orderDetailsModal.Style["display"] = "block";
+                else
+                {
+                    msg.Text = "Data not Removed!";
+                    conn.Close();
+                }
+                fungrid();
             }
             catch (Exception ex)
             {
-                msg.Text = ex.Message;
+                msg.Text = "Delete Id " + AssignmentId + " Logs First.";
             }
-        }
-
-        private void LoadOrderProducts(string orderId)
-        {
-            string qry = @"SELECT M.Name AS ProductName, OD.Quantity, OD.Subtotal AS Price
-                         FROM dbo.OrderDetails OD
-                         JOIN dbo.MenuItems M ON OD.ItemId = M.ItemId
-                         WHERE OD.OrderId = @OrderId";
-
-            cmd = new SqlCommand(qry, conn);
-            cmd.Parameters.AddWithValue("@OrderId", orderId);
-
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-
-            rptProducts.DataSource = dt;
-            rptProducts.DataBind();
         }
     }
 }

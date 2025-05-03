@@ -363,9 +363,9 @@
                                                 ItemStyle-CssClass="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 <ItemTemplate>
                                                     <div class="flex justify-end space-x-2">
-                                                        <asp:LinkButton ID="btnDelete" runat="server" OnClick="btnDelete_Click" CommandArgument='<%# Eval("OrderId") %>' CssClass="text-red-500 hover:text-red-700 w-8 h-8 flex items-center justify-center" 
-                                                            OnClientClick="return confirm('Are you sure you want to delete this agent?');">
-                                                            <i class="ri-delete-bin-line ri-lg"></i>
+                                                        <asp:LinkButton ID="btnDelete" runat="server" OnClick="btnDelete_Click" CommandArgument='<%# Eval("PaymentId") %>' 
+                                                            OnClientClick="return confirm('Are you sure you want to delete this Transation Details?');" CssClass="text-red-500 hover:text-red-700 w-8 h-8 flex items-center justify-center">
+                                                            <i class="ri-delete-bin-line"></i>
                                                         </asp:LinkButton>
                                                     </div>
                                                 </ItemTemplate>
