@@ -49,6 +49,19 @@
             background-color: #FEA116;
             color: white;
         }
+        
+        .order {
+            color: #FEA116;
+            border: 2px solid #FEA116;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: 0.3s ease;
+        }
+
+        .order:hover {
+            background-color: #FEA116;
+            color: white;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -100,6 +113,9 @@
                 </div>
             </div>
             <div class="flex items-center gap-6">
+                <div>
+                    <a href="trackOrder.aspx" class="order">My Orders</a>
+                </div>
                 <div>
                     <a href="../Index.aspx"><i class="ri-logout-box-line" style="font-size: 20px; cursor: pointer" title="Logout"></i></a>
                 </div>

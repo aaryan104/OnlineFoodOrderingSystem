@@ -22,6 +22,24 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
                 Response.Redirect("~/FOS/Login.aspx");
                 return;
             }
+            else
+            {
+                string email = Session["s_eml"].ToString();
+                string connStr = ConfigurationManager.ConnectionStrings["conStr"].ConnectionString;
+
+                using (SqlConnection conn = new SqlConnection(connStr))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("SELECT Address FROM Users WHERE Email = @email", conn);
+                    cmd.Parameters.AddWithValue("@email", email);
+
+                    object result = cmd.ExecuteScalar();
+                    if (result != null)
+                    {
+                        Session["address"] = result.ToString();
+                    }
+                }
+            }
 
             if (!IsPostBack)
             {
@@ -91,13 +109,19 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
 
                 if (orderId > 0)
                 {
+                    Session["OrderId"] = orderId;
+                    Session["OrderDate"] = DateTime.Now;
+                    Session["TotalAmount"] = total;
+                    Session["subTotal"] = subtotal;
+
                     InsertOrderDetails(orderId);
                     InsertPayment(orderId, total);
+
                     //Response.Write("<script>alert('OrderId: " + orderId + "');</script>");
 
                     Session.Remove("CartItems");
 
-                    Response.Redirect("Home.aspx", false);
+                    Response.Redirect("~/FOS/Customer/SuccessOrder.aspx");
                     Context.ApplicationInstance.CompleteRequest();
                 }
                 else
@@ -188,13 +212,14 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
                     cmd.Parameters.AddWithValue("@PaymentStatus", status);
                     cmd.Parameters.AddWithValue("@PaymentDate", DateTime.Now);
                     cmd.ExecuteNonQuery();
+
+                    Session["PaymentMethod"] = method;
                 }
             }
             catch (Exception ex)
             {
                 Response.Write("<script>alert('Payment Insert Error: " + ex.Message + "');</script>");
             }
-
         }
     }
 }

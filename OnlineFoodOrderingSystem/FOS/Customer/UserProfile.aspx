@@ -112,62 +112,65 @@
                                         <asp:Label ID="msg1" runat="server" ForeColor="red" Text=""></asp:Label>
                                     </div>
 
-                                    <form id="profileForm" class="space-y-6" runat="server">
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
-                                                <asp:TextBox ID="txtFirstname" runat="server" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary"></asp:TextBox>
-                                            </div>
-                                            <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
-                                                <asp:TextBox ID="txtLastname" runat="server" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary"></asp:TextBox>
-                                            </div>
-                                        </div>
-
-<%--                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
-                                            <asp:TextBox ID="txtEmail" runat="server" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary"></asp:TextBox>
-                                        </div>--%>
-
+                                <form id="profileForm" class="space-y-6" runat="server">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
-                                            <asp:TextBox ID="txtPhone" runat="server" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary" pattern="[0-9]{10}"></asp:TextBox>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                                            <asp:TextBox ID="txtFirstname" runat="server" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary"></asp:TextBox>
                                         </div>
-
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Address *</label>
-                                            <asp:TextBox ID="txtAddress" runat="server" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary" rows="3"></asp:TextBox>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                                            <asp:TextBox ID="txtLastname" runat="server" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary"></asp:TextBox>
                                         </div>
+                                    </div>
 
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Profile Photo</label>
-                                            <div class="flex items-center space-x-4">
-                                                <div id="imagePreview"
-                                                    class="w-20 h-20 bg-gray-100 rounded flex items-center justify-center">
-                                                    <i class="ri-image-line text-gray-400 text-2xl"></i>
-                                                </div>
-                                                <div class="flex-1">
-                                                    <asp:FileUpload ID="photoInput" runat="server" class="hidden" accept="image/*" />
-                                                    <button type="button" onclick="document.getElementById('photoInput').click()"
-                                                        class="bg-gray-100 text-gray-700 px-4 py-2 !rounded-button hover:bg-gray-200 transition-colors cursor-pointer flex items-center gap-2">
-                                                        <i class="ri-upload-line w-5 h-5 flex items-center justify-center"></i>
-                                                        Upload Photo
-                                                    </button>
-                                                    <p class="text-xs text-gray-500 mt-1">
-                                                        Supported formats: JPG, PNG. Max size: 5MB
-                                                    </p>
-                                                </div>
+                                    <%--<div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                                        <asp:TextBox ID="txtEmail" runat="server" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary"></asp:TextBox>
+                                    </div>--%>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                                        <asp:TextBox ID="txtPhone" runat="server" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary" pattern="[0-9]{10}"></asp:TextBox>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Address *</label>
+                                        <asp:TextBox ID="txtAddress" runat="server" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-primary" rows="3"></asp:TextBox>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Profile Photo</label>
+                                        <div class="flex items-center space-x-4">
+                                            <div id="imagePreview"
+                                                class="w-20 h-20 bg-gray-100 rounded flex items-center justify-center">
+                                                <i class="ri-image-line text-gray-400 text-2xl"></i>
+                                            </div>
+                                            <div class="flex-1">
+                                                <asp:FileUpload ID="photoInput" runat="server" class="hidden" accept="image/*" />
+                                                <button type="button" onclick="document.getElementById('photoInput').click()"
+                                                    class="bg-gray-100 text-gray-700 px-4 py-2 !rounded-button hover:bg-gray-200 transition-colors cursor-pointer flex items-center gap-2">
+                                                    <i class="ri-upload-line w-5 h-5 flex items-center justify-center"></i>
+                                                    Upload Photo
+                                                </button>
+                                                <p class="text-xs text-gray-500 mt-1">
+                                                    Supported formats: JPG, PNG. Max size: 5MB
+                                                </p>
                                             </div>
                                         </div>
-                                            <%--<i class="ri-check-line w-5 h-5 flex items-center justify-center"></i>--%>
-                                        <asp:Button ID="btnEdit" runat="server" Text="Submit" 
-                                            class="w-full bg-primary text-white py-3 !rounded-button hover:bg-primary/90 transition-colors cursor-pointer flex items-center justify-center gap-2" OnClick="btnEdit_Click" />
-                                    </form>
+                                    </div>
+                                        <%--<i class="ri-check-line w-5 h-5 flex items-center justify-center"></i>--%>
+                                    <asp:Button ID="btnEdit" runat="server" Text="Submit" 
+                                        class="w-full bg-primary text-white py-3 !rounded-button hover:bg-primary/90 transition-colors cursor-pointer flex items-center justify-center gap-2"
+                                        OnClick="btnEdit_Click" />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="space-y-4">
+                        <div>
+                            <asp:Label class="text-sm text-green-500 text-2xl" ID="lblId" runat="server" Text="..."></asp:Label>
+                        </div>
                         <div>
                             <asp:Label class="text-sm text-gray-500" ID="lblEmail" runat="server" Text="..."></asp:Label>
                         </div>
@@ -178,7 +181,7 @@
                             <asp:Label class="text-sm text-gray-500" ID="lblAddress" runat="server"></asp:Label>
                         </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-4 mt-8 pt-8 border-t">
+                    <div class="grid grid-cols-3 gap-4 mt-8 pt-8 border-t hidden">
                         <div class="text-center">
                             <p class="text-2xl font-semibold text-primary">47</p>
                             <p class="text-sm text-gray-500">Orders</p>
@@ -193,38 +196,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Payment Methods</h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between p-4 border rounded-lg">
-                            <div class="flex items-center gap-3">
-                                <i class="ri-visa-fill text-2xl text-blue-600"></i>
-                                <div>
-                                    <p class="text-gray-900">•••• 4589</p>
-                                    <p class="text-sm text-gray-500">Expires 08/2025</p>
-                                </div>
-                            </div>
-                            <span class="px-2 py-1 text-xs font-medium text-primary bg-primary/10 rounded">Default</span>
-                        </div>
-                        <div class="flex items-center justify-between p-4 border rounded-lg">
-                            <div class="flex items-center gap-3">
-                                <i class="ri-mastercard-fill text-2xl text-orange-600"></i>
-                                <div>
-                                    <p class="text-gray-900">•••• 7852</p>
-                                    <p class="text-sm text-gray-500">Expires 11/2024</p>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="w-full flex items-center justify-center gap-2 text-primary hover:text-primary/90 font-medium !rounded-button px-4 py-2 border border-primary">
-                            <i class="ri-add-line"></i>
-                            Add New Card
-                        </button>
-                    </div>
-                </div>
             </div>
            
             <div class="col-span-12 lg:col-span-8 space-y-8">
-
                 <div class="bg-white rounded-lg shadow-sm p-6">
                     <a href="trackOrder.aspx" class="inline-block bg-primary text-white font-medium py-2 px-4 rounded hover:bg-primary/90 transition">
                         Track Orders
@@ -236,21 +210,44 @@
                     </div>
                     <div class="space-y-4">
                         <div class="product-section" id="cartItemsContainer">
-                            <!-- Cart items will be loaded here -->
                             <div class="text-gray-500 text-center py-10">
-                                Loading your cart...
+                            <asp:Repeater ID="rptOrders" runat="server">
+                                <ItemTemplate>
+                                    <div id="ordersTable" class="order-card bg-white border border-gray-200 rounded p-4 cursor-pointer" data-order-id='<%# Eval("OrderId") %>'>
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <h4 class="font-semibold text-gray-800">Order #<%# Eval("OrderId") %></h4>
+                                                <p class="text-sm text-gray-500"><%# Eval("OrderDate", "{0:MMMM dd, yyyy}") %></p>
+                                            </div>
+                                            <span class='px-2 py-1 text-xs rounded-full 
+                                                <%# Eval("OrderStatus").ToString() == "Delivered" ? "bg-green-100 text-green-700" : 
+                                                    Eval("OrderStatus").ToString() == "Preparing" ? "bg-blue-100 text-blue-700" : 
+                                                    Eval("OrderStatus").ToString() == "Out for delivery" ? "bg-gray-100 text-gray-700" : 
+                                                    Eval("OrderStatus").ToString() == "Delayed" ? "bg-orange-100 text-orange-700" : 
+                                                    Eval("OrderStatus").ToString() == "Pending" ? "bg-yellow-100 text-yellow-700" : 
+                                                    "bg-red-100 text-red-700" %>'>
+                                                <%# Eval("OrderStatus") %>
+                                            </span>
+                                        </div>
+                                        <div class="mt-3 flex justify-between items-center">
+                                            <div class="text-sm">
+                                                <p class="text-gray-600"><%# Eval("ItemCount") %> items</p>
+                                                <p class="font-medium text-gray-800">₹<%# Eval("TotalAmount", "{0:F2}") %></p>
+                                            </div>
+                                            <div>
+                                                <a href='Review_Feedback.aspx?OrderId=<%# Eval("OrderId") %>'>Click here for review.</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ItemTemplate>
+                            </asp:Repeater>
                             </div>
                         </div>
                     </div>
                 </div>
-
-              
-                <button class="w-full bg-primary text-white font-medium !rounded-button px-6 py-3 mt-6 hover:bg-primary/90 flex items-center justify-center gap-2">
-                    <i class="ri-secure-payment-line"></i>
-                    Proceed to Payment
-                </button>
             </div>
         </div>
+    </form>
     </main>
     <script>
         function displayCartItems() {

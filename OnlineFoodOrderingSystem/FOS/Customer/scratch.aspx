@@ -128,7 +128,7 @@
     <div class="max-w-4xl mx-auto p-6">
         <header class="text-center mb-10">
             <h2 class="text-3xl font-bold mb-3 text-orange-600">Scratch & Win</h2>
-            <img ID="img" src="Image/logo (2)_prev_ui.png" />
+            <img ID="img" src="../../Asset/Library/img/scratch-card-image.jpg" />
             <p class="text-gray-600 mt-4 text-lg">Scratch the card to reveal your surprise!</p>
         </header>
 
@@ -235,29 +235,46 @@
                 localStorage.setItem('scratchCount', totalScratches);
                 localStorage.setItem('sessionAttempts', sessionAttempts);
 
-                // Ensure at least 2 wins in 10 attempts
+                // Ensure at least some wins in 10 attempts
                 if (sessionAttempts % 10 === 0 && totalWins < 2) {
                     sessionAttempts = 0;
                     localStorage.setItem('sessionAttempts', '0');
-                    return { hasWon: true, discount: getRandomDiscount() };
+                    return { hasWon: true, discount: getRandomWeightedDiscount() };
                 }
 
-                // Normal probability (20% chance to win)
+                // New probability distribution
                 const random = Math.random() * 100;
                 let hasWon = false;
                 let discount = 0;
 
-                if (random < 20) { // 20% chance to win
+                if (random < 55) { // 55% chance for 0% discount
+                    hasWon = false;
+                    discount = 0;
+                } else if (random < 75) { // 20% chance for 5% discount (55-75)
                     hasWon = true;
-                    discount = getRandomDiscount();
+                    discount = 5;
+                } else if (random < 90) { // 15% chance for 10% discount (75-90)
+                    hasWon = true;
+                    discount = 10;
+                } else { // 10% chance for 15% discount (90-100)
+                    hasWon = true;
+                    discount = 15;
                 }
 
-                if (hasWon) {
+                if (hasWon && discount > 0) {
                     totalWins++;
                     localStorage.setItem('winCount', totalWins);
                 }
 
                 return { hasWon, discount };
+            }
+
+            function getRandomWeightedDiscount() {
+                const rand = Math.random() * 100;
+                if (rand < 55) return 0;
+                if (rand < 75) return 5;
+                if (rand < 90) return 10;
+                return 15;
             }
 
             function getRandomDiscount() {

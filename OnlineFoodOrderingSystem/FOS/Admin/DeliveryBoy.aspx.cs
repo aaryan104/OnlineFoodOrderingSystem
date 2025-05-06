@@ -85,7 +85,7 @@ namespace OnlineFoodOrderingSystem.FOS.Admin
             }
             catch (Exception ex)
             {
-                Response.Write(ex.ToString());
+                msg.Text = "Delete Id no." + deliveryId + "'s all Orders first!";
             }
         }
 

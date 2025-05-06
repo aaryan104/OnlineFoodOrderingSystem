@@ -81,13 +81,24 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
             {
                 msg.Text = "User not found.";
             }
-        } 
+        }
 
         private void LoadOrders()
         {
             funcon();
 
-            string query = "SELECT OrderId, OrderDate, OrderStatus, TotalAmount FROM Orders WHERE UserId = @UserId ORDER BY OrderDate DESC";
+            string query = @"SELECT 
+                                o.OrderId, 
+                                o.OrderDate, 
+                                o.OrderStatus, 
+                                o.TotalAmount,
+                                ISNULL(SUM(od.Quantity), 0) AS ItemCount
+                            FROM Orders o
+                            LEFT JOIN OrderDetails od ON o.OrderId = od.OrderId
+                            WHERE o.UserId = @UserId
+                            GROUP BY o.OrderId, o.OrderDate, o.OrderStatus, o.TotalAmount
+                            ORDER BY o.OrderDate DESC";
+
             cmd = new SqlCommand(query, conn);
             cmd.Parameters.AddWithValue("@UserId", userId);
 
@@ -101,6 +112,7 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
 
         private void LoadOrderDetails(string orderId)
         {
+
             funcon();
             //Response.Write("<script>alert('OrderId: " + orderId + "');</script>");
             string query = @"SELECT TOP 1 
@@ -121,16 +133,20 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
             cmd.Parameters.AddWithValue("@UserId", userId);
 
             SqlDataReader reader = cmd.ExecuteReader();
+
             if (reader.Read())
             {
+                DateTime currentTime = Convert.ToDateTime(reader["OrderDate"]);
+                DateTime timeAfter15Min = currentTime.AddMinutes(20);
+                
                 lblCustomerName.Text = reader["CustomerName"].ToString();
-                lblContact.Text = reader["PhoneNumber"].ToString();
+                lblContact.Text = "+91 " + reader["PhoneNumber"].ToString();
                 lblOrderId.Text = reader["OrderId"].ToString();
-                lblOrderDate.Text = Convert.ToDateTime(reader["OrderDate"]).ToString("MMMM dd, yyyy");
-                //lblEstimatedDelivery.Text = Convert.ToDateTime(reader["DeliveryDate"]).ToString("MMMM dd, yyyy");
+                lblOrderDate.Text = Convert.ToDateTime(reader["OrderDate"]).ToString("MMMM dd, yyyy hh:mm tt");
+                lblEstimatedDelivery.Text = timeAfter15Min.ToString("MMMM dd, yyyy hh:mm tt");                
                 lblShippingAddress.Text = reader["Address"].ToString();
                 lblPaymentMethod.Text = reader["PaymentMethod"].ToString();
-                lblDebug.Text = $"Loaded orderId = {orderId}, userId = {userId}";
+                //lblDebug.Text = $"Loaded orderId = {orderId}, userId = {userId}";
             }
             reader.Close();
 
@@ -149,12 +165,27 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
             rptOrderItems.DataSource = dtItems;
             rptOrderItems.DataBind();
 
-            decimal total = 0;
+            decimal subtotal = 0;
+            decimal deliveryFee = 20;
+            decimal taxRate = 0.05m;
+
             foreach (DataRow row in dtItems.Rows)
             {
-                total += Convert.ToDecimal(row["Subtotal"]);
+                decimal price = Convert.ToDecimal(row["Subtotal"]);
+                int quantity = Convert.ToInt32(row["Quantity"]);
+                subtotal += price * quantity;
             }
-            lblTotalAmount.Text = "₹" + total.ToString("F2");
+
+            decimal taxableAmount = subtotal + deliveryFee;
+            decimal taxAmount = taxableAmount * taxRate;
+
+            decimal finalTotal = taxableAmount + taxAmount;
+
+            lblTotalAmount.Text = subtotal.ToString("C");
+            lblTax.Text = taxAmount.ToString("C");
+            lblDfee.Text = deliveryFee.ToString("C");
+            lblFinalAmount.Text = finalTotal.ToString("C");
+
         }
     }
 }

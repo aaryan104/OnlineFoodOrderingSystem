@@ -121,7 +121,7 @@
                                 class="custom-select block w-full pl-10 pr-10 py-3 border-gray-200 border rounded focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition">
                                 <asp:ListItem>-- Select Status --</asp:ListItem>
                                 <asp:ListItem>Cancelled</asp:ListItem>
-                                <asp:ListItem>Delay</asp:ListItem>
+                                <asp:ListItem>Delayed</asp:ListItem>
                                 <asp:ListItem>Out for Delivery</asp:ListItem>
                                 <asp:ListItem>Delivered</asp:ListItem>
                             </asp:DropDownList>
@@ -185,10 +185,10 @@
                         <div class="flex items-center">
                             <div class="w-5 h-5 flex items-center justify-center">
                                 <input type="checkbox" id="confirmLocation" name="confirmLocation"
-                                    class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary" />
+                                    class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary" required/>
                             </div>
                             <label for="confirmLocation" class="ml-2 text-sm text-gray-700">
-                                I confirm that I am at the correct delivery location
+                                I confirm that I will deliver to the correct delivery location
                             </label>
                         </div>
                     </div>

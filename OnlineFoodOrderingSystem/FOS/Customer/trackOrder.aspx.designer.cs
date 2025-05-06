@@ -123,12 +123,30 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
         protected global::System.Web.UI.WebControls.Label lblTotalAmount;
 
         /// <summary>
-        /// lblDebug control.
+        /// lblDfee control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDebug;
+        protected global::System.Web.UI.WebControls.Label lblDfee;
+
+        /// <summary>
+        /// lblTax control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTax;
+
+        /// <summary>
+        /// lblFinalAmount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblFinalAmount;
     }
 }

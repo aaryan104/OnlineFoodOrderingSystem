@@ -105,6 +105,7 @@
     <Content Include="Asset\Library\img\menu25.jpg" />
     <Content Include="Asset\Library\img\menu26.jpg" />
     <Content Include="Asset\Library\img\PaymentCode.png" />
+    <Content Include="Asset\Library\img\scratch-card-image.jpg" />
     <Content Include="Asset\Library\img\team1.png" />
     <Content Include="Asset\Library\img\team2.png" />
     <Content Include="Asset\Library\img\team3.png" />
@@ -147,7 +148,9 @@
     <Content Include="FOS\Customer\Cart.aspx" />
     <Content Include="FOS\Customer\Checkout.aspx" />
     <Content Include="FOS\Customer\Home.aspx" />
+    <Content Include="FOS\Customer\Review_Feedback.aspx" />
     <Content Include="FOS\Customer\scratch.aspx" />
+    <Content Include="FOS\Customer\SuccessOrder.aspx" />
     <Content Include="FOS\Customer\trackOrder.aspx" />
     <Content Include="FOS\Customer\UserProfile.aspx" />
     <Content Include="FOS\DeliveryAgent\addAgent.aspx" />
@@ -273,12 +276,26 @@
     <Compile Include="FOS\Customer\Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
+    <Compile Include="FOS\Customer\Review_Feedback.aspx.cs">
+      <DependentUpon>Review_Feedback.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FOS\Customer\Review_Feedback.aspx.designer.cs">
+      <DependentUpon>Review_Feedback.aspx</DependentUpon>
+    </Compile>
     <Compile Include="FOS\Customer\scratch.aspx.cs">
       <DependentUpon>scratch.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FOS\Customer\scratch.aspx.designer.cs">
       <DependentUpon>scratch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FOS\Customer\SuccessOrder.aspx.cs">
+      <DependentUpon>SuccessOrder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FOS\Customer\SuccessOrder.aspx.designer.cs">
+      <DependentUpon>SuccessOrder.aspx</DependentUpon>
     </Compile>
     <Compile Include="FOS\Customer\trackOrder.aspx.cs">
       <DependentUpon>trackOrder.aspx</DependentUpon>

@@ -216,7 +216,7 @@
                 </div>
                 <div class="overflow-x-auto responsive-table">
                     <asp:GridView ID="GridViewDeliveryAgents" runat="server" AutoGenerateColumns="False" CssClass="min-w-full divide-y divide-gray-200" 
-                        GridLines="None" HeaderStyle-BackColor="#F9FAFB" HeaderStyle-ForeColor="Gray" HeaderStyle-Font-Bold="true" 
+                        GridLines="None" HeaderStyle-BackColor="#F9FAFB" HeaderStyle-ForeColor="Gray" 
                         RowStyle-BackColor="White" AlternatingRowStyle-BackColor="#F9FAFB" DataKeyNames="DeliveryAgentId">
     
                         <Columns>

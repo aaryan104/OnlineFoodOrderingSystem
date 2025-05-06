@@ -286,7 +286,7 @@
         </div>
     </form>
     <script>
-            document.getElementById('<%= btnProceedToCheckout.ClientID %>').addEventListener('click', function () {
+        document.getElementById('<%= btnProceedToCheckout.ClientID %>').addEventListener('click', function () {
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
             if (cart.length === 0) {
@@ -297,9 +297,9 @@
             // Hidden field me cart ka JSON set karo
             document.getElementById('<%= hfCartData.ClientID %>').value = JSON.stringify(cart);
 
-            // No need to call form.submit() manually
-            // ASP.NET button apne aap form post karega
-        });
+                // No need to call form.submit() manually
+                // ASP.NET button apne aap form post karega
+            });
 
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let appliedCoupon = JSON.parse(localStorage.getItem('appliedCoupon')) || null;
@@ -445,7 +445,7 @@
 
             document.getElementById('discountRow').style.display = 'flex';
             document.getElementById('couponCodeDisplay').textContent = code;
-            document.getElementById('discountAmount').textContent = `-₹${ discount.toFixed(2) }`;
+            document.getElementById('discountAmount').textContent = `-₹${discount.toFixed(2)}`;
             document.getElementById('couponCodeDisplay').className = 'coupon-applied';
 
             updateOrderSummary(subtotal);

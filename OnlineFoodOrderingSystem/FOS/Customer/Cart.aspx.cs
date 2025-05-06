@@ -29,8 +29,8 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
 
         private void ApplyDiscount(decimal discount)
         {
-            decimal subtotal = GetCurrentSubtotal(); 
-            decimal tax = subtotal * 0.05m; 
+            decimal subtotal = GetCurrentSubtotal();
+            decimal tax = subtotal * 0.05m;
             decimal total = subtotal + tax - discount;
 
             Session["Total"] = total;

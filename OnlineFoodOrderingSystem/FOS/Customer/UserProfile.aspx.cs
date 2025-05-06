@@ -12,17 +12,20 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
         SqlCommand cmd;
         SqlDataAdapter sda;
         DataTable dt;
+        public static int userId;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+                GetUserIdFromEmail();
                 if (Session["s_eml"] != null)
                 {
                     string email = Session["s_eml"].ToString();
                     lblEmail.Text = email;
                     FetchUserData(email);
                     LoadUserData(email);
+                    LoadOrders();
                 }
                 else
                 {
@@ -53,6 +56,53 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
             }
         }
 
+        private void GetUserIdFromEmail()
+        {
+            funcon();
+            string email = Session["s_eml"].ToString();
+
+            string query = "SELECT UserId FROM Users WHERE Email = @Email";
+            cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@Email", email);
+            object result = cmd.ExecuteScalar();
+
+            if (result != null)
+            {
+                userId = Convert.ToInt32(result);
+            }
+            else
+            {
+                msg.Text = "User not found.";
+            }
+        }
+
+        private void LoadOrders()
+        {
+            funcon();
+
+            string query = @"SELECT 
+                                o.OrderId, 
+                                o.OrderDate, 
+                                o.OrderStatus, 
+                                o.TotalAmount,
+                                ISNULL(SUM(od.Quantity), 0) AS ItemCount
+                            FROM Orders o
+                            LEFT JOIN OrderDetails od ON o.OrderId = od.OrderId
+                            WHERE o.UserId = @UserId
+                            GROUP BY o.OrderId, o.OrderDate, o.OrderStatus, o.TotalAmount
+                            ORDER BY o.OrderDate DESC";
+
+            cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@UserId", userId);
+
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+
+            rptOrders.DataSource = dt;
+            rptOrders.DataBind();
+        }
+
         private void FetchUserData(string email)
         {
             try
@@ -61,7 +111,7 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
                 using (SqlConnection conn = new SqlConnection(conStr))
                 {
                     conn.Open();
-                    string qry = "SELECT FirstName, PhoneNumber, Address, ImageURL FROM Users WHERE Email = @Email";
+                    string qry = "SELECT UserId, FirstName, PhoneNumber, Address, ImageURL FROM Users WHERE Email = @Email";
                     using (SqlCommand cmd = new SqlCommand(qry, conn))
                     {
                         cmd.Parameters.AddWithValue("@Email", email);
@@ -73,6 +123,7 @@ namespace OnlineFoodOrderingSystem.FOS.Customer
 
                             if (dt.Rows.Count > 0)
                             {
+                                lblId.Text = "UserId : #" + dt.Rows[0]["UserId"].ToString();
                                 lblFullName.Text = dt.Rows[0]["FirstName"].ToString();
                                 lblPhone.Text = dt.Rows[0]["PhoneNumber"].ToString();
                                 lblAddress.Text = dt.Rows[0]["Address"].ToString();

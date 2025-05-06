@@ -157,7 +157,7 @@ namespace OnlineFoodOrderingSystem.FOS.DeliveryAgent
                     INNER JOIN Orders o ON oa.OrderId = o.OrderId
                     INNER JOIN Users u ON o.UserId = u.UserId
                 WHERE oa.DeliveryAgentId = @AgentId
-                    AND o.OrderStatus IN ('Preparing', 'Out for Delivery', 'Delivered')
+                    AND o.OrderStatus IN ('Preparing', 'Out for Delivery', 'Delivered', 'Delayed')
                 ORDER BY 
                     CASE 
                         WHEN o.OrderStatus = 'Preparing' THEN 1

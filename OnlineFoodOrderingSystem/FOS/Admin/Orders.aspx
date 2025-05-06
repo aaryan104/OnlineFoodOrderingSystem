@@ -351,7 +351,7 @@
                                                     <%# Eval("Status").ToString() == "Delivered" ? "bg-green-100 text-green-800" : 
                                                        Eval("Status").ToString() == "Pending" ? "bg-yellow-100 text-yellow-800" : 
                                                        Eval("Status").ToString() == "Preparing" ? "bg-blue-100 text-blue-800" : 
-                                                       Eval("Status").ToString() == "Out for Delivery" ? "bg-gray-100 text-gray-800" : 
+                                                       Eval("Status").ToString() == "Out for Delivery" ? "bg-purple-100 text-purple-800" : 
                                                        "bg-red-100 text-red-800" %>'>
                                                     <%# Eval("Status") %>
                                                 </span>
